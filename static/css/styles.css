@@ -136,6 +136,7 @@ body.dark-body {
 .page-content {
   padding: 50px;
   max-width: 1200px;
+  margin-top: 50px;
   width: 100%;
 }
 
@@ -536,6 +537,8 @@ body.dark-body {
   margin: 0;
   padding: 0;
   list-style: none;
+  text-align: center;
+  list-style: inside;
 }
 
 .home-banner .social-icons li {
@@ -1182,6 +1185,9 @@ padding: 20px;
   }
 }
 
+#reference{
+  font-size: 24px;
+}
 
 /*==============================
   Margins
