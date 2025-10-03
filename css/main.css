@@ -2595,5 +2595,88 @@ footer .copyright span:last-child::after {
 #go-top a:hover {
 	background: #000000;
 }
+/* Blog Section */
+#blog .blog-item {
+   position: relative;
+   margin: 15px; /* spacing between blog items */
+   overflow: hidden;
+   flex-shrink: 0;
+   border-radius: 12px;
+   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+   flex: 1 1 calc(50% - 30px); /* 2 items per row with margin */
+}
+
+#blog #blog-wrapper {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+
+/* Blog Images */
+#blog .blog-item img {
+   object-fit: cover;       /* fill frame, crop if needed */
+   object-position: center; /* center focus */
+   display: block;
+   object-position: center; 
+   border-radius: 12px;
+   transition: transform 0.4s ease;
+}
+
+#blog .blog-item:hover img {
+   transform: scale(1.08);
+}
+
+/* Overlay */
+#blog .blog-overlay {
+   background: linear-gradient(to top, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.25));
+   position: absolute;
+   top: 0; left: 0;
+   width: 100%;
+   height: 100%;
+   opacity: 0;
+   transition: opacity 0.3s ease;
+   display: flex;
+   align-items: flex-end;
+   padding: 20px;
+   border-radius: 12px;
+}
+
+#blog .blog-item:hover .blog-overlay {
+   opacity: 1;
+}
+
+/* Blog Content */
+#blog .blog-content {
+   color: #fff;
+}
+
+#blog .blog-title {
+   font-size: 1.3rem;
+   font-weight: 700;
+   margin-bottom: 6px;
+   color: #fff;
+}
+
+#blog .blog-desc {
+   font-size: rem;
+   line-height: 1.4;
+   margin-bottom: 12px;
+   color: #f0f0f0;
+}
+
+#blog .button {
+   background: #ff6b6b;
+   color: #fff !important;
+   padding: 8px 16px;
+   border-radius: 6px;
+   font-size: 0.9rem;
+   font-weight: 600;
+   transition: background 0.3s ease;
+   height: 50px;
+}
+
+#blog .button:hover {
+   background: #ff4757;
+}
 
 /*# sourceMappingURL=main.css.map */
