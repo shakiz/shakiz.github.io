@@ -2598,9 +2598,10 @@ footer .copyright span:last-child::after {
 /* Blog Section */
 #blog .blog-item {
    position: relative;
-   margin: 15px; /* spacing between blog items */
+   margin: 15px;
    overflow: hidden;
    flex-shrink: 0;
+   padding: 0px;
    border-radius: 12px;
    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
    flex: 1 1 calc(50% - 30px); /* 2 items per row with margin */
@@ -2609,26 +2610,28 @@ footer .copyright span:last-child::after {
 #blog #blog-wrapper {
    display: flex;
    flex-wrap: wrap;
-   justify-content: center;
 }
 
 /* Blog Images */
 #blog .blog-item img {
-   object-fit: cover;       /* fill frame, crop if needed */
-   object-position: center; /* center focus */
+   object-fit: fill;
+   object-position: center;
+   padding: 0px;
    display: block;
+   height: 280px;
+   width: 100%;
    object-position: center; 
    border-radius: 12px;
    transition: transform 0.4s ease;
 }
 
 #blog .blog-item:hover img {
-   transform: scale(1.08);
+   transform: scale(1.05);
 }
 
 /* Overlay */
 #blog .blog-overlay {
-   background: linear-gradient(to top, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.25));
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 100%, rgba(0,0,0,1));
    position: absolute;
    top: 0; left: 0;
    width: 100%;
@@ -2642,7 +2645,7 @@ footer .copyright span:last-child::after {
 }
 
 #blog .blog-item:hover .blog-overlay {
-   opacity: 1;
+   opacity: 2;
 }
 
 /* Blog Content */
@@ -2651,15 +2654,15 @@ footer .copyright span:last-child::after {
 }
 
 #blog .blog-title {
-   font-size: 1.3rem;
+   font-size: 1.4rem;
    font-weight: 700;
    margin-bottom: 6px;
    color: #fff;
 }
 
 #blog .blog-desc {
-   font-size: rem;
-   line-height: 1.4;
+   font-size: 1.2rem;
+   line-height: 1.2;
    margin-bottom: 12px;
    color: #f0f0f0;
 }
@@ -2667,12 +2670,8 @@ footer .copyright span:last-child::after {
 #blog .button {
    background: #ff6b6b;
    color: #fff !important;
-   padding: 8px 16px;
    border-radius: 6px;
-   font-size: 0.9rem;
-   font-weight: 600;
-   transition: background 0.3s ease;
-   height: 50px;
+   height: 48px;
 }
 
 #blog .button:hover {
