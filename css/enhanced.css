@@ -1,0 +1,829 @@
+/**
+ * Enhanced Portfolio Styles - Modern FAANG-Level Design
+ * This file contains modern UI enhancements including:
+ * - Modern color palette with gradients
+ * - Enhanced card designs with depth
+ * - Sophisticated hover effects
+ * - Improved responsiveness
+ * - Micro-interactions and animations
+ */
+
+/* ===================================================================
+ * CSS Custom Properties - Modern Design System
+ * ================================================================ */
+:root {
+    /* Modern Color Palette */
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --hero-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f5576c 100%);
+
+    /* Dark Theme Colors */
+    --dark-bg: #0a0a0a;
+    --dark-card: #1a1a1a;
+    --dark-elevated: #242424;
+    --dark-overlay: rgba(10, 10, 10, 0.95);
+
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --text-muted: #6e6e6e;
+
+    /* Accent Colors */
+    --accent-purple: #667eea;
+    --accent-pink: #f5576c;
+    --accent-blue: #4facfe;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 30px rgba(102, 126, 234, 0.3);
+
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ===================================================================
+ * Global Enhancements
+ * ================================================================ */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--dark-bg);
+}
+
+/* ===================================================================
+ * Header Enhancements - Glassmorphism Effect
+ * ================================================================ */
+header {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-base);
+}
+
+header .top-bar {
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Enhanced Navigation */
+.main-navigation li a {
+    position: relative;
+    transition: all var(--transition-base);
+}
+
+.main-navigation li a::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-gradient);
+    transition: width var(--transition-base);
+}
+
+.main-navigation li a:hover::after,
+.main-navigation li.current>a::after {
+    width: 30px;
+}
+
+/* ===================================================================
+ * Hero/Intro Section - Enhanced with Gradient Overlay
+ * ================================================================ */
+#intro {
+    position: relative;
+}
+
+.intro-overlay {
+    background: rgba(17, 17, 17, 0.85);
+    opacity: 1;
+}
+
+.intro-content h1 {
+    color: #FFFFFF !important;
+    animation: fadeInUp 1s ease;
+}
+
+.intro-content h5 {
+    color: #FF0077 !important;
+    animation: fadeInUp 1.2s ease;
+}
+
+.intro-content .intro-position {
+    color: #FFFFFF !important;
+    animation: fadeInUp 1.4s ease;
+}
+
+/* Enhanced Social Icons */
+.intro-social li {
+    transition: transform var(--transition-base);
+}
+
+.intro-social li:hover {
+    transform: translateY(-5px);
+}
+
+.intro-social li a {
+    position: relative;
+    transition: all var(--transition-base);
+}
+
+.intro-social li a:hover {
+    color: var(--accent-pink) !important;
+    filter: drop-shadow(0 0 10px rgba(245, 87, 108, 0.5));
+}
+
+/* Enhanced Button */
+.intro-content .button {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.intro-content .button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-gradient);
+    transition: left var(--transition-slow);
+    z-index: -1;
+}
+
+.intro-content .button:hover::before {
+    left: 0;
+}
+
+.intro-content .button:hover {
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+}
+
+/* ===================================================================
+ * About Section - Modern Card Design
+ * ================================================================ */
+#about {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
+}
+
+.intro-info {
+    background: #ffffff;
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+}
+
+.intro-info:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);
+}
+
+.intro-info img {
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    border: 4px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+        var(--primary-gradient) border-box;
+    transition: all var(--transition-base);
+}
+
+.intro-info img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 36px rgba(102, 126, 234, 0.4);
+}
+
+/* Enhanced Skill Bars */
+.skill-bars li {
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: visible !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Make skill names visible */
+.skill-bars li strong {
+    color: #313131 !important;
+    font-weight: bold !important;
+    display: block !important;
+}
+
+.skill-bars li .progress {
+    background: var(--primary-gradient);
+    border-radius: 10px;
+    position: relative;
+    animation: skillBarFill 1.5s ease-out;
+}
+
+.skill-bars li .progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes skillBarFill {
+    from {
+        width: 0;
+    }
+}
+
+@keyframes shimmer {
+
+    0%,
+    100% {
+        transform: translateX(-100%);
+    }
+
+    50% {
+        transform: translateX(100%);
+    }
+}
+
+.skill-bars li .progress span {
+    background: #313131 !important;
+    color: white !important;
+    font-weight: bold;
+    padding: 0.6rem 0.8rem !important;
+    border-radius: 3px !important;
+}
+
+.skill-bars li .progress span::after {
+    border-top-color: #313131 !important;
+}
+
+/* Enhanced Info List */
+.about-content .info-list {
+    background: #f8f8f8;
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    border-left: 4px solid transparent;
+    border-image: var(--primary-gradient) 1;
+}
+
+.about-content .info-list li {
+    transition: all var(--transition-fast);
+    padding-left: 1rem;
+}
+
+.about-content .info-list li:hover {
+    transform: translateX(5px);
+}
+
+/* Enhanced Buttons */
+.button-section .button {
+    background: var(--primary-gradient);
+    border: none;
+    color: white !important;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.button-section .button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.button-section .button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.button-section .button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ===================================================================
+ * Resume Section - Modern Timeline Cards
+ * ================================================================ */
+#resume {
+    background: linear-gradient(180deg, #ebebeb 0%, #f8f8f8 100%);
+}
+
+#resume .timeline-block {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 3rem;
+    transition: all var(--transition-base);
+    border-left: 4px solid transparent;
+    border-image: var(--primary-gradient) 1;
+}
+
+#resume .timeline-block:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-image: var(--accent-gradient) 1;
+}
+
+#resume .timeline-ico {
+    background: var(--primary-gradient);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+    transition: all var(--transition-base);
+}
+
+#resume .timeline-block:hover .timeline-ico {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.6);
+}
+
+#resume .timeline-header h3 {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#resume .timeline-content h4::after {
+    background: var(--accent-gradient);
+    height: 4px;
+    width: 60px;
+    border-radius: 2px;
+}
+
+/* ===================================================================
+ * Portfolio Section - Enhanced Card Hover Effects
+ * ================================================================ */
+#portfolio {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
+}
+
+#portfolio .folio-item {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+}
+
+#portfolio .folio-item:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-10px);
+}
+
+#portfolio .overlay {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+#portfolio .folio-item:hover .overlay {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+    opacity: 1 !important;
+}
+
+#portfolio .folio-title {
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+#portfolio .folio-item:hover img {
+    transform: scale(1.1);
+    filter: brightness(0.9);
+}
+
+/* Enhanced Modal */
+.popup-modal {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+}
+
+.popup-modal .description-box {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
+}
+
+.popup-modal .link-box a {
+    background: var(--dark-bg);
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.popup-modal .link-box a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-gradient);
+    transition: left var(--transition-base);
+}
+
+.popup-modal .link-box a:hover::before {
+    left: 0;
+}
+
+.popup-modal .link-box a:hover {
+    background: transparent;
+}
+
+.popup-modal .link-box a span {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===================================================================
+ * Blog Section - Enhanced Modern Cards
+ * ================================================================ */
+#blog {
+    background: linear-gradient(180deg, #ebebeb 0%, #f8f8f8 100%);
+}
+
+#blog .blog-item {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+    background: #ffffff;
+}
+
+#blog .blog-item:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-xl);
+}
+
+#blog .blog-item img {
+    border-radius: var(--radius-lg);
+}
+
+#blog .blog-overlay {
+    background: linear-gradient(to top, rgba(10, 10, 10, 0.95) 0%, rgba(102, 126, 234, 0.3) 100%) !important;
+    border-radius: var(--radius-lg);
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+#blog .blog-item:hover .blog-overlay {
+    opacity: 1 !important;
+}
+
+#blog .blog-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#blog .button {
+    background: var(--accent-gradient);
+    border: none;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-sm);
+}
+
+#blog .button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ===================================================================
+ * Contact Section - Modern Card Design
+ * ================================================================ */
+#contact {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.contact-info .icon {
+    transition: all var(--transition-base);
+}
+
+.contact-info .icon:hover {
+    transform: scale(1.1);
+    animation: pulse 1s infinite;
+}
+
+.contact-info .icon i {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+}
+
+.contact-info h5 {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Enhanced Contact Cards */
+.contact-info [class*="col-"] {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3rem 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-base);
+    margin-bottom: 2rem;
+}
+
+.contact-info .col-six {
+    margin-bottom: 4rem !important;
+}
+
+/* Add specific spacing for contact info items */
+.contact-info .col-six.tab-full {
+    margin-bottom: 4rem !important;
+}
+
+/* Ensure gap between email and phone sections */
+#contact .contact-info .row {
+    gap: 2rem;
+}
+
+/* Add horizontal spacing between the two contact cards */
+/* Reduce width slightly to accommodate the gap */
+.contact-info .col-six {
+    width: 48% !important;
+    float: left !important;
+}
+
+.contact-info .col-six:first-child {
+    margin-right: 4% !important;
+}
+
+.contact-info .col-six:last-child {
+    margin-left: 0 !important;
+}
+
+/* For mobile, stack vertically */
+@media only screen and (max-width: 768px) {
+
+    .contact-info .col-six {
+        width: 100% !important;
+        float: none !important;
+    }
+
+    .contact-info .col-six:first-child {
+        margin-right: 0 !important;
+    }
+}
+
+.contact-info [class*="col-"]:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(102, 126, 234, 0.5);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+}
+
+/* ===================================================================
+ * Animations
+ * ================================================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ===================================================================
+ * Scroll Animations - Fade In on Scroll
+ * ================================================================ */
+.section-intro,
+.about-content,
+.timeline-block,
+.folio-item,
+.blog-item {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.section-intro {
+    animation-delay: 0.1s;
+}
+
+.timeline-block:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.timeline-block:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.timeline-block:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.timeline-block:nth-child(4) {
+    animation-delay: 0.5s;
+}
+
+.folio-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.folio-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.folio-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.folio-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.folio-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.folio-item:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.blog-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.blog-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.blog-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.blog-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.blog-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.blog-item:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+/* ===================================================================
+ * Enhanced Responsive Design
+ * ================================================================ */
+@media only screen and (max-width: 768px) {
+    .intro-info {
+        padding: 2rem;
+    }
+
+    #resume .timeline-block {
+        padding: 2rem;
+    }
+
+    #blog .blog-title {
+        font-size: 1.5rem;
+    }
+
+    .contact-info [class*="col-"] {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    :root {
+        --shadow-lg: 0 15px 40px rgba(0, 0, 0, 0.25);
+        --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    .intro-info {
+        padding: 1.5rem;
+    }
+
+    #resume .timeline-block {
+        padding: 1.5rem;
+    }
+
+    #blog .blog-item {
+        margin: 10px 0;
+    }
+}
+
+/* ===================================================================
+ * Go to Top Button Enhancement
+ * ================================================================ */
+#go-top a {
+    background: var(--accent-gradient);
+    border-radius: var(--radius-md) 0 0 0;
+    transition: all var(--transition-base);
+}
+
+#go-top a:hover {
+    background: var(--primary-gradient);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+/* ===================================================================
+ * Section Dividers with Gradient
+ * ================================================================ */
+.grey-section {
+    position: relative;
+}
+
+.grey-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient);
+}
+
+/* ===================================================================
+ * Enhanced Typography
+ * ================================================================ */
+.section-intro h5 {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+.section-intro h5::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+}
+
+/* ===================================================================
+ * Loading Animation Enhancement
+ * ================================================================ */
+#preloader {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+#loader:before {
+    border-left-color: var(--accent-pink);
+    box-shadow: 0 0 20px rgba(245, 87, 108, 0.5);
+}
