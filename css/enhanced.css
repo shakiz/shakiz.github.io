@@ -15,41 +15,26 @@
     /* Modern Color Palette */
     --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --hero-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f5576c 100%);
 
     /* Dark Theme Colors */
     --dark-bg: #0a0a0a;
-    --dark-card: #1a1a1a;
-    --dark-elevated: #242424;
-    --dark-overlay: rgba(10, 10, 10, 0.95);
-
-    /* Text Colors */
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0a0;
-    --text-muted: #6e6e6e;
 
     /* Accent Colors */
     --accent-purple: #667eea;
     --accent-pink: #f5576c;
-    --accent-blue: #4facfe;
 
     /* Shadows */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.15);
     --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.3);
     --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.4);
-    --shadow-glow: 0 0 30px rgba(102, 126, 234, 0.3);
 
     /* Border Radius */
-    --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
-    --radius-xl: 24px;
 
     /* Transitions */
-    --transition-fast: 0.2s ease;
     --transition-base: 0.3s ease;
-    --transition-slow: 0.5s ease;
 }
 
 /* ===================================================================
@@ -345,75 +330,202 @@ header .top-bar {
     border-image: var(--primary-gradient) 1;
 }
 
+/* ===================================================================
+ * Resume Section - Modern Senior-Level Design
+ * ================================================================ */
+#resume {
+    background: #fdfdfd;
+    padding-top: 15rem;
+    padding-bottom: 15rem;
+}
+
+#resume .resume-header h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 5rem;
+    letter-spacing: -0.02em;
+}
+
+#resume .timeline-block {
+    background: #ffffff;
+    padding: 4rem;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    margin-bottom: 5rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: visible;
+}
+
 #resume .timeline-block:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-image: var(--accent-gradient) 1;
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    border-color: rgba(102, 126, 234, 0.2);
 }
 
 #resume .timeline-ico {
-    background: var(--primary-gradient);
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
-    transition: all var(--transition-base);
+    background: #ffffff !important;
+    border: 3px solid #f0f0f0;
+    color: #667eea !important;
+    box-shadow: none !important;
+    width: 5.4rem !important;
+    height: 5.4rem !important;
+    line-height: 4.8rem !important;
+    transition: all 0.3s ease;
 }
 
 #resume .timeline-block:hover .timeline-ico {
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.6);
+    border-color: #667eea;
+    transform: scale(1.05);
 }
 
 #resume .timeline-header h3 {
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #111 !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    margin-bottom: 0.5rem;
+}
+
+#resume .timeline-header p {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
+}
+
+#resume .timeline-content h4 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+#resume .timeline-content h4 a {
+    color: #667eea;
+    transition: color 0.3s ease;
+}
+
+#resume .timeline-content h4 a:hover {
+    color: #764ba2;
 }
 
 #resume .timeline-content h4::after {
-    background: var(--accent-gradient);
-    height: 4px;
-    width: 60px;
-    border-radius: 2px;
+    display: none;
+    /* Removed the line under company name */
+}
+
+/* Enhanced List for Impact */
+#resume .timeline-content h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#resume .timeline-content ul {
+    margin-left: 0;
+}
+
+#resume .timeline-content li {
+    position: relative;
+    padding-left: 2.5rem;
+    margin-bottom: 1.2rem;
+    font-size: 1.6rem;
+    line-height: 1.6;
+    color: #555;
+    list-style: none;
+}
+
+#resume .timeline-content li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: bold;
+}
+
+/* Timeline vertical line - Clean & Subtle */
+#resume .timeline-wrap::before {
+    width: 2px !important;
+    background: #f0f0f0 !important;
+    border-radius: 0 !important;
+    left: 35%;
+}
+
+@media only screen and (max-width: 768px) {
+    #resume .timeline-wrap::before {
+        left: 2.7rem;
+    }
 }
 
 /* ===================================================================
- * Portfolio Section - Enhanced Card Hover Effects
+ * Portfolio Section - Modern High-Impact Grid
  * ================================================================ */
 #portfolio {
-    background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
+    background: #ffffff;
+    padding-top: 15rem;
+    padding-bottom: 15rem;
 }
 
 #portfolio .folio-item {
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md) !important;
     overflow: hidden;
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition-base);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: none !important;
+    border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 #portfolio .folio-item:hover {
-    box-shadow: var(--shadow-xl);
-    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+    transform: translateY(-8px) !important;
 }
 
 #portfolio .overlay {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    background: rgba(0, 0, 0, 0.85) !important;
     opacity: 0 !important;
-    transition: opacity 0.3s ease !important;
+    transition: all 0.4s ease !important;
+    backdrop-filter: blur(4px);
 }
 
 #portfolio .folio-item:hover .overlay {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
     opacity: 1 !important;
 }
 
 #portfolio .folio-title {
+    font-size: 2.2rem;
     font-weight: 700;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    margin-bottom: 0.8rem;
+    text-shadow: none !important;
+}
+
+#portfolio .folio-types {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+}
+
+#portfolio .folio-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 #portfolio .folio-item:hover img {
-    transform: scale(1.1);
-    filter: brightness(0.9);
+    transform: scale(1.08);
 }
 
 /* Enhanced Modal */
@@ -459,33 +571,39 @@ header .top-bar {
 }
 
 /* ===================================================================
- * Blog Section - Enhanced Modern Cards
+ * Blog Section - Modern Journal Aesthetic
  * ================================================================ */
 #blog {
-    background: linear-gradient(180deg, #ebebeb 0%, #f8f8f8 100%);
+    background: #fcfcfc;
+    padding-top: 15rem;
+    padding-bottom: 15rem;
 }
 
 #blog .blog-item {
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition-base);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    margin-bottom: 4rem;
 }
 
 #blog .blog-item:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-xl);
+    transform: translateY(-6px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border-color: rgba(102, 126, 234, 0.15);
 }
 
 #blog .blog-item img {
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
 #blog .blog-overlay {
-    background: linear-gradient(to top, rgba(10, 10, 10, 0.95) 0%, rgba(102, 126, 234, 0.3) 100%) !important;
-    border-radius: var(--radius-lg);
+    background: rgba(0, 0, 0, 0.7) !important;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
     opacity: 0 !important;
-    transition: opacity 0.3s ease !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(2px);
 }
 
 #blog .blog-item:hover .blog-overlay {
@@ -493,25 +611,43 @@ header .top-bar {
 }
 
 #blog .blog-title {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     font-weight: 700;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    margin-bottom: 1.5rem;
+    color: #111;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+#blog .blog-title a {
+    color: inherit;
+}
+
+#blog .blog-title a:hover {
+    color: #667eea;
 }
 
 #blog .button {
-    background: var(--accent-gradient);
-    border: none;
-    transition: all var(--transition-base);
-    box-shadow: var(--shadow-sm);
+    background: #ffffff;
+    border: 1px solid #eee;
+    color: #667eea !important;
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: none !important;
 }
 
 #blog .button:hover {
+    background: #667eea;
+    color: #ffffff !important;
+    border-color: #667eea;
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
 }
 
 /* ===================================================================
@@ -555,23 +691,9 @@ header .top-bar {
     margin-bottom: 2rem;
 }
 
+/* Contact card layout and spacing */
 .contact-info .col-six {
     margin-bottom: 4rem !important;
-}
-
-/* Add specific spacing for contact info items */
-.contact-info .col-six.tab-full {
-    margin-bottom: 4rem !important;
-}
-
-/* Ensure gap between email and phone sections */
-#contact .contact-info .row {
-    gap: 2rem;
-}
-
-/* Add horizontal spacing between the two contact cards */
-/* Reduce width slightly to accommodate the gap */
-.contact-info .col-six {
     width: 48% !important;
     float: left !important;
 }
@@ -586,7 +708,6 @@ header .top-bar {
 
 /* For mobile, stack vertically */
 @media only screen and (max-width: 768px) {
-
     .contact-info .col-six {
         width: 100% !important;
         float: none !important;
@@ -631,17 +752,7 @@ header .top-bar {
     }
 }
 
-@keyframes float {
 
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
 
 /* ===================================================================
  * Scroll Animations - Fade In on Scroll
@@ -778,21 +889,14 @@ header .top-bar {
     box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
-/* ===================================================================
- * Section Dividers with Gradient
- * ================================================================ */
+/* Section Dividers - REMOVED */
 .grey-section {
     position: relative;
 }
 
+/* Removed the gradient divider line */
 .grey-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--primary-gradient);
+    display: none;
 }
 
 /* ===================================================================
