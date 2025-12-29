@@ -660,8 +660,10 @@ header .top-bar {
 }
 
 #portfolio .overlay {
-    background: rgba(9, 13, 22, 0.85) !important;
+    background: rgba(15, 15, 15, 0.85) !important;
+    /* Neutral deep dark */
     opacity: 0 !important;
+    visibility: hidden !important;
     transition: all 0.4s ease !important;
     backdrop-filter: blur(8px);
     display: flex;
@@ -673,6 +675,7 @@ header .top-bar {
 
 #portfolio .folio-item:hover .overlay {
     opacity: 1 !important;
+    visibility: visible !important;
 }
 
 #portfolio .folio-title {
@@ -702,45 +705,71 @@ header .top-bar {
 }
 
 /* Enhanced Modal */
+/* Enhanced Dark Modal Details */
 .popup-modal {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-xl);
+    background: var(--bg-card) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .popup-modal .description-box {
-    background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
+    background: var(--bg-card) !important;
+    padding: 3.5rem 4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.popup-modal .description-box h4 {
+    color: var(--text-primary) !important;
+    margin-bottom: 1.5rem;
+    font-size: 2.4rem;
+}
+
+.popup-modal .description-box p {
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.popup-modal .categories {
+    color: var(--accent-glow) !important;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 0.2rem;
+    font-weight: 600;
+}
+
+.popup-modal .link-box {
+    background: var(--bg-deep) !important;
+    padding: 2.5rem 4rem;
+    display: flex;
+    gap: 1.5rem;
 }
 
 .popup-modal .link-box a {
-    background: var(--dark-bg);
+    flex: 1;
+    text-align: center;
+    padding: 1.2rem 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary) !important;
     transition: all var(--transition-base);
-    position: relative;
-    overflow: hidden;
-}
-
-.popup-modal .link-box a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: var(--accent-gradient);
-    transition: left var(--transition-base);
-}
-
-.popup-modal .link-box a:hover::before {
-    left: 0;
 }
 
 .popup-modal .link-box a:hover {
-    background: transparent;
+    background: var(--accent-glow);
+    color: var(--bg-deep) !important;
 }
 
-.popup-modal .link-box a span {
-    position: relative;
-    z-index: 1;
+.popup-modal .link-box a.popup-modal-dismiss {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ===================================================================
@@ -778,8 +807,10 @@ header .top-bar {
 }
 
 #blog .blog-overlay {
-    background: rgba(9, 13, 22, 0.7) !important;
+    background: rgba(15, 15, 15, 0.85) !important;
+    /* Neutral deep dark */
     backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
 }
 
 #blog .blog-title {
@@ -1011,42 +1042,294 @@ header .top-bar {
 }
 
 /* ===================================================================
- * Enhanced Responsive Design
+ * Enhanced Mobile Responsiveness - High Density & Balanced
  * ================================================================ */
-@media only screen and (max-width: 768px) {
-    .intro-info {
-        padding: 2rem;
-    }
-
-    #resume .timeline-block {
-        padding: 2rem;
-    }
-
-    #blog .blog-title {
-        font-size: 1.5rem;
-    }
-
-    .contact-info [class*="col-"] {
-        padding: 2rem 1.5rem;
+@media only screen and (max-width: 1024px) {
+    .intro-content h1 {
+        font-size: 5.4rem !important;
     }
 }
 
-@media only screen and (max-width: 600px) {
-    :root {
-        --shadow-lg: 0 15px 40px rgba(0, 0, 0, 0.25);
-        --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.3);
+@media only screen and (max-width: 768px) {
+
+    /* Global Typography Scaling */
+    h1,
+    .section-intro h1 {
+        font-size: 3.2rem !important;
     }
 
+    h2,
+    .section-intro h2 {
+        font-size: 2.8rem !important;
+    }
+
+    p.lead {
+        font-size: 1.7rem !important;
+    }
+
+    /* Global Section Compactness */
+    section,
+    #about,
+    #resume,
+    #portfolio,
+    #blog,
+    #contact {
+        padding-top: 5rem !important;
+        padding-bottom: 4rem !important;
+    }
+
+    .section-intro {
+        margin-bottom: 4rem !important;
+    }
+
+    /* Hero Refinements */
+    .intro-content h1 {
+        font-size: 4.2rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .intro-content h5 {
+        font-size: 1.6rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .intro-content .intro-position {
+        font-size: 1.5rem !important;
+        margin: 0 auto 3rem !important;
+    }
+
+    .intro-actions {
+        gap: 1rem !important;
+    }
+
+    /* Compact Stats */
+    .about-stats {
+        gap: 1.5rem !important;
+        margin-bottom: 5rem !important;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        flex: 1 1 calc(50% - 1rem);
+        padding: 2.5rem 1.5rem !important;
+    }
+
+    .stat-number {
+        font-size: 3.2rem !important;
+    }
+
+    .stat-label {
+        font-size: 1.2rem !important;
+    }
+
+    /* About Card */
     .intro-info {
-        padding: 1.5rem;
+        padding: 3rem 2rem !important;
+        gap: 2.5rem !important;
+        margin-bottom: 4rem !important;
     }
 
+    .intro-info img {
+        width: 12rem !important;
+        height: 12rem !important;
+    }
+
+    /* Timeline Optimization */
     #resume .timeline-block {
-        padding: 1.5rem;
+        padding: 2.5rem 2rem !important;
+        margin-bottom: 2.5rem !important;
+    }
+
+    #resume .timeline-header h3 {
+        font-size: 1.8rem !important;
+    }
+
+    /* Portfolio Mobile Optimization - Stacked & Clear */
+    #portfolio .folio-item {
+        width: 100% !important;
+        /* Force stack to prevent horizontal scroll */
+        float: none !important;
+        margin-bottom: 3rem !important;
+    }
+
+    #portfolio .folio-item img {
+        width: 100% !important;
+        height: 28rem !important;
+        /* Fixed height to prevent stretching */
+        object-fit: cover !important;
+    }
+
+    #portfolio .folio-title {
+        font-size: 2.2rem !important;
+        padding: 0 1rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    #portfolio .folio-types {
+        font-size: 1.3rem !important;
+        opacity: 0.9;
+    }
+
+    /* Portfolio Mobile - Direct Modal Trigger (No Hover Overlay) */
+    #portfolio .overlay {
+        padding: 0 !important;
+        background: transparent !important;
+        /* Fully transparent tap target */
+        opacity: 1 !important;
+        visibility: visible !important;
+        backdrop-filter: none !important;
+        display: block !important;
+        z-index: 10;
+    }
+
+    #portfolio .folio-item-table,
+    #portfolio .folio-item-cell,
+    #portfolio .folio-title,
+    #portfolio .folio-types {
+        display: none !important;
+        /* Hide overlay text/structures on mobile */
+    }
+
+    /* Blog Mobile - Modal UX similar to Portfolio */
+    #blog .blog-overlay {
+        display: none !important;
+        /* Disable hover details on mobile */
+    }
+
+    #blog .overlay {
+        display: block !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent !important;
+        /* Invisible trigger */
+        z-index: 10;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Blog Mobile Optimization - Strict Single-Column Row Layout */
+    #blog #blog-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        /* FORCE VERTICAL STACK */
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
 
     #blog .blog-item {
-        margin: 10px 0;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+        /* Proper order: flex-grow flex-shrink flex-basis */
+        margin: 0 0 4rem 0 !important;
+        /* Stack with bottom margin only */
+        padding: 0 !important;
+        float: none !important;
+    }
+
+    #blog .blog-item img {
+        width: 100% !important;
+        height: 30rem !important;
+        /* Slightly taller for better impact */
+        object-fit: cover !important;
+        /* ABSOLUTE FIX FOR STRETCHING/SQUEEZING */
+        object-position: center !important;
+        display: block !important;
+    }
+
+    #blog .blog-content {
+        padding: 2.5rem !important;
+    }
+
+    #blog .blog-title {
+        font-size: 2rem !important;
+        margin-bottom: 0.8rem !important;
+    }
+
+    #blog .blog-desc {
+        font-size: 1.5rem !important;
+        line-height: 1.6 !important;
+        margin-bottom: 2rem !important;
+        display: block !important;
+        /* Show full desc on stack */
+        -webkit-line-clamp: none !important;
+        line-clamp: none !important;
+    }
+
+    #blog .button {
+        padding: 0.8rem 2rem !important;
+        font-size: 1.1rem !important;
+    }
+
+    #resume .timeline-content h4 {
+        font-size: 1.6rem !important;
+    }
+
+    /* Contact Spacing */
+    .contact-info {
+        gap: 2rem !important;
+    }
+
+    .contact-info [class*="col-"] {
+        padding: 3rem 2rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Detail Modals Mobile Optimization */
+    .popup-modal {
+        max-width: 90% !important;
+        margin: 4rem auto !important;
+    }
+
+    .popup-modal .description-box {
+        padding: 2.5rem 2.5rem 3rem !important;
+    }
+
+    .popup-modal .description-box h4 {
+        font-size: 2.22rem !important;
+    }
+
+    .popup-modal .link-box {
+        padding: 2rem 2.5rem !important;
+        flex-direction: column !important;
+        /* Stack buttons on mobile */
+    }
+
+    .popup-modal .link-box a {
+        padding: 1.4rem 0 !important;
+        width: 100% !important;
+    }
+
+    .popup-modal .media img {
+        height: auto !important;
+        max-height: 25rem !important;
+        object-fit: cover !important;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+
+    /* Ultra Compact for small phones */
+    .intro-content h1 {
+        font-size: 3.6rem !important;
+    }
+
+    .stat-card {
+        flex: 1 1 100%;
+    }
+
+    .intro-actions .button {
+        width: 100% !important;
+        margin: 0.5rem 0 !important;
+    }
+
+    .intro-social {
+        gap: 2rem !important;
     }
 }
 
