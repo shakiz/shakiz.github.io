@@ -1,0 +1,1370 @@
+/**
+ * Enhanced Portfolio Styles - Modern FAANG-Level Design
+ * This file contains modern UI enhancements including:
+ * - Modern color palette with gradients
+ * - Enhanced card designs with depth
+ * - Sophisticated hover effects
+ * - Improved responsiveness
+ * - Micro-interactions and animations
+ */
+
+/* ===================================================================
+ * CSS Custom Properties - Modern Design System
+ * ================================================================ */
+:root {
+    /* Dark Premium Color Palette */
+    --bg-deep: #090d16;
+    --bg-card: #161b22;
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1a1;
+    --accent-glow: #8da8d7;
+    --accent-purple: #7b4eb2;
+
+    /* Gradients */
+    --primary-gradient: linear-gradient(135deg, #8da8d7 0%, #667eea 100%);
+    --glow-gradient: radial-gradient(circle, rgba(141, 168, 215, 0.15) 0%, transparent 70%);
+
+    /* Shadows & Glows */
+    --shadow-glow: 0 0 20px rgba(141, 168, 215, 0.2);
+    --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.5);
+
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+
+    /* Transitions */
+    --transition-base: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* ===================================================================
+ * Global Enhancements
+ * ================================================================ */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+/* Code-inspired Accent Tag */
+.code-tag {
+    color: var(--accent-glow);
+    font-family: inherit;
+    font-weight: inherit;
+}
+
+.code-tag::before {
+    content: '{';
+    opacity: 0.6;
+    margin-right: 2px;
+}
+
+.code-tag::after {
+    content: '}';
+    opacity: 0.6;
+    margin-left: 2px;
+}
+
+/* Glowing Background Blobs */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    filter: blur(100px);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.15;
+}
+
+body::before {
+    top: -100px;
+    left: -100px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+}
+
+body::after {
+    bottom: -100px;
+    right: -100px;
+    background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+}
+
+/* ===================================================================
+ * Header Enhancements - Glassmorphism Effect
+ * ================================================================ */
+/* Global Section Header Visibility */
+.section-intro h1,
+.section-intro h2,
+.section-intro h3,
+.section-intro h4,
+.section-intro h5 {
+    color: var(--text-primary) !important;
+}
+
+p.lead {
+    color: var(--text-secondary) !important;
+    font-size: 2.1rem;
+    line-height: 1.8;
+}
+
+header {
+    background: rgba(9, 13, 22, 0.8) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 500;
+}
+
+header .top-bar {
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Enhanced Navigation */
+.main-navigation li a {
+    position: relative;
+    transition: all var(--transition-base);
+}
+
+.main-navigation li a::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-gradient);
+    transition: width var(--transition-base);
+}
+
+.main-navigation li a:hover::after,
+.main-navigation li.current>a::after {
+    width: 30px;
+}
+
+.main-navigation li a:hover,
+.main-navigation li.current>a {
+    color: var(--accent-glow) !important;
+}
+
+/* ===================================================================
+ * Hero/Intro Section - Centered High-Impact
+ * ================================================================ */
+#intro {
+    background: var(--bg-deep) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.intro-overlay {
+    background: radial-gradient(circle at center, rgba(141, 168, 215, 0.05) 0%, var(--bg-deep) 70%) !important;
+    opacity: 1;
+}
+
+.intro-content {
+    max-width: 900px !important;
+    z-index: 2;
+}
+
+.intro-content h5 {
+    color: var(--text-primary) !important;
+    font-size: 1.8rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+.intro-content h1 {
+    font-size: 7.2rem !important;
+    font-weight: 700 !important;
+    line-height: 1.1;
+    margin-bottom: 3.5rem;
+    letter-spacing: -0.03em;
+    color: var(--text-primary) !important;
+}
+
+.intro-content .intro-position {
+    font-size: 1.8rem !important;
+    line-height: 1.8;
+    color: var(--text-secondary) !important;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+}
+
+/* Horizontal Social Links beneath actions */
+.intro-social {
+    display: flex !important;
+    position: static !important;
+    /* Force out of main.css absolute positioning */
+    flex-direction: row !important;
+    gap: 3rem;
+    justify-content: center !important;
+    align-items: center !important;
+    list-style: none;
+    margin: 4rem 0 0 !important;
+    padding: 0;
+    width: 100% !important;
+}
+
+.intro-social li a {
+    color: var(--text-primary) !important;
+    font-size: 2.2rem !important;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.intro-social li a:hover {
+    opacity: 1;
+    color: var(--accent-glow) !important;
+    transform: translateY(-5px);
+}
+
+.intro-social .follow-label {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3rem;
+    color: var(--text-secondary);
+    opacity: 0.5;
+    font-weight: 600;
+    margin: 0 1rem 0 0 !important;
+    /* Added right margin for spacing */
+    order: -1;
+    /* Place label at the start */
+}
+
+/* Centered Actions */
+.intro-actions {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Global Button Styling */
+.button,
+.button-primary {
+    height: 5.4rem !important;
+    line-height: 5.4rem !important;
+    padding: 0 4rem !important;
+    font-weight: 600;
+    border-radius: 100px !important;
+    margin: 1rem !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.4s ease;
+}
+
+.button-primary {
+    background: var(--accent-glow) !important;
+    border-color: var(--accent-glow) !important;
+    color: var(--bg-deep) !important;
+}
+
+.button-primary:hover {
+    background: #ffffff !important;
+    border-color: #ffffff !important;
+    color: var(--bg-deep) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+}
+
+.button.stroke {
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+.button.stroke:hover {
+    border-color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+}
+
+/* Unified spacing for actions */
+.intro-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+/* ===================================================================
+ * About Section - Modern Dark Premium
+ * ================================================================ */
+#about {
+    background: var(--bg-deep) !important;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+.intro-info {
+    background: var(--bg-card) !important;
+    padding: 5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    margin-bottom: 6rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .intro-info {
+        flex-direction: column;
+        padding: 3rem;
+        text-align: center;
+    }
+}
+
+.intro-info:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.intro-info img {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    border: 4px solid var(--bg-card);
+    transition: all var(--transition-base);
+}
+
+.intro-info img {
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    border: 4px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+        var(--primary-gradient) border-box;
+    transition: all var(--transition-base);
+}
+
+.intro-info img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 36px rgba(102, 126, 234, 0.4);
+}
+
+/* Stats Cards */
+.about-stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 8rem;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    padding: 4rem 3rem;
+    border-radius: var(--radius-md);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all var(--transition-base);
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-glow);
+    box-shadow: var(--shadow-glow);
+}
+
+.stat-number {
+    font-size: 4.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.stat-label {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Modern Skills Section */
+.skill-bars li {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 100px !important;
+    height: 6px !important;
+    margin-bottom: 4.5rem !important;
+    position: relative;
+    overflow: visible !important;
+}
+
+.skill-bars li strong {
+    color: var(--text-primary) !important;
+    font-size: 1.3rem !important;
+    font-weight: 500 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    position: absolute;
+    top: -2.8rem;
+    left: 0;
+}
+
+.skill-bars li .progress {
+    background: var(--primary-gradient) !important;
+    border-radius: 100px !important;
+    height: 100%;
+    position: relative;
+    transition: width 2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.skill-bars li .progress span {
+    position: absolute;
+    right: 0;
+    top: -3rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-glow);
+}
+
+@keyframes skillBarFill {
+    from {
+        width: 0;
+    }
+}
+
+/* Shimmer removed per user request */
+
+.skill-bars li .progress span {
+    background: var(--bg-card) !important;
+    color: var(--accent-glow) !important;
+    font-weight: 700;
+    padding: 0.6rem 1.2rem !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skill-bars li .progress span::after {
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Enhanced Info List */
+.about-content .info-list {
+    background: var(--bg-card);
+    padding: 3rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.about-content .info-list li {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+}
+
+.about-content .info-list li a {
+    color: var(--accent-glow) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.about-content .info-list li a:hover {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
+
+.about-content .info-list li:last-child {
+    border-bottom: none;
+}
+
+.about-content .info-list li strong {
+    color: var(--text-primary);
+    width: 12rem;
+    display: inline-block;
+}
+
+.about-content h3 {
+    color: var(--text-primary) !important;
+    margin-bottom: 3rem;
+    font-size: 2.4rem;
+}
+
+/* Enhanced Buttons */
+/* Removed redundant button styles - using global primary button styles above */
+
+/* ===================================================================
+ * Resume Section - Dark Premium Timeline
+ * ================================================================ */
+#resume {
+    background: var(--bg-deep) !important;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+#resume .timeline-block {
+    background: var(--bg-card) !important;
+    padding: 4rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    margin-bottom: 5rem;
+    transition: all var(--transition-base);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    position: relative;
+    overflow: visible;
+}
+
+#resume .timeline-block:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-glow);
+    box-shadow: var(--shadow-glow);
+}
+
+#resume .timeline-ico {
+    background: var(--bg-card) !important;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: var(--accent-glow) !important;
+    box-shadow: none !important;
+    width: 6rem !important;
+    height: 6rem !important;
+    line-height: 5.6rem !important;
+    transition: all 0.3s ease;
+}
+
+#resume .timeline-block:hover .timeline-ico {
+    border-color: var(--accent-glow);
+    background: var(--accent-glow) !important;
+    color: var(--bg-deep) !important;
+    transform: scale(1.1);
+}
+
+#resume .timeline-header h3 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+    margin-bottom: 0.8rem;
+}
+
+#resume .timeline-header p {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--accent-glow);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.8;
+}
+
+#resume .timeline-content h4 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
+#resume .timeline-content h4 a {
+    color: var(--accent-glow) !important;
+    transition: all 0.3s ease;
+}
+
+#resume .timeline-content h4 a:hover {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
+
+/* Fix visibility for timeline internal links and text */
+#resume .timeline-content p {
+    color: var(--text-secondary) !important;
+}
+
+#resume .timeline-content p a {
+    color: var(--accent-glow) !important;
+    text-decoration: none;
+}
+
+#resume .timeline-content p a:hover {
+    text-decoration: underline;
+    color: #ffffff !important;
+}
+
+#resume .timeline-content h3 {
+    color: #ffffff !important;
+    /* Key Responsibilities, etc. */
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+#resume .timeline-content li {
+    color: var(--text-secondary) !important;
+    font-size: 1.6rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+#resume .timeline-content li::before {
+    color: var(--accent-glow) !important;
+}
+
+#resume .timeline-content li a {
+    color: var(--accent-glow) !important;
+    text-decoration: underline;
+}
+
+#resume .timeline-content li a:hover {
+    color: #ffffff !important;
+}
+
+/* Timeline vertical line - Subtle & Premium */
+#resume .timeline-wrap::before {
+    width: 1px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    left: 50% !important;
+}
+
+@media only screen and (max-width: 768px) {
+    #resume .timeline-wrap::before {
+        left: 3rem !important;
+    }
+}
+
+/* ===================================================================
+ * Portfolio Section - Dark Premium Grid
+ * ================================================================ */
+#portfolio {
+    background: var(--bg-deep) !important;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+#portfolio .folio-item {
+    border-radius: var(--radius-lg) !important;
+    background: var(--bg-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+#portfolio .folio-item:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-glow);
+    box-shadow: var(--shadow-glow);
+}
+
+#portfolio .overlay {
+    background: rgba(15, 15, 15, 0.85) !important;
+    /* Neutral deep dark */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: all 0.4s ease !important;
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem;
+}
+
+#portfolio .folio-item:hover .overlay {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#portfolio .folio-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+}
+
+#portfolio .folio-types {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    color: var(--accent-glow);
+    font-weight: 600;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+#portfolio .folio-item img {
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+#portfolio .folio-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Enhanced Modal */
+/* Enhanced Dark Modal Details */
+.popup-modal {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    background: var(--bg-card) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.popup-modal .description-box {
+    background: var(--bg-card) !important;
+    padding: 3.5rem 4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.popup-modal .description-box h4 {
+    color: var(--text-primary) !important;
+    margin-bottom: 1.5rem;
+    font-size: 2.4rem;
+}
+
+.popup-modal .description-box p {
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.popup-modal .categories {
+    color: var(--accent-glow) !important;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 0.2rem;
+    font-weight: 600;
+}
+
+.popup-modal .link-box {
+    background: var(--bg-deep) !important;
+    padding: 2.5rem 4rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.popup-modal .link-box a {
+    flex: 1;
+    text-align: center;
+    padding: 1.2rem 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary) !important;
+    transition: all var(--transition-base);
+}
+
+.popup-modal .link-box a:hover {
+    background: var(--accent-glow);
+    color: var(--bg-deep) !important;
+}
+
+.popup-modal .link-box a.popup-modal-dismiss {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===================================================================
+ * Blog Section - Dark Premium Journal
+ * ================================================================ */
+#blog {
+    background: var(--bg-deep) !important;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+#blog .blog-item {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    transition: all var(--transition-base);
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    margin-bottom: 4rem;
+    overflow: hidden;
+}
+
+#blog .blog-item:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-glow);
+    box-shadow: var(--shadow-glow);
+}
+
+#blog .blog-item img {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    transition: transform 0.5s ease;
+}
+
+#blog .blog-item:hover img {
+    transform: scale(1.05);
+}
+
+#blog .blog-overlay {
+    background: rgba(15, 15, 15, 0.85) !important;
+    /* Neutral deep dark */
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+#blog .blog-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary) !important;
+    line-height: 1.4;
+}
+
+#blog .blog-title a {
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+#blog .blog-title a:hover {
+    color: var(--accent-glow);
+}
+
+#blog .button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary) !important;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 100px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+#blog .button:hover {
+    background: var(--accent-glow);
+    color: var(--bg-deep) !important;
+    border-color: var(--accent-glow);
+    transform: translateX(5px);
+}
+
+/* ===================================================================
+ * Contact Section - Dark Premium Glow
+ * ================================================================ */
+#contact {
+    background: var(--bg-deep) !important;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    position: relative;
+    overflow: hidden;
+}
+
+#contact::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(141, 168, 215, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.contact-info {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4rem !important;
+    justify-content: center !important;
+    margin-top: 4.8rem !important;
+}
+
+.contact-info [class*="col-"] {
+    background: var(--bg-card) !important;
+    padding: 5rem 4rem !important;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all var(--transition-base);
+    flex: 1 1 450px !important;
+    /* Allows them to stay side-by-side on desktop, stack on mobile */
+    max-width: 100% !important;
+    margin: 0 !important;
+    /* Spacing handled by gap */
+}
+
+/* Contact Icon Styling */
+.contact-info .icon {
+    background: var(--bg-card);
+    width: 6rem;
+    height: 6rem;
+    line-height: 6rem;
+    border-radius: 50%;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-base);
+    display: inline-block;
+}
+
+.contact-info .icon i {
+    color: var(--accent-glow) !important;
+    font-size: 2.4rem;
+}
+
+.contact-info [class*="col-"]:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-glow);
+    box-shadow: var(--shadow-glow);
+}
+
+.contact-info h5 {
+    color: var(--text-primary) !important;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-transform: none;
+}
+
+.contact-info p {
+    color: var(--text-secondary) !important;
+    font-size: 1.6rem;
+}
+
+/* ===================================================================
+ * Animations
+ * ================================================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+
+
+/* ===================================================================
+ * Scroll Animations - Fade In on Scroll
+ * ================================================================ */
+.section-intro,
+.about-content,
+.timeline-block,
+.folio-item,
+.blog-item {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.section-intro {
+    animation-delay: 0.1s;
+}
+
+.timeline-block:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.timeline-block:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.timeline-block:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.timeline-block:nth-child(4) {
+    animation-delay: 0.5s;
+}
+
+.folio-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.folio-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.folio-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.folio-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.folio-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.folio-item:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.blog-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.blog-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.blog-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.blog-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.blog-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.blog-item:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+/* ===================================================================
+ * Enhanced Mobile Responsiveness - High Density & Balanced
+ * ================================================================ */
+@media only screen and (max-width: 1024px) {
+    .intro-content h1 {
+        font-size: 5.4rem !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+
+    /* Global Typography Scaling */
+    h1,
+    .section-intro h1 {
+        font-size: 3.2rem !important;
+    }
+
+    h2,
+    .section-intro h2 {
+        font-size: 2.8rem !important;
+    }
+
+    p.lead {
+        font-size: 1.7rem !important;
+    }
+
+    /* Global Section Compactness */
+    section,
+    #about,
+    #resume,
+    #portfolio,
+    #blog,
+    #contact {
+        padding-top: 5rem !important;
+        padding-bottom: 4rem !important;
+    }
+
+    .section-intro {
+        margin-bottom: 4rem !important;
+    }
+
+    /* Hero Refinements */
+    .intro-content h1 {
+        font-size: 4.2rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .intro-content h5 {
+        font-size: 1.6rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .intro-content .intro-position {
+        font-size: 1.5rem !important;
+        margin: 0 auto 3rem !important;
+    }
+
+    .intro-actions {
+        gap: 1rem !important;
+    }
+
+    /* Compact Stats */
+    .about-stats {
+        gap: 1.5rem !important;
+        margin-bottom: 5rem !important;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        flex: 1 1 calc(50% - 1rem);
+        padding: 2.5rem 1.5rem !important;
+    }
+
+    .stat-number {
+        font-size: 3.2rem !important;
+    }
+
+    .stat-label {
+        font-size: 1.2rem !important;
+    }
+
+    /* About Card */
+    .intro-info {
+        padding: 3rem 2rem !important;
+        gap: 2.5rem !important;
+        margin-bottom: 4rem !important;
+    }
+
+    .intro-info img {
+        width: 12rem !important;
+        height: 12rem !important;
+    }
+
+    /* Timeline Optimization */
+    #resume .timeline-block {
+        padding: 2.5rem 2rem !important;
+        margin-bottom: 2.5rem !important;
+    }
+
+    #resume .timeline-header h3 {
+        font-size: 1.8rem !important;
+    }
+
+    /* Portfolio Mobile Optimization - Stacked & Clear */
+    #portfolio .folio-item {
+        width: 100% !important;
+        /* Force stack to prevent horizontal scroll */
+        float: none !important;
+        margin-bottom: 3rem !important;
+    }
+
+    #portfolio .folio-item img {
+        width: 100% !important;
+        height: 28rem !important;
+        /* Fixed height to prevent stretching */
+        object-fit: cover !important;
+    }
+
+    #portfolio .folio-title {
+        font-size: 2.2rem !important;
+        padding: 0 1rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    #portfolio .folio-types {
+        font-size: 1.3rem !important;
+        opacity: 0.9;
+    }
+
+    /* Portfolio Mobile - Direct Modal Trigger (No Hover Overlay) */
+    #portfolio .overlay {
+        padding: 0 !important;
+        background: transparent !important;
+        /* Fully transparent tap target */
+        opacity: 1 !important;
+        visibility: visible !important;
+        backdrop-filter: none !important;
+        display: block !important;
+        z-index: 10;
+    }
+
+    #portfolio .folio-item-table,
+    #portfolio .folio-item-cell,
+    #portfolio .folio-title,
+    #portfolio .folio-types {
+        display: none !important;
+        /* Hide overlay text/structures on mobile */
+    }
+
+    /* Blog Mobile - Modal UX similar to Portfolio */
+    #blog .blog-overlay {
+        display: none !important;
+        /* Disable hover details on mobile */
+    }
+
+    #blog .overlay {
+        display: block !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent !important;
+        /* Invisible trigger */
+        z-index: 10;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Blog Mobile Optimization - Strict Single-Column Row Layout */
+    #blog #blog-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        /* FORCE VERTICAL STACK */
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    #blog .blog-item {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+        /* Proper order: flex-grow flex-shrink flex-basis */
+        margin: 0 0 4rem 0 !important;
+        /* Stack with bottom margin only */
+        padding: 0 !important;
+        float: none !important;
+    }
+
+    #blog .blog-item img {
+        width: 100% !important;
+        height: 30rem !important;
+        /* Slightly taller for better impact */
+        object-fit: cover !important;
+        /* ABSOLUTE FIX FOR STRETCHING/SQUEEZING */
+        object-position: center !important;
+        display: block !important;
+    }
+
+    #blog .blog-content {
+        padding: 2.5rem !important;
+    }
+
+    #blog .blog-title {
+        font-size: 2rem !important;
+        margin-bottom: 0.8rem !important;
+    }
+
+    #blog .blog-desc {
+        font-size: 1.5rem !important;
+        line-height: 1.6 !important;
+        margin-bottom: 2rem !important;
+        display: block !important;
+        /* Show full desc on stack */
+        -webkit-line-clamp: none !important;
+        line-clamp: none !important;
+    }
+
+    #blog .button {
+        padding: 0.8rem 2rem !important;
+        font-size: 1.1rem !important;
+    }
+
+    #resume .timeline-content h4 {
+        font-size: 1.6rem !important;
+    }
+
+    /* Contact Spacing */
+    .contact-info {
+        gap: 2rem !important;
+    }
+
+    .contact-info [class*="col-"] {
+        padding: 3rem 2rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Detail Modals Mobile Optimization */
+    .popup-modal {
+        max-width: 90% !important;
+        margin: 4rem auto !important;
+    }
+
+    .popup-modal .description-box {
+        padding: 2.5rem 2.5rem 3rem !important;
+    }
+
+    .popup-modal .description-box h4 {
+        font-size: 2.22rem !important;
+    }
+
+    .popup-modal .link-box {
+        padding: 2rem 2.5rem !important;
+        flex-direction: column !important;
+        /* Stack buttons on mobile */
+    }
+
+    .popup-modal .link-box a {
+        padding: 1.4rem 0 !important;
+        width: 100% !important;
+    }
+
+    .popup-modal .media img {
+        height: auto !important;
+        max-height: 25rem !important;
+        object-fit: cover !important;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+
+    /* Ultra Compact for small phones */
+    .intro-content h1 {
+        font-size: 3.6rem !important;
+    }
+
+    .stat-card {
+        flex: 1 1 100%;
+    }
+
+    .intro-actions .button {
+        width: 100% !important;
+        margin: 0.5rem 0 !important;
+    }
+
+    .intro-social {
+        gap: 2rem !important;
+    }
+}
+
+/* ===================================================================
+ * Footer & Preloader - Dark Premium
+ * ================================================================ */
+footer {
+    background: var(--bg-deep);
+    padding: 8rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-main .copyright span {
+    color: var(--text-secondary);
+}
+
+#go-top a {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--accent-glow) !important;
+    transition: all var(--transition-base);
+}
+
+#go-top a:hover {
+    background: var(--accent-glow);
+    color: var(--bg-deep) !important;
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-glow);
+}
+
+#preloader {
+    background: var(--bg-deep);
+}
+
+#loader:before {
+    border-left-color: var(--accent-glow);
+    box-shadow: 0 0 30px rgba(141, 168, 215, 0.5);
+}
