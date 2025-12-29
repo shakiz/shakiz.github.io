@@ -97,11 +97,27 @@ body::after {
 /* ===================================================================
  * Header Enhancements - Glassmorphism Effect
  * ================================================================ */
+/* Global Section Header Visibility */
+.section-intro h1,
+.section-intro h2,
+.section-intro h3,
+.section-intro h4,
+.section-intro h5 {
+    color: var(--text-primary) !important;
+}
+
+p.lead {
+    color: var(--text-secondary) !important;
+    font-size: 2.1rem;
+    line-height: 1.8;
+}
+
 header {
     background: rgba(9, 13, 22, 0.8) !important;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 500;
 }
 
 header .top-bar {
@@ -130,6 +146,11 @@ header .top-bar {
 .main-navigation li a:hover::after,
 .main-navigation li.current>a::after {
     width: 30px;
+}
+
+.main-navigation li a:hover,
+.main-navigation li.current>a {
+    color: var(--accent-glow) !important;
 }
 
 /* ===================================================================
@@ -179,72 +200,104 @@ header .top-bar {
     margin: 0 auto 4rem;
 }
 
-/* Vertical Social Sidebar */
+/* Horizontal Social Links beneath actions */
 .intro-social {
-    position: absolute;
-    right: 5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    position: static !important;
+    /* Force out of main.css absolute positioning */
+    flex-direction: row !important;
     gap: 3rem;
-    z-index: 10;
-}
-
-.intro-social::after {
-    content: 'Follow me';
-    writing-mode: vertical-rl;
-    margin-top: 2rem;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 0.2rem;
-    color: var(--text-secondary);
-    opacity: 0.5;
+    justify-content: center !important;
+    align-items: center !important;
+    list-style: none;
+    margin: 4rem 0 0 !important;
+    padding: 0;
+    width: 100% !important;
 }
 
 .intro-social li a {
     color: var(--text-primary) !important;
-    font-size: 2rem !important;
-    opacity: 0.6;
+    font-size: 2.2rem !important;
+    opacity: 0.5;
     transition: all 0.3s ease;
 }
 
 .intro-social li a:hover {
     opacity: 1;
     color: var(--accent-glow) !important;
-    transform: scale(1.2);
+    transform: translateY(-5px);
+}
+
+.intro-social .follow-label {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3rem;
+    color: var(--text-secondary);
+    opacity: 0.5;
+    font-weight: 600;
+    margin: 0 1rem 0 0 !important;
+    /* Added right margin for spacing */
+    order: -1;
+    /* Place label at the start */
 }
 
 /* Centered Actions */
-.intro-content .button {
-    padding: 1.8rem 4rem !important;
+.intro-actions {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Global Button Styling */
+.button,
+.button-primary {
+    height: 5.4rem !important;
+    line-height: 5.4rem !important;
+    padding: 0 4rem !important;
     font-weight: 600;
     border-radius: 100px !important;
-    margin: 1rem;
+    margin: 1rem !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     transition: all 0.4s ease;
 }
 
-.intro-content .button-primary {
+.button-primary {
     background: var(--accent-glow) !important;
     border-color: var(--accent-glow) !important;
     color: var(--bg-deep) !important;
 }
 
-.intro-content .button-primary:hover {
+.button-primary:hover {
     background: #ffffff !important;
     border-color: #ffffff !important;
+    color: var(--bg-deep) !important;
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(141, 168, 215, 0.4);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
 }
 
-.intro-content .button.stroke {
+.button.stroke {
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+.button.stroke:hover {
+    border-color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     color: #ffffff !important;
 }
 
-.intro-content .button.stroke:hover {
-    border-color: #ffffff !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+/* Unified spacing for actions */
+.intro-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
 }
 
 /* ===================================================================
@@ -252,8 +305,8 @@ header .top-bar {
  * ================================================================ */
 #about {
     background: var(--bg-deep) !important;
-    padding-top: 12rem;
-    padding-bottom: 12rem;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
 }
 
 .intro-info {
@@ -380,34 +433,13 @@ header .top-bar {
     color: var(--accent-glow);
 }
 
-.skill-bars li .progress::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    animation: shimmer 2s infinite;
-}
-
 @keyframes skillBarFill {
     from {
         width: 0;
     }
 }
 
-@keyframes shimmer {
-
-    0%,
-    100% {
-        transform: translateX(-100%);
-    }
-
-    50% {
-        transform: translateX(100%);
-    }
-}
+/* Shimmer removed per user request */
 
 .skill-bars li .progress span {
     background: var(--bg-card) !important;
@@ -436,6 +468,17 @@ header .top-bar {
     color: var(--text-secondary);
 }
 
+.about-content .info-list li a {
+    color: var(--accent-glow) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.about-content .info-list li a:hover {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
+
 .about-content .info-list li:last-child {
     border-bottom: none;
 }
@@ -453,31 +496,15 @@ header .top-bar {
 }
 
 /* Enhanced Buttons */
-.button-section .button {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-primary) !important;
-    padding: 1.5rem 4rem;
-    border-radius: 100px;
-    font-weight: 600;
-    transition: all var(--transition-base);
-}
-
-.button-section .button:hover {
-    background: var(--accent-glow);
-    color: var(--bg-deep) !important;
-    border-color: var(--accent-glow);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-glow);
-}
+/* Removed redundant button styles - using global primary button styles above */
 
 /* ===================================================================
  * Resume Section - Dark Premium Timeline
  * ================================================================ */
 #resume {
     background: var(--bg-deep) !important;
-    padding-top: 12rem;
-    padding-bottom: 12rem;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
 }
 
 #resume .timeline-block {
@@ -540,13 +567,39 @@ header .top-bar {
 }
 
 #resume .timeline-content h4 a {
-    color: var(--accent-glow);
+    color: var(--accent-glow) !important;
     transition: all 0.3s ease;
 }
 
 #resume .timeline-content h4 a:hover {
-    color: #ffffff;
+    color: #ffffff !important;
     text-decoration: underline;
+}
+
+/* Fix visibility for timeline internal links and text */
+#resume .timeline-content p {
+    color: var(--text-secondary) !important;
+}
+
+#resume .timeline-content p a {
+    color: var(--accent-glow) !important;
+    text-decoration: none;
+}
+
+#resume .timeline-content p a:hover {
+    text-decoration: underline;
+    color: #ffffff !important;
+}
+
+#resume .timeline-content h3 {
+    color: #ffffff !important;
+    /* Key Responsibilities, etc. */
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 #resume .timeline-content li {
@@ -558,6 +611,15 @@ header .top-bar {
 
 #resume .timeline-content li::before {
     color: var(--accent-glow) !important;
+}
+
+#resume .timeline-content li a {
+    color: var(--accent-glow) !important;
+    text-decoration: underline;
+}
+
+#resume .timeline-content li a:hover {
+    color: #ffffff !important;
 }
 
 /* Timeline vertical line - Subtle & Premium */
@@ -578,8 +640,8 @@ header .top-bar {
  * ================================================================ */
 #portfolio {
     background: var(--bg-deep) !important;
-    padding-top: 12rem;
-    padding-bottom: 12rem;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
 }
 
 #portfolio .folio-item {
@@ -686,8 +748,8 @@ header .top-bar {
  * ================================================================ */
 #blog {
     background: var(--bg-deep) !important;
-    padding-top: 12rem;
-    padding-bottom: 12rem;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
 }
 
 #blog .blog-item {
@@ -762,8 +824,8 @@ header .top-bar {
  * ================================================================ */
 #contact {
     background: var(--bg-deep) !important;
-    padding-top: 12rem;
-    padding-bottom: 12rem;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
     position: relative;
     overflow: hidden;
 }
@@ -780,6 +842,28 @@ header .top-bar {
     pointer-events: none;
 }
 
+.contact-info {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4rem !important;
+    justify-content: center !important;
+    margin-top: 4.8rem !important;
+}
+
+.contact-info [class*="col-"] {
+    background: var(--bg-card) !important;
+    padding: 5rem 4rem !important;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all var(--transition-base);
+    flex: 1 1 450px !important;
+    /* Allows them to stay side-by-side on desktop, stack on mobile */
+    max-width: 100% !important;
+    margin: 0 !important;
+    /* Spacing handled by gap */
+}
+
+/* Contact Icon Styling */
 .contact-info .icon {
     background: var(--bg-card);
     width: 6rem;
@@ -790,20 +874,12 @@ header .top-bar {
     margin-bottom: 2.5rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all var(--transition-base);
+    display: inline-block;
 }
 
 .contact-info .icon i {
     color: var(--accent-glow) !important;
     font-size: 2.4rem;
-}
-
-.contact-info [class*="col-"] {
-    background: var(--bg-card) !important;
-    padding: 4rem 3rem !important;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    transition: all var(--transition-base);
-    margin-bottom: 3rem;
 }
 
 .contact-info [class*="col-"]:hover {
