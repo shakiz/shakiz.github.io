@@ -162,11 +162,62 @@ header .top-bar {
     align-items: center;
     justify-content: center;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Layered Depth and Texture */
+#intro::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Subtle Grid Pattern */
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+#intro::after {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+    background: radial-gradient(circle, rgba(141, 168, 215, 0.1) 0%, transparent 70%);
+    filter: blur(80px);
+    z-index: 1;
+    animation: float 20s ease-in-out infinite alternate;
+    pointer-events: none;
 }
 
 .intro-overlay {
-    background: radial-gradient(circle at center, rgba(141, 168, 215, 0.05) 0%, var(--bg-deep) 70%) !important;
+    background:
+        radial-gradient(circle at 70% 30%, rgba(123, 78, 178, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at top center, rgba(141, 168, 215, 0.08) 0%, var(--bg-deep) 80%) !important;
     opacity: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(10%, 5%) scale(1.1);
+    }
 }
 
 .intro-content {
