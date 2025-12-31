@@ -888,86 +888,97 @@ header .top-bar {
 }
 
 /* ===================================================================
- * Blog Section - Dark Premium Journal
+ * Blog Section - Minimalist Article List
  * ================================================================ */
 #blog {
     background: var(--bg-deep) !important;
-    padding-top: 8rem;
-    padding-bottom: 6rem;
+    padding-top: 10rem;
+    padding-bottom: 10rem;
 }
 
-#blog .blog-item {
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-xl);
-    transition: all var(--transition-base);
-    background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    margin-bottom: 4rem;
-    overflow: hidden;
+#blog .blog-content {
+    padding-top: 0;
 }
 
-#blog .blog-item:hover {
-    transform: translateY(-8px);
-    border-color: var(--accent-glow);
-    box-shadow: var(--shadow-glow);
+.blog-list-item {
+    width: 100% !important;
+    float: none !important;
+    clear: both !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    opacity: 0;
+    /* Handled by animation fadeInUp */
 }
 
-#blog .blog-item img {
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    transition: transform 0.5s ease;
+.blog-list-item:first-child {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-#blog .blog-item:hover img {
-    transform: scale(1.05);
-}
-
-#blog .blog-overlay {
-    background: rgba(15, 15, 15, 0.85) !important;
-    /* Neutral deep dark */
-    backdrop-filter: blur(4px);
+.blog-link {
+    display: block !important;
+    padding: 4.5rem 0 !important;
+    text-align: left;
+    position: relative;
+    text-decoration: none !important;
     transition: all 0.3s ease;
 }
 
-#blog .blog-title {
-    font-size: 2.2rem;
-    font-weight: 700;
+.blog-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1.5rem;
-    color: var(--text-primary) !important;
-    line-height: 1.4;
 }
 
-#blog .blog-title a {
-    color: inherit;
-    transition: color 0.3s ease;
-}
-
-#blog .blog-title a:hover {
-    color: var(--accent-glow);
-}
-
-#blog .button {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-primary) !important;
-    font-size: 1.2rem;
-    font-weight: 600;
-    padding: 1rem 2.5rem;
-    border-radius: 100px;
-    transition: all 0.3s ease;
+.blog-category {
+    color: #10b981 !important;
+    /* Architectural Emerald */
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
 }
 
-#blog .button:hover {
-    background: var(--accent-glow);
-    color: var(--bg-deep) !important;
-    border-color: var(--accent-glow);
-    transform: translateX(5px);
+.blog-date {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    font-family: var(--font-secondary);
+    opacity: 0.6;
 }
 
-/* Modal Trigger Overlay - Hidden on Desktop by default */
-#blog .overlay {
-    display: none;
+.blog-title {
+    color: var(--text-primary) !important;
+    font-size: 3.2rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+    font-weight: 700 !important;
+    max-width: 85% !important;
+    transition: all 0.3s ease;
+}
+
+.blog-arrow {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.8rem;
+    color: var(--accent-glow);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.blog-link:hover {
+    padding-left: 2rem !important;
+}
+
+.blog-link:hover .blog-title {
+    color: var(--accent-glow) !important;
+}
+
+.blog-link:hover .blog-arrow {
+    opacity: 1;
+    right: 1.5rem;
 }
 
 /* ===================================================================
@@ -1088,7 +1099,7 @@ header .top-bar {
 .about-content,
 .timeline-block,
 .folio-item,
-.blog-item {
+.blog-list-item {
     opacity: 0;
     animation: fadeInUp 0.8s ease forwards;
 }
@@ -1149,15 +1160,27 @@ header .top-bar {
     animation-delay: 0.3s;
 }
 
-.blog-item:nth-child(4) {
+.blog-list-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.blog-list-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.blog-list-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.blog-list-item:nth-child(4) {
     animation-delay: 0.4s;
 }
 
-.blog-item:nth-child(5) {
+.blog-list-item:nth-child(5) {
     animation-delay: 0.5s;
 }
 
-.blog-item:nth-child(6) {
+.blog-list-item:nth-child(6) {
     animation-delay: 0.6s;
 }
 
@@ -1310,6 +1333,35 @@ header .top-bar {
         /* Hide overlay text/structures on mobile */
     }
 
+
+    /* Blog Redesign Mobile Refinements */
+    .blog-list-item:nth-child(1) {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .blog-link {
+        padding: 3rem 0 !important;
+    }
+
+    .blog-title {
+        font-size: 2rem !important;
+        max-width: 100% !important;
+    }
+
+    .blog-arrow {
+        display: none !important;
+    }
+
+    .blog-link:hover {
+        padding-left: 0 !important;
+        background: transparent !important;
+    }
+
+    .blog-link:hover .blog-title {
+        transform: none !important;
+        color: var(--accent-glow) !important;
+    }
+
     /* Blog Mobile - Modal UX similar to Portfolio */
     #blog .blog-overlay {
         display: none !important;
@@ -1372,20 +1424,6 @@ header .top-bar {
         margin-bottom: 0.8rem !important;
     }
 
-    #blog .blog-desc {
-        font-size: 1.5rem !important;
-        line-height: 1.6 !important;
-        margin-bottom: 2rem !important;
-        display: block !important;
-        /* Show full desc on stack */
-        -webkit-line-clamp: none !important;
-        line-clamp: none !important;
-    }
-
-    #blog .button {
-        padding: 0.8rem 2rem !important;
-        font-size: 1.1rem !important;
-    }
 
     #resume .timeline-content h4 {
         font-size: 1.6rem !important;
