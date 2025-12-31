@@ -251,6 +251,68 @@ header .top-bar {
     margin: 0 auto 4rem;
 }
 
+/* Availability Badge */
+.intro-badge-wrapper {
+    margin-bottom: 3.5rem;
+    display: flex;
+    justify-content: center;
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.1s;
+    opacity: 0;
+}
+
+.badge-availability {
+    background: rgba(16, 185, 129, 0.1) !important;
+    /* Elegant Green Tint */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: #10b981 !important;
+    /* Emerald Green */
+    padding: 0.8rem 2.4rem !important;
+    border-radius: 100px !important;
+    font-size: 1.3rem !important;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.badge-availability .dot {
+    width: 10px;
+    height: 10px;
+    background: #10b981;
+    border-radius: 50%;
+    position: relative;
+}
+
+.badge-availability .dot::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px solid #10b981;
+    border-radius: 50%;
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+}
+
 /* Horizontal Social Links beneath actions */
 .intro-social {
     display: flex !important;
