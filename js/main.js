@@ -274,18 +274,26 @@
 	var scrollSpeed = 300; // how slow/fast you want the button to scroll to top. can be a value, 'slow', 'normal' or 'fast'
 
 	// Show or hide the sticky footer button
-	jQuery(window).scroll(function () {
+	var scrolling = false;
 
-		if (!($("#header-search").hasClass('is-visible'))) {
-
-			if (jQuery(window).scrollTop() >= pxShow) {
-				jQuery("#go-top").fadeIn(fadeInTime);
-			} else {
-				jQuery("#go-top").fadeOut(fadeOutTime);
-			}
-
+	$(window).scroll(function () {
+		if (!scrolling) {
+			scrolling = true;
+			(!window.requestAnimationFrame)
+				? setTimeout(updateBackToTop, 250)
+				: window.requestAnimationFrame(updateBackToTop);
 		}
-
 	});
+
+	function updateBackToTop() {
+		if (!($("#header-search").hasClass('is-visible'))) {
+			if ($(window).scrollTop() >= pxShow) {
+				$("#go-top").fadeIn(fadeInTime);
+			} else {
+				$("#go-top").fadeOut(fadeOutTime);
+			}
+		}
+		scrolling = false;
+	}
 
 })(jQuery);
