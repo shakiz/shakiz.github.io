@@ -822,17 +822,44 @@ header .top-bar {
 /* Enhanced Modal */
 /* Enhanced Dark Modal Details */
 .popup-modal {
+    position: relative;
+    max-width: 800px;
+    margin: 4.8rem auto;
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-xl);
     background: var(--bg-card) !important;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    /* Prevent modal from being taller than viewport */
+}
+
+.popup-modal .media {
+    position: relative;
+    width: 100%;
+    height: 30rem;
+    /* Fixed height for consistency */
+    overflow: hidden;
+    background: var(--bg-deep);
+}
+
+.popup-modal .media img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block;
 }
 
 .popup-modal .description-box {
     background: var(--bg-card) !important;
     padding: 3.5rem 4rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    overflow-y: auto;
+    flex-grow: 1;
+    -webkit-overflow-scrolling: touch;
 }
 
 .popup-modal .description-box h4 {
@@ -1221,6 +1248,11 @@ header .top-bar {
         padding-bottom: 4rem !important;
     }
 
+    /* Specific override for Intro to clear fixed header */
+    #intro {
+        padding-top: 10rem !important;
+    }
+
     .section-intro {
         margin-bottom: 4rem !important;
     }
@@ -1441,12 +1473,25 @@ header .top-bar {
 
     /* Detail Modals Mobile Optimization */
     .popup-modal {
-        max-width: 90% !important;
-        margin: 4rem auto !important;
+        max-width: 92% !important;
+        margin: 2rem auto !important;
+        max-height: 85vh !important;
+        display: flex;
+        /* Removed !important to allow MagnificPopup to hide it */
+        flex-direction: column !important;
+    }
+
+    .popup-modal .media {
+        height: 20rem !important;
+        /* Smaller on mobile */
+        flex-shrink: 0 !important;
     }
 
     .popup-modal .description-box {
         padding: 2.5rem 2.5rem 3rem !important;
+        overflow-y: auto !important;
+        flex-grow: 1 !important;
+        -webkit-overflow-scrolling: touch;
     }
 
     .popup-modal .description-box h4 {
@@ -1454,20 +1499,17 @@ header .top-bar {
     }
 
     .popup-modal .link-box {
-        padding: 2rem 2.5rem !important;
+        padding: 1.5rem 2.5rem !important;
         flex-direction: column !important;
-        /* Stack buttons on mobile */
+        gap: 1rem !important;
+        flex-shrink: 0 !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .popup-modal .link-box a {
-        padding: 1.4rem 0 !important;
+        padding: 1.2rem 0 !important;
         width: 100% !important;
-    }
-
-    .popup-modal .media img {
-        height: auto !important;
-        max-height: 25rem !important;
-        object-fit: cover !important;
+        margin: 0 !important;
     }
 }
 
