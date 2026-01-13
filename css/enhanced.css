@@ -1515,22 +1515,63 @@ header .top-bar {
 
 @media only screen and (max-width: 480px) {
 
-    /* Ultra Compact for small phones */
-    .intro-content h1 {
-        font-size: 3.6rem !important;
+    /* Ultra Compact for small phones (iPhone SE, etc) */
+    #intro {
+        padding-top: 9rem !important;
+        /* Balanced buffer for fixed header */
+        height: auto !important;
+        /* Allow section to grow if needed */
+        min-height: 100vh !important;
+        display: flex !important;
+        align-items: center !important;
     }
 
-    .stat-card {
-        flex: 1 1 100%;
+    .intro-content {
+        padding: 2rem 0 !important;
+    }
+
+    .intro-badge-wrapper {
+        margin-bottom: 2rem !important;
+    }
+
+    .intro-content h5 {
+        font-size: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .intro-content h1 {
+        font-size: 4.2rem !important;
+        /* Slightly larger but balanced */
+        margin-bottom: 2rem !important;
+    }
+
+    .intro-content .intro-position {
+        font-size: 1.5rem !important;
+        margin-bottom: 2.5rem !important;
+        line-height: 1.6 !important;
+    }
+
+    .intro-actions {
+        margin-bottom: 3rem !important;
     }
 
     .intro-actions .button {
         width: 100% !important;
         margin: 0.5rem 0 !important;
+        padding: 1.4rem 0 !important;
+        text-align: center !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
     }
 
     .intro-social {
-        gap: 2rem !important;
+        gap: 2.5rem !important;
+        margin-top: 1rem !important;
+    }
+
+    .stat-card {
+        flex: 1 1 100%;
     }
 }
 
