@@ -1,13 +1,3 @@
-/**
- * Enhanced Portfolio Styles - Modern FAANG-Level Design
- * This file contains modern UI enhancements including:
- * - Modern color palette with gradients
- * - Enhanced card designs with depth
- * - Sophisticated hover effects
- * - Improved responsiveness
- * - Micro-interactions and animations
- */
-
 /* ===================================================================
  * CSS Custom Properties - Modern Design System
  * ================================================================ */
@@ -1088,6 +1078,149 @@ header .top-bar {
 .contact-info p {
     color: var(--text-secondary) !important;
     font-size: 1.6rem;
+}
+
+/* ===================================================================
+ * Services Section - Modern High-Impact Cards
+ * ================================================================ */
+#services {
+    background: var(--bg-deep) !important;
+    padding-top: 15rem;
+    padding-bottom: 12rem;
+    position: relative;
+    overflow: hidden;
+}
+
+#services::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle at bottom center, rgba(141, 168, 215, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.mvp-services-grid {
+    margin-top: 6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    /* Modern spacing control */
+    justify-content: center;
+}
+
+.mvp-service-card {
+    background: var(--bg-card);
+    padding: 6rem 4rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all var(--transition-base);
+    flex: 1 1 calc(33.333% - 4rem);
+    /* Responsive three-column layout with gap compensation */
+    min-width: 300px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Isolation Resets to prevent theme conflict */
+.mvp-service-card::before {
+    content: none !important;
+}
+
+.mvp-service-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(141, 168, 215, 0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: all var(--transition-base);
+    z-index: -1;
+}
+
+.mvp-service-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-glow);
+    box-shadow: var(--shadow-glow);
+}
+
+.mvp-service-card:hover::after {
+    opacity: 1;
+}
+
+.mvp-service-icon {
+    width: 6.5rem;
+    height: 6.5rem;
+    line-height: 6.5rem;
+    background: rgba(141, 168, 215, 0.08);
+    border-radius: 1.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-glow);
+    font-size: 2.8rem;
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.mvp-service-icon::before,
+.mvp-service-icon::after {
+    content: none !important;
+}
+
+.mvp-service-card:hover .mvp-service-icon {
+    background: var(--accent-glow);
+    color: var(--bg-deep);
+    transform: rotate(5deg) scale(1.1);
+}
+
+.mvp-service-card .service-content h3 {
+    color: var(--text-primary);
+    font-size: 2.22rem;
+    margin-bottom: 1.8rem;
+}
+
+.mvp-service-card .service-content p {
+    color: var(--text-secondary);
+    font-size: 1.6rem;
+    line-height: 1.8;
+    margin-bottom: 0;
+}
+
+/* Responsive Audit for Services */
+@media only screen and (max-width: 1024px) {
+    .mvp-service-card {
+        padding: 4rem 3rem;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #services {
+        padding-top: 10rem;
+        padding-bottom: 8rem;
+    }
+
+    .mvp-services-grid {
+        margin-top: 4rem;
+        gap: 2.5rem;
+        /* Tighter gap on tablet/mobile */
+    }
+
+    .mvp-service-card {
+        margin-bottom: 0;
+        /* Let flex gap handle vertical spacing */
+        min-width: 100%;
+        /* Force stacking on mobile */
+    }
 }
 
 /* ===================================================================
