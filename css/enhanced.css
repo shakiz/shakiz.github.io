@@ -180,7 +180,7 @@ header .top-bar {
     height: 80%;
     top: 10%;
     left: 10%;
-    background: radial-gradient(circle, rgba(141, 168, 215, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
     filter: blur(80px);
     z-index: 1;
     animation: float 20s ease-in-out infinite alternate;
@@ -188,9 +188,7 @@ header .top-bar {
 }
 
 .intro-overlay {
-    background:
-        radial-gradient(circle at 70% 30%, rgba(123, 78, 178, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at top center, rgba(141, 168, 215, 0.08) 0%, var(--bg-deep) 80%) !important;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, #000000 85%) !important;
     opacity: 1;
     position: absolute;
     top: 0;
@@ -409,7 +407,7 @@ header .top-bar {
  * About Section - Modern Dark Premium
  * ================================================================ */
 #about {
-    background: var(--bg-deep) !important;
+    background: #111418 !important;
     padding-top: 8rem;
     padding-bottom: 6rem;
 }
@@ -440,13 +438,18 @@ header .top-bar {
 }
 
 .intro-info img {
-    width: 15rem;
-    height: 15rem;
+    width: 12rem;
+    height: 12rem;
+    flex-shrink: 0;
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     border: 4px solid var(--bg-card);
     transition: all var(--transition-base);
+}
+
+.intro-info p.lead {
+    flex: 1;
 }
 
 .intro-info img {
@@ -607,7 +610,7 @@ header .top-bar {
  * Resume Section - Dark Premium Timeline
  * ================================================================ */
 #resume {
-    background: var(--bg-deep) !important;
+    background: #0a0c10 !important;
     padding-top: 8rem;
     padding-bottom: 6rem;
 }
@@ -744,7 +747,7 @@ header .top-bar {
  * Portfolio Section - Dark Premium Grid
  * ================================================================ */
 #portfolio {
-    background: var(--bg-deep) !important;
+    background: #141618 !important;
     padding-top: 8rem;
     padding-bottom: 6rem;
 }
@@ -908,7 +911,7 @@ header .top-bar {
  * Blog Section - Minimalist Article List
  * ================================================================ */
 #blog {
-    background: var(--bg-deep) !important;
+    background: #0d0f11 !important;
     padding-top: 10rem;
     padding-bottom: 10rem;
 }
@@ -1002,7 +1005,7 @@ header .top-bar {
  * Contact Section - Dark Premium Glow
  * ================================================================ */
 #contact {
-    background: var(--bg-deep) !important;
+    background: #111314 !important;
     padding-top: 8rem;
     padding-bottom: 8rem;
     position: relative;
@@ -1017,7 +1020,7 @@ header .top-bar {
     transform: translateX(-50%);
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(141, 168, 215, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -1084,7 +1087,7 @@ header .top-bar {
  * Services Section - Modern High-Impact Cards
  * ================================================================ */
 #services {
-    background: var(--bg-deep) !important;
+    background: #080a0c !important;
     padding-top: 15rem;
     padding-bottom: 12rem;
     position: relative;
@@ -1098,7 +1101,7 @@ header .top-bar {
     height: 100%;
     top: 0;
     left: 0;
-    background: radial-gradient(circle at bottom center, rgba(141, 168, 215, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle at bottom center, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -1220,6 +1223,79 @@ header .top-bar {
         /* Let flex gap handle vertical spacing */
         min-width: 100%;
         /* Force stacking on mobile */
+    }
+}
+
+/* Services CTA
+ * ================================================================ */
+.services-cta {
+    margin-top: 6rem;
+    text-align: center;
+}
+
+.services-cta-text {
+    color: var(--text-secondary);
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+}
+
+.services-cta-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.services-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.4rem 3rem;
+    border-radius: 5rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-base);
+    letter-spacing: 0.04em;
+}
+
+.services-cta-btn i {
+    font-size: 2rem;
+}
+
+.linkedin-btn {
+    background: #0077B5;
+    color: #fff;
+}
+
+.linkedin-btn:hover {
+    background: #005fa3;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 119, 181, 0.4);
+    color: #fff;
+}
+
+.gmail-btn {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.gmail-btn:hover {
+    border-color: var(--accent-glow);
+    color: var(--accent-glow);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(141, 168, 215, 0.15);
+}
+
+@media only screen and (max-width: 768px) {
+    .services-cta {
+        margin-top: 4rem;
+    }
+
+    .services-cta-btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 
