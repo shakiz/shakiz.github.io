@@ -1,0 +1,297 @@
+/* ==========================================================================
+   android_cli_guide.css — Styles for guides/android-cli.html
+   ========================================================================== */
+
+/* ── Workflow tab container ─────────────────────────── */
+.wf-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #21262d;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.wf-tabs-container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: #0d1117;
+    border-bottom: 1px solid #21262d;
+    flex-shrink: 0;
+}
+
+.wf-tabs-container::-webkit-scrollbar {
+    display: none;
+}
+
+.wf-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.wf-tab:hover {
+    color: #c9d1d9;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.wf-tab.active {
+    color: #38bdf8;
+    border-bottom-color: #38bdf8;
+    font-weight: 600;
+    background: rgba(56, 189, 248, 0.05);
+}
+
+.wf-tab .step-num {
+    display: block;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.6rem;
+    color: #38bdf8;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.1rem;
+    font-weight: 700;
+}
+
+.wf-content-area {
+    background: #060a0f;
+    padding: 1.5rem;
+    min-height: 260px;
+}
+
+.wf-content {
+    display: none;
+}
+
+.wf-content.active {
+    display: block;
+}
+
+/* ── Desktop: side-by-side workflow layout ──────────── */
+@media (min-width: 768px) {
+    .wf-container {
+        flex-direction: row;
+    }
+
+    .wf-tabs-container {
+        flex-direction: column;
+        width: 10.5rem;
+        flex-shrink: 0;
+        border-bottom: none;
+        border-right: 1px solid #21262d;
+        overflow-x: visible;
+        overflow-y: auto;
+    }
+
+    .wf-tab {
+        white-space: normal;
+        border-bottom: none;
+        border-left: 3px solid transparent;
+        padding: 0.85rem 1rem;
+    }
+
+    .wf-tab.active {
+        border-bottom-color: transparent;
+        border-left-color: #38bdf8;
+    }
+
+    .wf-content-area {
+        flex: 1;
+        padding: 2rem 2.25rem;
+        min-height: 320px;
+    }
+}
+
+/* ── Context toggle buttons ─────────────────────────── */
+.ctx-toggle {
+    padding: 0.6rem 1.4rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid;
+}
+
+.ctx-toggle.is-legacy {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.35);
+    color: #f87171;
+}
+
+.ctx-toggle.is-cli {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: #10b981;
+}
+
+.ctx-toggle.is-inactive {
+    background: transparent;
+    border-color: #21262d;
+    color: #6b7280;
+}
+
+/* ── Section badge ──────────────────────────────────── */
+.s-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.65rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.8rem;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+}
+
+/* ── Callout / tip boxes ────────────────────────────── */
+.callout {
+    border-radius: 0.5rem;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.85rem;
+    line-height: 1.65;
+}
+
+.callout.sky {
+    background: rgba(56, 189, 248, 0.06);
+    border: 1px solid rgba(56, 189, 248, 0.18);
+    color: #7dd3fc;
+}
+
+.callout.amber {
+    background: rgba(251, 191, 36, 0.06);
+    border: 1px solid rgba(251, 191, 36, 0.18);
+    color: #fcd34d;
+}
+
+.callout.emerald {
+    background: rgba(16, 185, 129, 0.06);
+    border: 1px solid rgba(16, 185, 129, 0.18);
+    color: #6ee7b7;
+}
+
+/* ── Stat cards ─────────────────────────────────────── */
+.stat-card {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 0.75rem;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+}
+
+.stat-card.sky::before {
+    background: linear-gradient(90deg, #38bdf8, transparent);
+}
+
+.stat-card.amber::before {
+    background: linear-gradient(90deg, #fbbf24, transparent);
+}
+
+.stat-card.emerald::before {
+    background: linear-gradient(90deg, #10b981, transparent);
+}
+
+/* ── Chart card wrapper ─────────────────────────────── */
+.chart-card {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+}
+
+.chart-wrap {
+    position: relative;
+    width: 100%;
+    height: 210px;
+}
+
+@media (min-width: 768px) {
+    .chart-wrap {
+        height: 240px;
+    }
+}
+
+/* ── Architecture cards ─────────────────────────────── */
+.arch-card {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.arch-card:hover {
+    border-color: rgba(56, 189, 248, 0.22);
+    box-shadow: 0 0 24px rgba(56, 189, 248, 0.04);
+}
+
+/* ── Command group cards ────────────────────────────── */
+.cmd-card {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+/* ── Code wrap (code-block + copy button container) ─── */
+.code-wrap {
+    position: relative;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1;
+    font-size: 0.7rem;
+    padding: 0.28rem 0.6rem;
+    border-radius: 0.3rem;
+    border: 1px solid #30363d;
+    background: #161b22;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'Fira Code', monospace;
+}
+
+.copy-btn:hover {
+    background: #21262d;
+    color: #c9d1d9;
+}
+
+/* ── Agent matrix ───────────────────────────────────── */
+.agent-chip {
+    background: #111418;
+    border: 1px solid #21262d;
+    border-radius: 0.5rem;
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+}

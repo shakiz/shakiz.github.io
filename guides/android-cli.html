@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI for Android: Deep Dive | Sakhawat Hossain</title>
+    <meta name="description"
+        content="An interactive deep dive into Android CLI — the unified tool designed for AI agents. Build Android apps 3x faster with Claude Code, Gemini CLI, and structured output.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'ui-monospace', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="../css/agentic_dev.css">
+    <link rel="stylesheet" href="../css/android_cli_guide.css">
+</head>
+
+<!-- Mobile: natural scroll. Desktop: fixed viewport with column scroll. -->
+
+<body class="antialiased font-sans flex flex-col" style="background:#060a0f; color:#c9d1d9; min-height:100vh;">
+
+    <!-- ── Back bar ──────────────────────────────────────────── -->
+    <div class="back-bar">
+        <a href="../agentic_dev.html">&#8592; Agentic</a>
+        <span class="back-bar-sep">/</span>
+        <span class="back-bar-current">Android CLI: Deep Dive</span>
+    </div>
+
+    <!-- ── Mobile chapter tabs ───────────────────────────────── -->
+    <div class="mobile-tabs" id="mobileTabs">
+        <button class="mobile-tab active" data-target="view-impact">📊 Impact</button>
+        <button class="mobile-tab" data-target="view-context">🧱 Context Wall</button>
+        <button class="mobile-tab" data-target="view-workflow">🔄 Workflow</button>
+        <button class="mobile-tab" data-target="view-commands">🛠️ Commands</button>
+        <button class="mobile-tab" data-target="view-arch">🏗️ Architecture</button>
+    </div>
+
+    <!-- ── Guide layout ──────────────────────────────────────── -->
+    <div class="guide-layout">
+
+        <!-- Sidebar (desktop only) -->
+        <nav class="guide-sidebar">
+            <div class="p-5" style="border-bottom:1px solid #21262d;">
+                <div class="font-mono text-xs tracking-widest mb-1.5" style="color:#38bdf8; letter-spacing:0.15em;">
+                    ANDROID CLI</div>
+                <div class="text-sm font-semibold leading-snug" style="color:#e2e8f0;">Agentic AI for<br>Modern Android
+                </div>
+            </div>
+            <div class="p-3 flex-1">
+                <button class="nav-item active w-full text-left rounded px-3 py-2.5 text-sm mb-0.5"
+                    data-target="view-impact">
+                    <span class="font-mono text-xs mr-2" style="color:#38bdf8;">01</span>Paradigm Shift
+                </button>
+                <button class="nav-item w-full text-left rounded px-3 py-2.5 text-sm mb-0.5" data-target="view-context">
+                    <span class="font-mono text-xs mr-2" style="color:#38bdf8;">02</span>Context Wall
+                </button>
+                <button class="nav-item w-full text-left rounded px-3 py-2.5 text-sm mb-0.5"
+                    data-target="view-workflow">
+                    <span class="font-mono text-xs mr-2" style="color:#38bdf8;">03</span>Migration Workflow
+                </button>
+                <button class="nav-item w-full text-left rounded px-3 py-2.5 text-sm mb-0.5"
+                    data-target="view-commands">
+                    <span class="font-mono text-xs mr-2" style="color:#38bdf8;">04</span>Command Reference
+                </button>
+                <button class="nav-item w-full text-left rounded px-3 py-2.5 text-sm mb-0.5" data-target="view-arch">
+                    <span class="font-mono text-xs mr-2" style="color:#38bdf8;">05</span>Architecture
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main content area -->
+        <main class="guide-main">
+            <div class="p-6 md:p-10 space-y-0 max-w-4xl" style="margin:0 auto;">
+
+                <!-- ════════════════════════════════
+                     01  PARADIGM SHIFT
+                ════════════════════════════════ -->
+                <section id="view-impact" class="view-section active fade-in space-y-7">
+
+                    <div>
+                        <div class="s-badge">📊 Chapter 01</div>
+                        <h1 class="text-3xl font-bold mb-3" style="color:#e2e8f0;">The Paradigm Shift</h1>
+                        <p class="text-sm leading-relaxed" style="color:#8b949e;">The Android CLI replaces fragmented
+                            legacy tooling with a single binary purpose-built for AI agents. Structured JSON output
+                            instead of verbose human-readable logs fundamentally changes how LLMs consume Android
+                            context — and the numbers prove it.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="chart-card">
+                            <div class="chart-wrap">
+                                <canvas id="tokenChart"></canvas>
+                            </div>
+                            <p class="text-xs mt-3 text-center" style="color:#4b5563;">Token consumption drops ~70% by
+                                replacing XML dumps and verbose Gradle traces with structured JSON.</p>
+                        </div>
+                        <div class="chart-card">
+                            <div class="chart-wrap">
+                                <canvas id="speedChart"></canvas>
+                            </div>
+                            <p class="text-xs mt-3 text-center" style="color:#4b5563;">AI-assisted development speeds
+                                increase up to 3× by eliminating the context wall and reducing hallucinations.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="stat-card sky">
+                            <div class="text-3xl font-bold mb-1" style="color:#38bdf8;">70%</div>
+                            <div class="text-xs" style="color:#6b7280;">Fewer tokens consumed</div>
+                        </div>
+                        <div class="stat-card amber">
+                            <div class="text-3xl font-bold mb-1" style="color:#fbbf24;">3×</div>
+                            <div class="text-xs" style="color:#6b7280;">Faster dev velocity</div>
+                        </div>
+                        <div class="stat-card emerald">
+                            <div class="text-3xl font-bold mb-1" style="color:#10b981;">1</div>
+                            <div class="text-xs" style="color:#6b7280;">Unified binary</div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- ════════════════════════════════
+                     02  CONTEXT WALL
+                ════════════════════════════════ -->
+                <section id="view-context" class="view-section fade-in space-y-6">
+
+                    <div>
+                        <div class="s-badge">🧱 Chapter 02</div>
+                        <h1 class="text-3xl font-bold mb-3" style="color:#e2e8f0;">Breaking the Context Wall</h1>
+                        <p class="text-sm leading-relaxed" style="color:#8b949e;">Historically, agents were forced to
+                            use tools built for humans. Toggle between the two realities below to understand the
+                            paradigm shift at the core of the Android CLI.</p>
+                    </div>
+
+                    <div class="flex gap-3 flex-wrap">
+                        <button class="ctx-toggle is-legacy" id="legacyBtn">❌ Legacy Tools (The Problem)</button>
+                        <button class="ctx-toggle is-inactive" id="cliBtn">✅ Android CLI (The Solution)</button>
+                    </div>
+
+                    <!-- Legacy view -->
+                    <div id="ctx-legacy" class="rounded-xl p-6 space-y-5"
+                        style="background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.18);">
+                        <h3 class="font-bold" style="color:#f87171;">The Overwhelmed Agent</h3>
+                        <div class="space-y-5">
+                            <div class="flex gap-3">
+                                <span class="text-lg flex-shrink-0 mt-0.5">📉</span>
+                                <div>
+                                    <div class="font-semibold text-sm mb-1" style="color:#fca5a5;">Verbose Logs</div>
+                                    <p class="text-sm" style="color:#6b7280;">Feeding an LLM a 400-line Gradle stack
+                                        trace burns through tokens rapidly and obscures the actual error signal in
+                                        noise.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="text-lg flex-shrink-0 mt-0.5">🗑️</span>
+                                <div>
+                                    <div class="font-semibold text-sm mb-1" style="color:#fca5a5;">Context Loss</div>
+                                    <p class="text-sm" style="color:#6b7280;">Dumping massive nested <span
+                                            class="font-mono text-xs" style="color:#f87171;">activity_main.xml</span>
+                                        files into a prompt causes the agent to lose its place in the view hierarchy
+                                        entirely.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="text-lg flex-shrink-0 mt-0.5">😵‍💫</span>
+                                <div>
+                                    <div class="font-semibold text-sm mb-1" style="color:#fca5a5;">Hallucinations</div>
+                                    <p class="text-sm" style="color:#6b7280;">Legacy binaries (<span
+                                            class="font-mono text-xs" style="color:#f87171;">adb</span>, <span
+                                            class="font-mono text-xs" style="color:#f87171;">avdmanager</span>) produce
+                                        unstructured text, leading agents to invent UI components that don't exist.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CLI view (hidden by default) -->
+                    <div id="ctx-cli" class="hidden rounded-xl p-6 space-y-5"
+                        style="background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.18);">
+                        <h3 class="font-bold" style="color:#10b981;">The Empowered Agent</h3>
+                        <div class="space-y-5">
+                            <div class="flex gap-3">
+                                <span class="text-lg flex-shrink-0 mt-0.5">📦</span>
+                                <div>
+                                    <div class="font-semibold text-sm mb-1" style="color:#6ee7b7;">Unified Binary</div>
+                                    <p class="text-sm" style="color:#6b7280;">Everything lives under a single <span
+                                            class="font-mono text-xs" style="color:#38bdf8;">android</span> command —
+                                        init, build, emulator, layout inspection, docs, and skills all unified.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="text-lg flex-shrink-0 mt-0.5">📋</span>
+                                <div>
+                                    <div class="font-semibold text-sm mb-1" style="color:#6ee7b7;">Structured JSON
+                                        Output</div>
+                                    <p class="text-sm" style="color:#6b7280;">Abandons bloated text logs in favour of
+                                        clean Protocol Buffers or JSON that LLMs parse natively — without wasting
+                                        context budget on formatting noise.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="text-lg flex-shrink-0 mt-0.5">🎯</span>
+                                <div>
+                                    <div class="font-semibold text-sm mb-1" style="color:#6ee7b7;">Targeted Diffs</div>
+                                    <p class="text-sm" style="color:#6b7280;">When inspecting a screen, the agent reads
+                                        only what changed — stripping bounds, focusability, and irrelevant attributes
+                                        from the delta.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- ════════════════════════════════
+                     03  MIGRATION WORKFLOW
+                ════════════════════════════════ -->
+                <section id="view-workflow" class="view-section fade-in space-y-6">
+
+                    <div>
+                        <div class="s-badge">🔄 Chapter 03</div>
+                        <h1 class="text-3xl font-bold mb-3" style="color:#e2e8f0;">Real-World Workflow</h1>
+                        <p class="text-sm leading-relaxed" style="color:#8b949e;">A concrete walkthrough of autonomously
+                            migrating a legacy XML view to modern Jetpack Compose using the Android CLI. Click through
+                            each step to follow the agent's full execution path.</p>
+                    </div>
+
+                    <div class="wf-container">
+
+                        <!-- Step tabs -->
+                        <div class="wf-tabs-container">
+                            <button class="wf-tab active" data-wf="wf1">
+                                <span class="step-num">STEP 01</span>Equip the Agent
+                            </button>
+                            <button class="wf-tab" data-wf="wf2">
+                                <span class="step-num">STEP 02</span>Capture UI State
+                            </button>
+                            <button class="wf-tab" data-wf="wf3">
+                                <span class="step-num">STEP 03</span>Target the Prompt
+                            </button>
+                            <button class="wf-tab" data-wf="wf4">
+                                <span class="step-num">STEP 04</span>Execute &amp; Verify
+                            </button>
+                        </div>
+
+                        <!-- Step content -->
+                        <div class="wf-content-area">
+
+                            <div id="wf1" class="wf-content active space-y-4">
+                                <h3 class="font-bold" style="color:#e2e8f0;">Equip with Required Skills</h3>
+                                <p class="text-sm leading-relaxed" style="color:#8b949e;">Inject expert knowledge into
+                                    the agent's context before writing a single line of code. This ensures it follows
+                                    current architectural best practices — using <span class="font-mono text-xs"
+                                        style="color:#38bdf8;">ComposeView</span> as a bridge — instead of attempting a
+                                    dangerous full-screen rewrite.</p>
+                                <div class="code-wrap">
+                                    <button class="copy-btn">📋 Copy</button>
+                                    <div class="code-block" style="padding-right:5rem;"># List available skills
+android skills list
+
+# Inject the migration skill
+android skills add --agent=claude-code \
+  --skill=migrate-xml-views-to-jetpack-compose</div>
+                                </div>
+                            </div>
+
+                            <div id="wf2" class="wf-content space-y-4">
+                                <h3 class="font-bold" style="color:#e2e8f0;">Capture Current UI State</h3>
+                                <p class="text-sm leading-relaxed" style="color:#8b949e;">Instead of reading a raw
+                                    nested XML file, the agent captures the actual rendered state of the screen in the
+                                    emulator. This returns a token-efficient JSON map of the live UI hierarchy — only
+                                    what matters, stripped of visual noise.</p>
+                                <div class="code-wrap">
+                                    <button class="copy-btn">📋 Copy</button>
+                                    <div class="code-block" style="padding-right:5rem;"># Capture current screen as structured JSON
+android layout --pretty</div>
+                                </div>
+                                <div class="callout sky text-xs">
+                                    The <span class="font-mono">--pretty</span> flag formats the JSON for readability.
+                                    Omit it in automated pipelines for raw compact output.
+                                </div>
+                            </div>
+
+                            <div id="wf3" class="wf-content space-y-4">
+                                <h3 class="font-bold" style="color:#e2e8f0;">Strategic Prompting</h3>
+                                <p class="text-sm leading-relaxed" style="color:#8b949e;">Target specific elements from
+                                    the JSON output to prevent hallucinations. Use View IDs or component types — never
+                                    "migrate the whole screen" in one shot.</p>
+                                <div class="callout sky text-xs">
+                                    <strong>Example Prompt (by file &amp; ID):</strong><br><br>
+                                    "Open <span class="font-mono">res/layout/item_tenant_bill.xml</span>. Migrate only
+                                    the ConstraintLayout with ID <span class="font-mono">@+id/rent_payment_card</span>
+                                    to Jetpack Compose. Leave the rest intact and use a ComposeView bridge."
+                                </div>
+                                <div class="callout amber text-xs">
+                                    <strong>Pro Tip:</strong> Always instruct the agent to list the specific View IDs it
+                                    plans to replace <em>before</em> it writes code. This checkpoint allows human
+                                    confirmation before irreversible changes are made.
+                                </div>
+                            </div>
+
+                            <div id="wf4" class="wf-content space-y-4">
+                                <h3 class="font-bold" style="color:#e2e8f0;">Execute &amp; Verify the Delta</h3>
+                                <p class="text-sm leading-relaxed" style="color:#8b949e;">Once the code is written, the
+                                    agent rebuilds and checks the layout diff to verify the semantic visual structure
+                                    remains identical. A minimal diff confirms a successful migration.</p>
+                                <div class="code-wrap">
+                                    <button class="copy-btn">📋 Copy</button>
+                                    <div class="code-block" style="padding-right:5rem;"># Build and deploy
+./gradlew assembleDebug
+android run --apks=app/build/outputs/apk/debug/app-debug.apk
+
+# The game changer: verify visual integrity
+android layout --diff</div>
+                                </div>
+                                <div class="callout emerald text-xs">
+                                    If <span class="font-mono">--diff</span> returns minimal or zero changes, the
+                                    migration preserved visual parity.
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- ════════════════════════════════
+                     04  COMMAND REFERENCE
+                ════════════════════════════════ -->
+                <section id="view-commands" class="view-section fade-in space-y-6">
+
+                    <div>
+                        <div class="s-badge">🛠️ Chapter 04</div>
+                        <h1 class="text-3xl font-bold mb-3" style="color:#e2e8f0;">Command Reference</h1>
+                        <p class="text-sm leading-relaxed" style="color:#8b949e;">The essential Android CLI commands,
+                            grouped by purpose. Click the copy icon on any block to grab commands directly for your
+                            terminal or agent workflow.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <div class="cmd-card">
+                            <div class="font-semibold text-sm" style="color:#e2e8f0;">Environment &amp; Init</div>
+                            <p class="text-xs" style="color:#6b7280;">Scaffold modern projects without wrestling with
+                                missing SDKs.</p>
+                            <div class="code-wrap">
+                                <button class="copy-btn">📋</button>
+                                <div class="code-block text-xs" style="padding-right:3.5rem;">android init
+android sdk install platforms/android-35 build-tools/35.0.0
+android create --output=./App --name=App empty-activity-agp-9</div>
+                            </div>
+                        </div>
+
+                        <div class="cmd-card">
+                            <div class="font-semibold text-sm" style="color:#e2e8f0;">Emulator Management</div>
+                            <p class="text-xs" style="color:#6b7280;">Spin up virtual devices for visual inspection
+                                effortlessly.</p>
+                            <div class="code-wrap">
+                                <button class="copy-btn">📋</button>
+                                <div class="code-block text-xs" style="padding-right:3.5rem;">android emulator create --list-profiles
+android emulator create --profile=medium_phone
+android emulator start medium_phone</div>
+                            </div>
+                        </div>
+
+                        <div class="cmd-card">
+                            <div class="font-semibold text-sm" style="color:#e2e8f0;">Installation (macOS, Apple
+                                Silicon)</div>
+                            <p class="text-xs" style="color:#6b7280;">Get the preview CLI running locally.</p>
+                            <div class="code-wrap">
+                                <button class="copy-btn">📋</button>
+                                <div class="code-block text-xs" style="padding-right:3.5rem;">curl -fsSL https://dl.google.com/android/cli/latest/darwin_arm64/install.sh | bash
+android updates
+android info</div>
+                            </div>
+                        </div>
+
+                        <div class="cmd-card">
+                            <div class="font-semibold text-sm" style="color:#e2e8f0;">Knowledge Base Queries</div>
+                            <p class="text-xs" style="color:#6b7280;">Access live developer docs to bypass stale LLM
+                                training data.</p>
+                            <div class="code-wrap">
+                                <button class="copy-btn">📋</button>
+                                <div class="code-block text-xs" style="padding-right:3.5rem;">android docs search 'Jetpack Compose LazyColumn memory optimization'
+android docs search 'WorkManager chaining constraints API 2.9'</div>
+                            </div>
+                        </div>
+
+                        <div class="cmd-card md:col-span-2">
+                            <div class="font-semibold text-sm" style="color:#e2e8f0;">Layout Inspection &amp; Diffing
+                            </div>
+                            <p class="text-xs" style="color:#6b7280;">The core superpower — structured UI inspection
+                                without XML noise.</p>
+                            <div class="code-wrap">
+                                <button class="copy-btn">📋</button>
+                                <div class="code-block text-xs" style="padding-right:3.5rem;">android layout --pretty          # structured JSON of current screen
+android layout --diff            # delta between last two snapshots
+android layout --filter=id       # filter output by view ID
+android layout --filter=type     # filter output by component type</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- ════════════════════════════════
+                     05  ARCHITECTURE
+                ════════════════════════════════ -->
+                <section id="view-arch" class="view-section fade-in space-y-6">
+
+                    <div>
+                        <div class="s-badge">🏗️ Chapter 05</div>
+                        <h1 class="text-3xl font-bold mb-3" style="color:#e2e8f0;">Under The Hood</h1>
+                        <p class="text-sm leading-relaxed" style="color:#8b949e;">Three architectural pillars
+                            distinguish the Android CLI from legacy binaries: live Retrieval-Augmented Generation for
+                            docs, a composable Skill system for agentic workflows, and open-standard agent integration.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="arch-card space-y-3">
+                            <div class="text-xl">🧠</div>
+                            <div class="font-bold text-sm" style="color:#38bdf8;">RAG-on-the-Fly</div>
+                            <p class="text-xs leading-relaxed" style="color:#8b949e;">The <span class="font-mono"
+                                    style="color:#38bdf8;">android docs</span> command is a local entry point for
+                                Retrieval-Augmented Generation — returning summarised context from live Google Developer
+                                blogs to prevent deprecated API usage in generated code.</p>
+                        </div>
+                        <div class="arch-card space-y-3">
+                            <div class="text-xl">🎯</div>
+                            <div class="font-bold text-sm" style="color:#fbbf24;">Skill Architecture</div>
+                            <p class="text-xs leading-relaxed" style="color:#8b949e;">Skills are Agentic System Prompts
+                                stored in open-standard markdown. They define Context (e.g., MVVM), Constraints (e.g.,
+                                don't touch manifest), and Execution logic — injected per-task, not globally.</p>
+                        </div>
+                        <div class="arch-card space-y-3">
+                            <div class="text-xl">🤝</div>
+                            <div class="font-bold text-sm" style="color:#10b981;">Multi-Agent Support</div>
+                            <p class="text-xs leading-relaxed" style="color:#8b949e;">Built on open standards.
+                                Integrates seamlessly with <strong style="color:#e2e8f0;">Claude Code</strong>, <strong
+                                    style="color:#e2e8f0;">Gemini CLI</strong>, and <strong
+                                    style="color:#e2e8f0;">Codex</strong>. Any custom agent following the skill spec is
+                                compatible.</p>
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl p-5 space-y-4" style="background:#0d1117; border:1px solid #21262d;">
+                        <div class="font-mono text-xs tracking-widest" style="color:#38bdf8; letter-spacing:0.15em;">
+                            AGENT INTEGRATION MATRIX</div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="agent-chip">
+                                <div class="font-semibold text-xs mb-1" style="color:#e2e8f0;">Claude Code</div>
+                                <div class="text-xs" style="color:#10b981;">✓ Full Support</div>
+                            </div>
+                            <div class="agent-chip">
+                                <div class="font-semibold text-xs mb-1" style="color:#e2e8f0;">Gemini CLI</div>
+                                <div class="text-xs" style="color:#10b981;">✓ Full Support</div>
+                            </div>
+                            <div class="agent-chip">
+                                <div class="font-semibold text-xs mb-1" style="color:#e2e8f0;">Codex</div>
+                                <div class="text-xs" style="color:#10b981;">✓ Full Support</div>
+                            </div>
+                        </div>
+                        <p class="text-xs" style="color:#4b5563;">Any custom agent following the open skill
+                            specification is also compatible.</p>
+                    </div>
+
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ── Chapter navigation ──────────────────────────────
+            function showSection(target) {
+                document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
+
+                const section = document.getElementById(target);
+                if (section) {
+                    section.classList.add('active');
+                    void section.offsetWidth; // reflow to re-trigger animation
+                    section.classList.add('fade-in');
+                }
+                document.querySelectorAll(`[data-target="${target}"]`).forEach(el => el.classList.add('active'));
+            }
+
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.addEventListener('click', () => showSection(btn.dataset.target));
+            });
+
+            document.querySelectorAll('.mobile-tab').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    showSection(btn.dataset.target);
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                });
+            });
+
+            // ── Charts ──────────────────────────────────────────
+            const darkScales = {
+                x: {
+                    grid: { color: 'rgba(255,255,255,0.04)' },
+                    ticks: { color: '#6b7280', font: { family: 'Inter, system-ui, sans-serif', size: 11 } }
+                },
+                y: {
+                    grid: { color: 'rgba(255,255,255,0.04)' },
+                    ticks: { color: '#6b7280', font: { family: 'Inter, system-ui, sans-serif', size: 11 } },
+                    beginAtZero: true
+                }
+            };
+
+            new Chart(document.getElementById('tokenChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Legacy Tools', 'Android CLI'],
+                    datasets: [{
+                        label: 'Token Usage (%)',
+                        data: [100, 30],
+                        backgroundColor: ['rgba(239,68,68,0.45)', 'rgba(56,189,248,0.55)'],
+                        borderColor: ['rgba(239,68,68,0.75)', '#38bdf8'],
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Token Consumption — Lower is Better',
+                            color: '#8b949e',
+                            font: { size: 12, family: 'Inter, system-ui, sans-serif' },
+                            padding: { bottom: 12 }
+                        }
+                    },
+                    scales: { ...darkScales, y: { ...darkScales.y, max: 120 } }
+                }
+            });
+
+            new Chart(document.getElementById('speedChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Legacy Tools', 'Android CLI'],
+                    datasets: [{
+                        label: 'Dev Speed (×)',
+                        data: [1, 3],
+                        backgroundColor: ['rgba(107,114,128,0.4)', 'rgba(251,191,36,0.55)'],
+                        borderColor: ['rgba(107,114,128,0.7)', '#fbbf24'],
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Development Speed — Higher is Better',
+                            color: '#8b949e',
+                            font: { size: 12, family: 'Inter, system-ui, sans-serif' },
+                            padding: { bottom: 12 }
+                        }
+                    },
+                    scales: { ...darkScales, y: { ...darkScales.y, max: 4 } }
+                }
+            });
+
+            // ── Context wall toggle ─────────────────────────────
+            const legacyEl = document.getElementById('ctx-legacy');
+            const cliEl = document.getElementById('ctx-cli');
+            const legacyBtn = document.getElementById('legacyBtn');
+            const cliBtn = document.getElementById('cliBtn');
+
+            legacyBtn.addEventListener('click', () => {
+                legacyEl.classList.remove('hidden');
+                cliEl.classList.add('hidden');
+                legacyBtn.className = 'ctx-toggle is-legacy';
+                cliBtn.className = 'ctx-toggle is-inactive';
+            });
+
+            cliBtn.addEventListener('click', () => {
+                cliEl.classList.remove('hidden');
+                legacyEl.classList.add('hidden');
+                cliBtn.className = 'ctx-toggle is-cli';
+                legacyBtn.className = 'ctx-toggle is-inactive';
+            });
+
+            // ── Workflow step tabs ──────────────────────────────
+            document.querySelectorAll('.wf-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.wf-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.wf-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.wf).classList.add('active');
+                });
+            });
+
+            // ── Copy buttons ────────────────────────────────────
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const wrap = btn.closest('.code-wrap');
+                    const code = wrap.querySelector('.code-block').innerText.trim();
+
+                    const doCopy = navigator.clipboard
+                        ? navigator.clipboard.writeText(code)
+                        : new Promise(resolve => {
+                            const ta = document.createElement('textarea');
+                            ta.value = code;
+                            document.body.appendChild(ta);
+                            ta.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(ta);
+                            resolve();
+                        });
+
+                    doCopy.then(() => {
+                        const orig = btn.textContent;
+                        btn.textContent = '✓';
+                        btn.style.color = '#10b981';
+                        btn.style.borderColor = 'rgba(16,185,129,0.4)';
+                        setTimeout(() => {
+                            btn.textContent = orig;
+                            btn.style.color = '';
+                            btn.style.borderColor = '';
+                        }, 2000);
+                    });
+                });
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

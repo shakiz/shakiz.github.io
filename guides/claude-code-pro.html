@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,179 +27,16 @@
         }
     </script>
 
-    <style>
-        /* ── Scrollbar ───────────────────────────────────────── */
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: #0a0c10; }
-        ::-webkit-scrollbar-thumb { background: #2a2f3a; border-radius: 3px; }
-
-        /* ── Chart ───────────────────────────────────────────── */
-        .chart-container {
-            position: relative; width: 100%;
-            max-width: 800px; margin: 0 auto;
-            height: 300px;
-        }
-        @media (max-width: 640px) { .chart-container { height: 210px; } }
-
-        /* ── Code block ──────────────────────────────────────── */
-        .code-block {
-            background: #0d1117;
-            color: #c9d1d9;
-            padding: 1.2rem 1.4rem;
-            border-radius: 0.5rem;
-            font-family: 'Fira Code', monospace;
-            overflow-x: auto;
-            border: 1px solid #21262d;
-            font-size: 0.85rem;
-            line-height: 1.65;
-            white-space: pre;
-        }
-
-        /* ── Animation ───────────────────────────────────────── */
-        .fade-in { animation: fadeIn 0.22s ease-out both; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ── Section visibility ──────────────────────────────── */
-        .view-section { display: none; }
-        .view-section.active { display: block; }
-
-        /* ════════════════════════════════════════════════════════
-           LAYOUT — mobile-first
-        ════════════════════════════════════════════════════════ */
-
-        /* Back bar — always visible, sticky */
-        .back-bar {
-            position: sticky;
-            top: 0;
-            z-index: 200;
-            background: #0d1117;
-            border-bottom: 1px solid #21262d;
-            padding: 0.8rem 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-shrink: 0;
-        }
-        .back-bar a {
-            color: #8da8d7; text-decoration: none;
-            font-size: 0.85rem; font-weight: 500;
-            display: flex; align-items: center; gap: 0.35rem;
-            transition: color 0.2s;
-        }
-        .back-bar a:hover { color: #fff; }
-        .back-bar-sep, .back-bar-current { font-size: 0.85rem; color: #444; }
-        .back-bar-current {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 18ch;
-        }
-
-        /* Mobile chapter tabs — shown only on mobile */
-        .mobile-tabs {
-            position: sticky;
-            top: 41px; /* back-bar height */
-            z-index: 190;
-            display: flex;
-            overflow-x: auto;
-            gap: 0.5rem;
-            padding: 0.7rem 1rem;
-            background: #111418;
-            border-bottom: 1px solid #21262d;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-        .mobile-tabs::-webkit-scrollbar { display: none; }
-
-        .mobile-tab {
-            white-space: nowrap;
-            flex-shrink: 0;
-            padding: 0.38rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #666;
-            background: transparent;
-            border: 1px solid #21262d;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .mobile-tab.active {
-            background: rgba(141, 168, 215, 0.12);
-            border-color: #8da8d7;
-            color: #8da8d7;
-            font-weight: 600;
-        }
-
-        /* Desktop sidebar nav item */
-        .nav-item { transition: all 0.15s; }
-        .nav-item.active {
-            background: rgba(141, 168, 215, 0.1);
-            border-left: 3px solid #8da8d7;
-            color: #fff;
-            font-weight: 600;
-        }
-
-        /* Layout wrapper */
-        .guide-layout {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-height: 0;
-        }
-
-        /* Sidebar — hidden on mobile */
-        .guide-sidebar { display: none; }
-
-        /* Main content — full width on mobile, scrollable */
-        .guide-main {
-            flex: 1;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* ── Desktop overrides (≥ 768px) ─────────────────────── */
-        @media (min-width: 768px) {
-            /* Fix total height and enable independent column scrolling */
-            html, body { height: 100%; overflow: hidden; }
-
-            .mobile-tabs { display: none; }
-
-            .guide-layout {
-                flex-direction: row;
-                overflow: hidden;
-                flex: 1;
-                min-height: 0;
-            }
-
-            .guide-sidebar {
-                display: flex;
-                flex-direction: column;
-                width: 15rem;
-                flex-shrink: 0;
-                border-right: 1px solid #21262d;
-                overflow-y: auto;
-                background: #111418;
-            }
-
-            .guide-main { overflow-y: auto; }
-        }
-
-        /* ── Accordion ───────────────────────────────────────── */
-        .accordion-content { display: none; }
-        .accordion-content.open { display: block; }
-    </style>
+    <link rel="stylesheet" href="../css/agentic_dev.css">
 </head>
 
 <!-- Mobile: natural document flow. Desktop: fixed viewport with column scroll. -->
+
 <body class="antialiased font-sans flex flex-col" style="background:#0a0c10; color:#c9d1d9; min-height:100vh;">
 
     <!-- ── Back bar ──────────────────────────────────────────── -->
     <div class="back-bar">
-        <a href="../guides.html">&#8592; Agentic</a>
+        <a href="../agentic_dev.html">&#8592; Agentic</a>
         <span class="back-bar-sep">/</span>
         <span class="back-bar-current">Claude Code: Pro Guide</span>
     </div>
@@ -260,7 +98,8 @@
                 <!-- ══ VIEW: OVERVIEW ══════════════════════════════ -->
                 <section id="view-overview" class="view-section active fade-in">
                     <div class="mb-8">
-                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 1</p>
+                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 1
+                        </p>
                         <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">The Agentic Developer Paradigm</h2>
                         <p class="text-base leading-relaxed" style="color:#a1a1a1;">
                             This guide transitions you from using Claude Code as a glorified autocomplete
@@ -272,7 +111,8 @@
 
                     <div class="rounded-xl p-5 md:p-7 mb-8 border" style="background:#111418; border-color:#21262d;">
                         <h3 class="text-base font-bold text-white mb-1">Efficiency Impact Analysis</h3>
-                        <p class="text-xs mb-5" style="color:#555;">Average weekly hours — manual dev vs. Claude Code-optimised.</p>
+                        <p class="text-xs mb-5" style="color:#555;">Average weekly hours — manual dev vs. Claude
+                            Code-optimised.</p>
                         <div class="chart-container">
                             <canvas id="impactChart"></canvas>
                         </div>
@@ -282,17 +122,20 @@
                         <div class="p-5 rounded-xl border" style="background:#111418; border-color:#21262d;">
                             <div class="text-2xl mb-2">&#128269;</div>
                             <h4 class="font-bold text-white text-sm mb-1">Context is King</h4>
-                            <p class="text-xs leading-relaxed" style="color:#a1a1a1;">Over-stuffing context degrades quality. Point Claude to specific evidence, not the whole codebase.</p>
+                            <p class="text-xs leading-relaxed" style="color:#a1a1a1;">Over-stuffing context degrades
+                                quality. Point Claude to specific evidence, not the whole codebase.</p>
                         </div>
                         <div class="p-5 rounded-xl border" style="background:#111418; border-color:#21262d;">
                             <div class="text-2xl mb-2">&#8635;&#65039;</div>
                             <h4 class="font-bold text-white text-sm mb-1">Iterative Loops</h4>
-                            <p class="text-xs leading-relaxed" style="color:#a1a1a1;">Scope → Scaffold → Implement → Verify. One-shot complex tasks rarely survive first contact.</p>
+                            <p class="text-xs leading-relaxed" style="color:#a1a1a1;">Scope → Scaffold → Implement →
+                                Verify. One-shot complex tasks rarely survive first contact.</p>
                         </div>
                         <div class="p-5 rounded-xl border" style="background:#111418; border-color:#21262d;">
                             <div class="text-2xl mb-2">&#128736;&#65039;</div>
                             <h4 class="font-bold text-white text-sm mb-1">Tooling Synergy</h4>
-                            <p class="text-xs leading-relaxed" style="color:#a1a1a1;">Pipe test failures and lint errors straight back into the prompt. Build a self-healing dev loop.</p>
+                            <p class="text-xs leading-relaxed" style="color:#a1a1a1;">Pipe test failures and lint errors
+                                straight back into the prompt. Build a self-healing dev loop.</p>
                         </div>
                     </div>
                 </section>
@@ -300,7 +143,8 @@
                 <!-- ══ VIEW: COMMANDS ══════════════════════════════ -->
                 <section id="view-commands" class="view-section fade-in">
                     <div class="mb-8">
-                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 2</p>
+                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 2
+                        </p>
                         <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Command Mastery</h2>
                         <p class="text-base leading-relaxed" style="color:#a1a1a1;">
                             Knowing <em>when</em> and <em>why</em> to use each slash command determines whether you're
@@ -310,15 +154,20 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="commandGrid"></div>
 
-                    <div id="commandDetailPanel" class="mt-6 rounded-xl p-5 md:p-6 hidden relative fade-in border" style="background:#0d1117; border-color:#30363d;">
-                        <button id="closeCommandPanel" class="absolute top-3 right-4 text-lg font-bold" style="color:#555;" onmouseenter="this.style.color='#fff'" onmouseleave="this.style.color='#555'">&#10005;</button>
+                    <div id="commandDetailPanel" class="mt-6 rounded-xl p-5 md:p-6 hidden relative fade-in border"
+                        style="background:#0d1117; border-color:#30363d;">
+                        <button id="closeCommandPanel" class="absolute top-3 right-4 text-lg font-bold"
+                            style="color:#555;" onmouseenter="this.style.color='#fff'"
+                            onmouseleave="this.style.color='#555'">&#10005;</button>
                         <div class="flex flex-wrap items-center gap-2 mb-3">
-                            <span class="px-2 py-0.5 font-mono rounded text-xs font-bold" style="background:#8da8d7; color:#0a0c10;" id="detailCmdLabel"></span>
+                            <span class="px-2 py-0.5 font-mono rounded text-xs font-bold"
+                                style="background:#8da8d7; color:#0a0c10;" id="detailCmdLabel"></span>
                             <h3 class="text-lg font-bold text-white" id="detailCmdTitle"></h3>
                         </div>
                         <p class="text-sm mb-4" style="color:#a1a1a1;" id="detailCmdDesc"></p>
                         <div class="p-4 rounded-lg border mb-4" style="background:#111418; border-color:#21262d;">
-                            <p class="text-xs font-bold uppercase tracking-wider mb-1.5" style="color:#8da8d7;">&#128161; Pro Use Case</p>
+                            <p class="text-xs font-bold uppercase tracking-wider mb-1.5" style="color:#8da8d7;">
+                                &#128161; Pro Use Case</p>
                             <p class="text-sm" style="color:#c9d1d9;" id="detailCmdUseCase"></p>
                         </div>
                         <p class="text-xs font-bold uppercase tracking-wider mb-1.5" style="color:#555;">Example</p>
@@ -329,7 +178,8 @@
                 <!-- ══ VIEW: CONTEXT ═══════════════════════════════ -->
                 <section id="view-context" class="view-section fade-in">
                     <div class="mb-8">
-                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 3</p>
+                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 3
+                        </p>
                         <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Context Management</h2>
                         <p class="text-base leading-relaxed" style="color:#a1a1a1;">
                             The primary reason AI coding assistants fail is context poisoning — irrelevant data
@@ -340,42 +190,72 @@
                     <div class="rounded-xl overflow-hidden border" style="background:#111418; border-color:#21262d;">
 
                         <div class="border-b" style="border-color:#21262d;">
-                            <button class="accordion-header w-full text-left px-5 py-4 flex justify-between items-center" style="background:transparent;" data-target="acc1">
+                            <button
+                                class="accordion-header w-full text-left px-5 py-4 flex justify-between items-center"
+                                style="background:transparent;" data-target="acc1">
                                 <span class="font-semibold text-white text-sm">The Context Window Lifecycle</span>
                                 <span class="text-base indicator transition-transform" style="color:#8da8d7;">+</span>
                             </button>
-                            <div id="acc1" class="accordion-content px-5 pb-5 text-sm leading-relaxed" style="color:#a1a1a1;">
-                                <p class="mb-3">As a session grows, conversation history consumes your token budget. Eventually the AI loses track of early instructions and response quality degrades — without a clear signal.</p>
+                            <div id="acc1" class="accordion-content px-5 pb-5 text-sm leading-relaxed"
+                                style="color:#a1a1a1;">
+                                <p class="mb-3">As a session grows, conversation history consumes your token budget.
+                                    Eventually the AI loses track of early instructions and response quality degrades —
+                                    without a clear signal.</p>
                                 <ul class="space-y-2 pl-4 list-disc">
-                                    <li><strong class="text-white">Monitor:</strong> Watch the token counter. Amber/red means you're at risk of context collapse.</li>
-                                    <li><strong class="text-white">Compact:</strong> <code class="px-1 rounded text-xs" style="background:#0d1117; color:#8da8d7;">/compact</code> summarises history while keeping file context and instructions intact.</li>
-                                    <li><strong class="text-white">Clear:</strong> <code class="px-1 rounded text-xs" style="background:#0d1117; color:#8da8d7;">/clear</code> for a completely unrelated task — a blank slate beats polluted context every time.</li>
+                                    <li><strong class="text-white">Monitor:</strong> Watch the token counter. Amber/red
+                                        means you're at risk of context collapse.</li>
+                                    <li><strong class="text-white">Compact:</strong> <code class="px-1 rounded text-xs"
+                                            style="background:#0d1117; color:#8da8d7;">/compact</code> summarises
+                                        history while keeping file context and instructions intact.</li>
+                                    <li><strong class="text-white">Clear:</strong> <code class="px-1 rounded text-xs"
+                                            style="background:#0d1117; color:#8da8d7;">/clear</code> for a completely
+                                        unrelated task — a blank slate beats polluted context every time.</li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="border-b" style="border-color:#21262d;">
-                            <button class="accordion-header w-full text-left px-5 py-4 flex justify-between items-center" style="background:transparent;" data-target="acc2">
+                            <button
+                                class="accordion-header w-full text-left px-5 py-4 flex justify-between items-center"
+                                style="background:transparent;" data-target="acc2">
                                 <span class="font-semibold text-white text-sm">Targeted File Inclusion</span>
                                 <span class="text-base indicator transition-transform" style="color:#8da8d7;">+</span>
                             </button>
-                            <div id="acc2" class="accordion-content px-5 pb-5 text-sm leading-relaxed" style="color:#a1a1a1;">
-                                <p class="mb-3">Never ask Claude to "look at the whole project". Be the detective — point it to the exact evidence needed.</p>
-                                <div class="p-4 rounded-lg border text-sm" style="background:#0d1117; border-color:#21262d;">
-                                    <p class="mb-2"><span style="color:#f87171; font-weight:700;">Weak:</span> <span>"Fix the routing issue."</span></p>
-                                    <p><span style="color:#34d399; font-weight:700;">Strong:</span> <span style="color:#c9d1d9;">"Review <code style="color:#8da8d7;">src/router.ts</code> and <code style="color:#8da8d7;">src/views/Home.vue</code>. Auth middleware triggers a redirect loop from /login. Fix only these files."</span></p>
+                            <div id="acc2" class="accordion-content px-5 pb-5 text-sm leading-relaxed"
+                                style="color:#a1a1a1;">
+                                <p class="mb-3">Never ask Claude to "look at the whole project". Be the detective —
+                                    point it to the exact evidence needed.</p>
+                                <div class="p-4 rounded-lg border text-sm"
+                                    style="background:#0d1117; border-color:#21262d;">
+                                    <p class="mb-2"><span style="color:#f87171; font-weight:700;">Weak:</span>
+                                        <span>"Fix the routing issue."</span>
+                                    </p>
+                                    <p><span style="color:#34d399; font-weight:700;">Strong:</span> <span
+                                            style="color:#c9d1d9;">"Review <code
+                                                style="color:#8da8d7;">src/router.ts</code> and <code
+                                                style="color:#8da8d7;">src/views/Home.vue</code>. Auth middleware
+                                            triggers a redirect loop from /login. Fix only these files."</span></p>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <button class="accordion-header w-full text-left px-5 py-4 flex justify-between items-center" style="background:transparent;" data-target="acc3">
+                            <button
+                                class="accordion-header w-full text-left px-5 py-4 flex justify-between items-center"
+                                style="background:transparent;" data-target="acc3">
                                 <span class="font-semibold text-white text-sm">Mastering .claudeignore</span>
                                 <span class="text-base indicator transition-transform" style="color:#8da8d7;">+</span>
                             </button>
-                            <div id="acc3" class="accordion-content px-5 pb-5 text-sm leading-relaxed" style="color:#a1a1a1;">
-                                <p class="mb-3">Claude Code respects <code class="px-1 rounded text-xs" style="background:#0d1117; color:#8da8d7;">.gitignore</code>, but sometimes you need finer control — blocking large generated JSON files, compiled bundles, or minified assets that Git tracks but Claude shouldn't read.</p>
-                                <p>Create a <code class="px-1 rounded text-xs" style="background:#0d1117; color:#8da8d7;">.claudeignore</code> in your project root. Same syntax as <code style="color:#8da8d7;">.gitignore</code>. Directly reduces token usage and eliminates noise from every response.</p>
+                            <div id="acc3" class="accordion-content px-5 pb-5 text-sm leading-relaxed"
+                                style="color:#a1a1a1;">
+                                <p class="mb-3">Claude Code respects <code class="px-1 rounded text-xs"
+                                        style="background:#0d1117; color:#8da8d7;">.gitignore</code>, but sometimes you
+                                    need finer control — blocking large generated JSON files, compiled bundles, or
+                                    minified assets that Git tracks but Claude shouldn't read.</p>
+                                <p>Create a <code class="px-1 rounded text-xs"
+                                        style="background:#0d1117; color:#8da8d7;">.claudeignore</code> in your project
+                                    root. Same syntax as <code style="color:#8da8d7;">.gitignore</code>. Directly
+                                    reduces token usage and eliminates noise from every response.</p>
                             </div>
                         </div>
 
@@ -385,10 +265,12 @@
                 <!-- ══ VIEW: WORKFLOWS ═════════════════════════════ -->
                 <section id="view-workflows" class="view-section fade-in">
                     <div class="mb-8">
-                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 4</p>
+                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 4
+                        </p>
                         <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Advanced Workflows</h2>
                         <p class="text-base leading-relaxed" style="color:#a1a1a1;">
-                            Structure every non-trivial task using <strong class="text-white">Scope → Scaffold → Implement → Verify</strong>.
+                            Structure every non-trivial task using <strong class="text-white">Scope → Scaffold →
+                                Implement → Verify</strong>.
                             Tap any step to reveal the exact prompt pattern.
                         </p>
                     </div>
@@ -396,62 +278,74 @@
                     <div class="relative border-l-2 ml-3 space-y-8 pb-6" style="border-color:#21262d;">
 
                         <div class="relative pl-7">
-                            <div class="absolute -left-[9px] top-1 h-[18px] w-[18px] rounded-full border-2 flex-shrink-0" style="background:#8da8d7; border-color:#0a0c10;"></div>
+                            <div class="absolute -left-[9px] top-1 h-[18px] w-[18px] rounded-full border-2 flex-shrink-0"
+                                style="background:#8da8d7; border-color:#0a0c10;"></div>
                             <button class="text-left w-full" onclick="toggleStep('wf1')">
-                                <p class="text-xs uppercase tracking-widest mb-0.5 font-semibold" style="color:#8da8d7;">Step 1</p>
+                                <p class="text-xs uppercase tracking-widest mb-0.5 font-semibold"
+                                    style="color:#8da8d7;">Step 1</p>
                                 <h3 class="text-base font-bold text-white">Scoping &amp; Discovery</h3>
-                                <p class="text-xs mt-0.5" style="color:#555;">Map the territory before writing code. Tap to see the prompt.</p>
+                                <p class="text-xs mt-0.5" style="color:#555;">Map the territory before writing code. Tap
+                                    to see the prompt.</p>
                             </button>
                             <div id="wf1" class="hidden mt-3 code-block">
-&gt; Examine src/legacy-auth.js. List all external dependencies,
-  identify side effects, and outline a migration plan to the
-  new next-auth implementation in src/auth.ts.
+                                &gt; Examine src/legacy-auth.js. List all external dependencies,
+                                identify side effects, and outline a migration plan to the
+                                new next-auth implementation in src/auth.ts.
 
-  Do NOT write any code yet. Plan only.</div>
+                                Do NOT write any code yet. Plan only.</div>
                         </div>
 
                         <div class="relative pl-7">
-                            <div class="absolute -left-[9px] top-1 h-[18px] w-[18px] rounded-full border-2" style="background:#1e2330; border-color:#0a0c10;"></div>
+                            <div class="absolute -left-[9px] top-1 h-[18px] w-[18px] rounded-full border-2"
+                                style="background:#1e2330; border-color:#0a0c10;"></div>
                             <button class="text-left w-full" onclick="toggleStep('wf2')">
-                                <p class="text-xs uppercase tracking-widest mb-0.5 font-semibold" style="color:#444;">Step 2</p>
+                                <p class="text-xs uppercase tracking-widest mb-0.5 font-semibold" style="color:#444;">
+                                    Step 2</p>
                                 <h3 class="text-base font-bold text-white">Scaffolding</h3>
-                                <p class="text-xs mt-0.5" style="color:#555;">Approve the plan, then execute only step 1.</p>
+                                <p class="text-xs mt-0.5" style="color:#555;">Approve the plan, then execute only step
+                                    1.</p>
                             </button>
                             <div id="wf2" class="hidden mt-3 code-block">
-&gt; Plan approved. Execute Step 1 only: generate TypeScript
-  interfaces for the new auth types and write them to
-  src/types/auth.ts. No other files.</div>
+                                &gt; Plan approved. Execute Step 1 only: generate TypeScript
+                                interfaces for the new auth types and write them to
+                                src/types/auth.ts. No other files.</div>
                         </div>
 
                         <div class="relative pl-7">
-                            <div class="absolute -left-[9px] top-1 h-[18px] w-[18px] rounded-full border-2" style="background:#1e2330; border-color:#0a0c10;"></div>
+                            <div class="absolute -left-[9px] top-1 h-[18px] w-[18px] rounded-full border-2"
+                                style="background:#1e2330; border-color:#0a0c10;"></div>
                             <button class="text-left w-full" onclick="toggleStep('wf3')">
-                                <p class="text-xs uppercase tracking-widest mb-0.5 font-semibold" style="color:#444;">Step 3</p>
+                                <p class="text-xs uppercase tracking-widest mb-0.5 font-semibold" style="color:#444;">
+                                    Step 3</p>
                                 <h3 class="text-base font-bold text-white">Test-Driven Generation</h3>
-                                <p class="text-xs mt-0.5" style="color:#555;">Write tests first, pipe failures back into the loop.</p>
+                                <p class="text-xs mt-0.5" style="color:#555;">Write tests first, pipe failures back into
+                                    the loop.</p>
                             </button>
                             <div id="wf3" class="hidden mt-3 code-block">
-&gt; Write Jest tests for AuthHelper based on the interfaces
-  we just created. Cover the happy path and null-token edge case.
+                                &gt; Write Jest tests for AuthHelper based on the interfaces
+                                we just created. Cover the happy path and null-token edge case.
 
---- npm test output ---
-TypeError: Cannot read properties of undefined (reading 'token')
-    at AuthHelper.validate (src/auth/AuthHelper.ts:34)
+                                --- npm test output ---
+                                TypeError: Cannot read properties of undefined (reading 'token')
+                                at AuthHelper.validate (src/auth/AuthHelper.ts:34)
 
-&gt; Fix the implementation to pass all tests.</div>
+                                &gt; Fix the implementation to pass all tests.</div>
                         </div>
 
                         <div class="relative pl-7">
-                            <div class="absolute -left-[9px] top-1 h-[18px] w-[18px] rounded-full border-2" style="background:#1e2330; border-color:#0a0c10;"></div>
+                            <div class="absolute -left-[9px] top-1 h-[18px] w-[18px] rounded-full border-2"
+                                style="background:#1e2330; border-color:#0a0c10;"></div>
                             <button class="text-left w-full" onclick="toggleStep('wf4')">
-                                <p class="text-xs uppercase tracking-widest mb-0.5 font-semibold" style="color:#444;">Step 4</p>
+                                <p class="text-xs uppercase tracking-widest mb-0.5 font-semibold" style="color:#444;">
+                                    Step 4</p>
                                 <h3 class="text-base font-bold text-white">Cleanup &amp; Commit</h3>
-                                <p class="text-xs mt-0.5" style="color:#555;">Compact, polish, and commit — all in the CLI.</p>
+                                <p class="text-xs mt-0.5" style="color:#555;">Compact, polish, and commit — all in the
+                                    CLI.</p>
                             </button>
                             <div id="wf4" class="hidden mt-3 code-block">
-&gt; /compact
-&gt; Scan the diff for leftover console.logs, TODOs, or dead code.
-&gt; Generate a conventional commit message and run git commit.</div>
+                                &gt; /compact
+                                &gt; Scan the diff for leftover console.logs, TODOs, or dead code.
+                                &gt; Generate a conventional commit message and run git commit.</div>
                         </div>
 
                     </div>
@@ -460,24 +354,29 @@ TypeError: Cannot read properties of undefined (reading 'token')
                 <!-- ══ VIEW: CONFIG ════════════════════════════════ -->
                 <section id="view-config" class="view-section fade-in">
                     <div class="mb-8">
-                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 5</p>
+                        <p class="text-xs uppercase tracking-widest mb-2 font-semibold" style="color:#8da8d7;">Chapter 5
+                        </p>
                         <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Pro Configuration</h2>
                         <p class="text-base leading-relaxed" style="color:#a1a1a1;">
                             Steer Claude Code's default behaviour per project with a
-                            <code class="px-1.5 py-0.5 rounded text-xs border" style="background:#111418; border-color:#21262d; color:#8da8d7;">CLAUDE.md</code>
-                            file in your project root. Define conventions and constraints once — never repeat them in prompts.
+                            <code class="px-1.5 py-0.5 rounded text-xs border"
+                                style="background:#111418; border-color:#21262d; color:#8da8d7;">CLAUDE.md</code>
+                            file in your project root. Define conventions and constraints once — never repeat them in
+                            prompts.
                         </p>
                     </div>
 
                     <div class="rounded-xl overflow-hidden border" style="border-color:#21262d;">
-                        <div class="flex items-center justify-between px-4 py-2.5 border-b" style="background:#111418; border-color:#21262d;">
+                        <div class="flex items-center justify-between px-4 py-2.5 border-b"
+                            style="background:#111418; border-color:#21262d;">
                             <span class="font-mono text-xs" style="color:#8da8d7;">CLAUDE.md</span>
                             <button onclick="copyConfig()" id="copyBtn"
                                 class="text-xs px-3 py-1 rounded font-medium transition-colors"
                                 style="background:#21262d; color:#a1a1a1;">Copy</button>
                         </div>
                         <div class="p-5 overflow-x-auto" style="background:#0d1117;">
-<pre class="font-mono leading-relaxed" style="font-size:0.82rem; color:#c9d1d9;" id="configCode"># Project Rules for Claude Code
+                            <pre class="font-mono leading-relaxed" style="font-size:0.82rem; color:#c9d1d9;"
+                                id="configCode"># Project Rules for Claude Code
 
 ## Stack
 - React 18 + TypeScript (strict) + Tailwind CSS
@@ -501,7 +400,8 @@ TypeError: Cannot read properties of undefined (reading 'token')
                         </div>
                     </div>
 
-                    <div class="mt-5 p-5 rounded-xl border" style="background:rgba(245,158,11,0.05); border-color:rgba(245,158,11,0.18);">
+                    <div class="mt-5 p-5 rounded-xl border"
+                        style="background:rgba(245,158,11,0.05); border-color:rgba(245,158,11,0.18);">
                         <h4 class="font-bold text-sm mb-1.5 flex items-center gap-2" style="color:#f59e0b;">
                             <span>&#9888;&#65039;</span> Security Note
                         </h4>
@@ -570,8 +470,8 @@ TypeError: Cannot read properties of undefined (reading 'token')
         /* ── Navigation: syncs desktop sidebar + mobile tabs ─── */
         function initNavigation() {
             const desktopItems = document.querySelectorAll('#desktopNav .nav-item');
-            const mobileItems  = document.querySelectorAll('#mobileTabs .mobile-tab');
-            const sections     = document.querySelectorAll('.view-section');
+            const mobileItems = document.querySelectorAll('#mobileTabs .mobile-tab');
+            const sections = document.querySelectorAll('.view-section');
 
             function switchTo(targetId) {
                 // Update desktop sidebar
@@ -605,9 +505,9 @@ TypeError: Cannot read properties of undefined (reading 'token')
         function initAccordions() {
             document.querySelectorAll('.accordion-header').forEach(header => {
                 header.addEventListener('click', () => {
-                    const content   = document.getElementById(header.dataset.target);
+                    const content = document.getElementById(header.dataset.target);
                     const indicator = header.querySelector('.indicator');
-                    const isOpen    = content.classList.contains('open');
+                    const isOpen = content.classList.contains('open');
                     content.classList.toggle('open', !isOpen);
                     indicator.textContent = isOpen ? '+' : '−';
                 });
@@ -640,13 +540,13 @@ TypeError: Cannot read properties of undefined (reading 'token')
         }
 
         function showCommandDetail(index) {
-            const data  = commandsData[index];
+            const data = commandsData[index];
             const panel = document.getElementById('commandDetailPanel');
-            document.getElementById('detailCmdLabel').textContent   = data.cmd;
-            document.getElementById('detailCmdTitle').textContent   = data.title;
-            document.getElementById('detailCmdDesc').textContent    = data.desc;
+            document.getElementById('detailCmdLabel').textContent = data.cmd;
+            document.getElementById('detailCmdTitle').textContent = data.title;
+            document.getElementById('detailCmdDesc').textContent = data.desc;
             document.getElementById('detailCmdUseCase').textContent = data.useCase;
-            document.getElementById('detailCmdCode').innerHTML      = data.code.replace(/\n/g, '<br>');
+            document.getElementById('detailCmdCode').innerHTML = data.code.replace(/\n/g, '<br>');
             panel.classList.remove('hidden');
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -678,7 +578,7 @@ TypeError: Cannot read properties of undefined (reading 'token')
                     labels: ['Architecture', 'Boilerplate', 'Implementation', 'Debug & Test', 'Refactoring'],
                     datasets: [
                         { label: 'Manual (hrs/wk)', data: [4, 6, 12, 10, 8], backgroundColor: '#21262d', borderRadius: 4 },
-                        { label: 'With Claude Code', data: [6, 1, 4, 3, 2],  backgroundColor: '#8da8d7', borderRadius: 4 }
+                        { label: 'With Claude Code', data: [6, 1, 4, 3, 2], backgroundColor: '#8da8d7', borderRadius: 4 }
                     ]
                 },
                 options: {
@@ -702,4 +602,5 @@ TypeError: Cannot read properties of undefined (reading 'token')
         }
     </script>
 </body>
+
 </html>
