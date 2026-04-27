@@ -1,0 +1,273 @@
+/* ==========================================================================
+   guides.css — Styles for guides.html (guide listing page)
+   ========================================================================== */
+
+body {
+	background: #090d16;
+	color: #ffffff;
+}
+
+/* ── Hero ───────────────────────────────────────────────── */
+.guides-hero {
+	padding: 14rem 2rem 8rem;
+	text-align: center;
+	position: relative;
+	background: #090d16;
+	overflow: hidden;
+}
+
+.guides-hero::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image:
+		linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+	background-size: 50px 50px;
+	pointer-events: none;
+}
+
+.guides-hero h5 {
+	font-family: 'Poppins', sans-serif;
+	font-size: 1.3rem;
+	font-weight: 600;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
+	color: #8da8d7;
+	margin-bottom: 2rem;
+}
+
+.guides-hero h1 {
+	font-size: clamp(3.2rem, 6vw, 5.6rem);
+	font-weight: 800;
+	color: #ffffff;
+	line-height: 1.15;
+	margin-bottom: 2.5rem;
+}
+
+.guides-hero p {
+	font-size: clamp(1.55rem, 2.5vw, 1.8rem);
+	color: #a1a1a1;
+	max-width: 58rem;
+	margin: 0 auto;
+	line-height: 1.7;
+}
+
+/* ── Guides list section ────────────────────────────────── */
+.guides-section {
+	padding: 8rem 0 12rem;
+	background: #0a0c10;
+}
+
+.guides-section-header {
+	text-align: center;
+	margin-bottom: 6rem;
+	padding: 0 2rem;
+}
+
+.guides-section-header h2 {
+	font-size: clamp(2.4rem, 4vw, 3rem);
+	font-weight: 700;
+	color: #ffffff;
+	margin-bottom: 1.2rem;
+}
+
+.guides-section-header p {
+	font-size: 1.6rem;
+	color: #a1a1a1;
+}
+
+.guides-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(32rem, 100%), 1fr));
+	gap: 3rem;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 3rem;
+}
+
+/* ── Guide card ─────────────────────────────────────────── */
+.guide-card {
+	display: flex;
+	flex-direction: column;
+	background: #161b22;
+	border: 1px solid rgba(255, 255, 255, 0.05);
+	border-radius: 16px;
+	padding: 3.5rem;
+	text-decoration: none;
+	transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+	position: relative;
+	overflow: hidden;
+}
+
+.guide-card::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(135deg, rgba(141, 168, 215, 0.04) 0%, transparent 60%);
+	opacity: 0;
+	transition: opacity 0.35s ease;
+	pointer-events: none;
+}
+
+.guide-card:hover {
+	transform: translateY(-6px);
+	border-color: rgba(141, 168, 215, 0.3);
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(141, 168, 215, 0.07);
+}
+
+.guide-card:hover::after {
+	opacity: 1;
+}
+
+.guide-card.coming-soon {
+	opacity: 0.45;
+	cursor: default;
+	pointer-events: none;
+}
+
+/* ── Card tags ──────────────────────────────────────────── */
+.guide-tags {
+	display: flex;
+	gap: 0.8rem;
+	flex-wrap: wrap;
+	margin-bottom: 2.2rem;
+}
+
+.guide-tag {
+	font-size: 1rem;
+	font-weight: 600;
+	letter-spacing: 0.07em;
+	text-transform: uppercase;
+	padding: 0.35rem 1.1rem;
+	border-radius: 10rem;
+	border: 1px solid rgba(141, 168, 215, 0.25);
+	color: #8da8d7;
+}
+
+.guide-tag.live {
+	background: rgba(141, 168, 215, 0.1);
+	border-color: rgba(141, 168, 215, 0.4);
+}
+
+.guide-tag.soon {
+	background: rgba(255, 255, 255, 0.03);
+	border-color: rgba(255, 255, 255, 0.08);
+	color: #555;
+}
+
+/* ── Card body ──────────────────────────────────────────── */
+.guide-card h3 {
+	font-size: 2rem;
+	font-weight: 700;
+	color: #ffffff;
+	margin-bottom: 1.4rem;
+	line-height: 1.3;
+}
+
+.guide-card p {
+	font-size: 1.5rem;
+	color: #a1a1a1;
+	line-height: 1.75;
+	margin-bottom: 0;
+	flex: 1;
+}
+
+.guide-card-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 2.8rem;
+	padding-top: 2rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.guide-card-meta {
+	font-size: 1.2rem;
+	color: #555;
+	letter-spacing: 0.03em;
+}
+
+.guide-card-arrow {
+	width: 3.8rem;
+	height: 3.8rem;
+	border-radius: 50%;
+	background: rgba(141, 168, 215, 0.08);
+	border: 1px solid rgba(141, 168, 215, 0.18);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #8da8d7;
+	font-size: 1.5rem;
+	transition: all 0.28s ease;
+	flex-shrink: 0;
+}
+
+.guide-card:hover .guide-card-arrow {
+	background: #8da8d7;
+	color: #090d16;
+	transform: translateX(3px);
+}
+
+.guide-interactive-badge {
+	position: absolute;
+	top: 2.2rem;
+	right: 2.2rem;
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	background: rgba(16, 185, 129, 0.1);
+	color: #10b981;
+	border: 1px solid rgba(16, 185, 129, 0.28);
+	padding: 0.35rem 1rem;
+	border-radius: 10rem;
+}
+
+/* ── Mobile ─────────────────────────────────────────────── */
+@media only screen and (max-width: 768px) {
+	.guides-hero {
+		padding: 10rem 2rem 5rem;
+	}
+
+	.guides-section {
+		padding: 5rem 0 8rem;
+	}
+
+	.guides-section-header {
+		margin-bottom: 4rem;
+	}
+
+	.guides-grid {
+		grid-template-columns: 1fr;
+		padding: 0 1.8rem;
+		gap: 2rem;
+	}
+
+	.guide-card {
+		padding: 2.8rem 2.4rem;
+	}
+
+	.guide-interactive-badge {
+		font-size: 0.9rem;
+		top: 1.8rem;
+		right: 1.8rem;
+		padding: 0.3rem 0.9rem;
+	}
+
+	.guide-card h3 {
+		font-size: 1.85rem;
+		padding-right: 8rem;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.guide-card h3 {
+		padding-right: 0;
+		margin-top: 3.5rem;
+	}
+
+	.guide-interactive-badge {
+		top: 2.8rem;
+	}
+}
