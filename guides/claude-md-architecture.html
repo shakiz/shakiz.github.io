@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture of CLAUDE.md | Sakhawat Hossain</title>
+    <meta name="description"
+        content="A layered, hierarchical loading system designed to keep context lean, separate concerns, and compound value over time.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: { light: '#8da8d7', DEFAULT: '#6e8fbe', dark: '#5577a3' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'ui-monospace', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../css/agentic_dev.css">
+    <style>
+        .file-node {
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .file-node:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .file-node.active {
+            background: rgba(141, 168, 215, 0.15);
+            color: #fff;
+        }
+
+        .file-node.active .node-icon {
+            color: #8da8d7;
+        }
+
+        .children-container {
+            display: none;
+        }
+
+        .children-container.open {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="antialiased font-sans flex flex-col" style="background:#0a0c10; color:#c9d1d9; min-height:100vh;">
+
+    <div class="back-bar">
+        <a href="../agentic_dev.html">&#8592; Agentic</a>
+        <span class="back-bar-sep">/</span>
+        <span class="back-bar-current">CLAUDE.md Architecture</span>
+    </div>
+
+    <main class="guide-main w-full">
+        <div class="max-w-6xl mx-auto px-5 py-8 md:px-9 md:py-10">
+
+            <header class="mb-10 text-center md:text-left">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4" style="color:#ffffff;">
+                    Claude Code: Architecture of CLAUDE.md
+                </h1>
+                <p class="text-lg max-w-3xl" style="color:#a1a1a1;">
+                    A layered, hierarchical loading system designed to keep context lean, separate concerns, and
+                    compound value over time. Explore how it works below.
+                </p>
+            </header>
+
+            <!-- Explorer -->
+            <section class="rounded-2xl border overflow-hidden mb-12" style="background:#111418; border-color:#21262d;">
+                <div class="grid grid-cols-1 md:grid-cols-3 min-h-[400px]">
+                    <!-- Left Panel -->
+                    <div class="border-b md:border-b-0 md:border-r p-4 overflow-y-auto max-h-[40vh] md:max-h-none"
+                        style="border-color:#21262d; background:rgba(10,12,16,0.5);">
+                        <h3 class="text-xs font-bold uppercase tracking-wider mb-4 flex items-center sticky top-0"
+                            style="color:#8da8d7; background:rgba(10,12,16,1); padding-bottom: 8px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" class="mr-2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="3" y1="9" x2="21" y2="9"></line>
+                                <line x1="9" y1="21" x2="9" y2="9"></line>
+                            </svg>
+                            Virtual File System
+                        </h3>
+                        <div id="file-tree" class="space-y-1"></div>
+                    </div>
+
+                    <!-- Right Panel -->
+                    <div class="col-span-1 md:col-span-2 p-6 md:p-8 flex flex-col justify-center relative">
+                        <div id="file-details" class="fade-in">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Concepts Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <div class="p-6 rounded-2xl border" style="background:#111418; border-color:#21262d;">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+                        style="background:rgba(141,168,215,0.1); color:#8da8d7;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white">On-Demand Loading</h3>
+                    <p class="text-sm" style="color:#a1a1a1;">
+                        CLAUDE.md files in subdirectories are <strong>not loaded at launch</strong>. They are only
+                        included when Claude is actively working in that part of the codebase, keeping the context lean
+                        and hyper-relevant.
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl border" style="background:#111418; border-color:#21262d;">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+                        style="background:rgba(141,168,215,0.1); color:#8da8d7;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white">@imports & Delegation</h3>
+                    <p class="text-sm" style="color:#a1a1a1;">
+                        Use <code>@path/to/import</code> syntax in your markdown. Your root file can stay short and
+                        delegate to specialized docs. Example:<br />
+                        <code class="text-xs p-1 rounded mt-2 block w-max"
+                            style="background:#21262d; color:#c9d1d9;">- Git workflow: @docs/git.md</code>
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl border lg:col-span-1 md:col-span-2"
+                    style="background:rgba(245,158,11,0.05); border-color:rgba(245,158,11,0.2);">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+                        style="background:rgba(245,158,11,0.15); color:#f59e0b;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                            </path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2" style="color:#fcd34d;">The Danger of Bloat</h3>
+                    <p class="text-sm mb-3" style="color:#fbbf24;">
+                        Because root files are loaded every session, bloat causes Claude to ignore your instructions. If
+                        Claude ignores rules, your file is too long.
+                    </p>
+                    <div class="px-3 py-2 rounded-lg border text-sm font-medium"
+                        style="background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.2); color:#fcd34d;">
+                        Rule of thumb: Keep CLAUDE.md under 200 lines. Ask yourself: "Would removing this cause
+                        mistakes?" If no, cut it.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mental Model Cheat Sheet Table -->
+            <section class="rounded-2xl border overflow-hidden mb-8" style="background:#111418; border-color:#21262d;">
+                <div class="p-6 border-b" style="border-color:#21262d; background:rgba(255,255,255,0.02);">
+                    <h3 class="text-lg font-bold text-white">Quick Reference: The Mental Model</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm" style="color:#a1a1a1;">
+                        <thead class="text-xs font-semibold uppercase tracking-wider"
+                            style="background:rgba(255,255,255,0.03); color:#c9d1d9;">
+                            <tr>
+                                <th class="px-6 py-4">File Path</th>
+                                <th class="px-6 py-4">Scope</th>
+                                <th class="px-6 py-4">Shared via Git?</th>
+                                <th class="px-6 py-4">When loaded</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y" style="border-color:#21262d;" id="summary-table-body">
+                            <!-- Generated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Common Mistakes -->
+            <section class="rounded-2xl border p-6 md:p-8"
+                style="background:#111418; border-color:rgba(248,113,113,0.3);">
+                <h3 class="text-xl font-bold mb-6 flex items-center" style="color:#f87171;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        class="mr-2">
+                        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2">
+                        </polygon>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    Common Mistakes
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-base text-white">Bloating the root file</h4>
+                        <p class="text-sm text-slate-400">If Claude keeps ignoring a rule, the file is probably too
+                            long. Prune ruthlessly. Move domain rules to subfolder files and team-owned rules to <code
+                                class="text-xs px-1 rounded" style="background:#21262d;">.claude/rules/</code>.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-base text-white">Duplicating rules across files</h4>
+                        <p class="text-sm text-slate-400">If the same rule appears in two files, remove it from the less
+                            specific one. The hierarchy is additive, not overriding.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-base text-white">Forgetting .gitignore for local files</h4>
+                        <p class="text-sm text-slate-400">Add it immediately to prevent leaking your local env config:
+                            <br /><code class="text-xs px-1 mt-2 inline-block rounded border"
+                                style="background:#0d1117; border-color:#30363d;">echo "CLAUDE.local.md" &gt;&gt; .gitignore</code>
+                        </p>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-base text-white">Treating CLAUDE.md as set-and-forget</h4>
+                        <p class="text-sm text-slate-400">Treat it like code. Review when things go wrong, prune
+                            regularly, and test changes by observing whether Claude's behavior actually shifts.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // Icons as SVG strings
+        const icons = {
+            FolderOpen: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`,
+            FileText: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>`,
+            Home: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
+            TerminalSquare: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><polyline points="8 11 12 15 8 19"></polyline><line x1="13" y1="19" x2="17" y2="19"></line></svg>`,
+            FileCode: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="10 13 8 15 10 17"></polyline><polyline points="14 13 16 15 14 17"></polyline></svg>`,
+            Layers: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>`,
+            Zap: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`,
+            GitBranch: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>`,
+            ShieldOff: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19.69 14a6.9 6.9 0 0 0 .31-2V5l-8-3-3.16 1.18"></path><path d="M4.73 4.73L4 5v7c0 6 8 10 8 10a20.29 20.29 0 0 0 5.62-4.38"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`,
+            CheckCircle2: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+            AlertTriangle: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
+            XCircle: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`,
+        };
+
+        const fileSystem = [
+            {
+                id: 'global', name: '~/.claude/', type: 'folder', icon: 'Home',
+                children: [
+                    {
+                        id: 'file-global', name: 'CLAUDE.md', type: 'file', scope: 'All projects (Global)', shared: 'No (Personal)', loaded: 'Always',
+                        description: 'Your personal developer identity. Things that are true regardless of which project you are in.',
+                        putHere: 'Coding style preferences, verbosity level, preferred tools.', dontPutHere: 'Anything project-specific.',
+                        example: '# My global preferences\n- Always respond in English\n- Prefer functional patterns when possible\n- Never use var; always const/let\n\n# My tools\n- Editor: VS Code\n- Terminal: zsh + oh-my-zsh\n- Package manager: pnpm globally'
+                    }
+                ]
+            },
+            {
+                id: 'project', name: 'my-project/', type: 'folder', icon: 'TerminalSquare', isOpenByDefault: true,
+                children: [
+                    {
+                        id: 'file-root', name: 'CLAUDE.md', type: 'file', scope: 'Project-wide', shared: 'Yes (Committed to Git)', loaded: 'Always',
+                        description: 'The main configuration file for the project. The team\'s shared brain.Every line should survive the test: "Would removing this cause Claude to make mistakes?"',
+                        putHere: 'Build/test/lint commands, code style rules, git workflow, @imports to delegate details.', dontPutHere: 'Personal preferences, local environment quirks.',
+                        example: '# Project: E-commerce API (Node.js / TypeScript)\n# See @README.md for project overview\n\n## Commands\n- Build:  pnpm build\n- Test:   pnpm test (run single: pnpm test -- auth)\n- Lint:   pnpm lint (must pass before commit)\n\n## Code style\n- TypeScript strict mode, no `any`\n- ES modules, not CommonJS\n- Zod for all validation'
+                    },
+                    {
+                        id: 'file-local', name: 'CLAUDE.local.md', type: 'file', scope: 'Project-wide', shared: 'No (.gitignore)', loaded: 'Always',
+                        description: 'Your private tweaks on top of the shared root file. Nobody else sees this.',
+                        putHere: 'Local port differences, personal env quirks, things only true on your machine.', dontPutHere: 'Anything that should apply to teammates.',
+                        example: '# My local overrides (NOT committed to git)\n\n## Dev environment\n- DB: postgres on localhost:5433 (not default 5432)\n- Redis: localhost:6380\n- My dev API key is in .env.local\n\n## Personal preferences\n- Skip test coverage report when running locally'
+                    },
+                    {
+                        id: 'rules-folder', name: '.claude/rules/', type: 'folder', icon: 'FolderOpen',
+                        children: [
+                            {
+                                id: 'file-rules', name: '*.md (e.g. security.md)', type: 'file', scope: 'Project-wide', shared: 'Yes (Committed to Git)', loaded: 'Always',
+                                description: 'Instead of one giant root file, split rules by ownership. Each file is maintained by one team or person. No merge conflicts.',
+                                putHere: 'Rules owned by a specific team, concerns that change independently.', dontPutHere: 'Things that need to be in one place (like build commands).',
+                                example: '// Inside security.md:\n- Never log request body\n- No secrets in source code — use environment variables\n- SQL: parameterized queries only, never string concatenation\n- Sanitize all user input at the boundary\n- Rate limit all public endpoints'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'child-folder', name: 'src/feature/', type: 'folder', icon: 'FolderOpen',
+                        children: [
+                            {
+                                id: 'file-child', name: 'CLAUDE.md', type: 'file', scope: 'This folder only', shared: 'Yes (Committed to Git)', loaded: 'On demand',
+                                description: 'Perfect for domain-specific context that would bloat the root file. Keep these very short — they supplement, not replace, the root file.',
+                                putHere: 'Key file map, domain-specific rules, gotchas and quirks for that module.', dontPutHere: 'Things already in the root file, broad project-wide rules.',
+                                example: '# Auth module\n\n## Key files\n- jwt.ts — token sign/verify (RS256 algorithm)\n- session.ts — Redis-backed session store\n\n## Rules\n- NEVER store plain-text passwords\n- Use bcrypt with rounds=12\n\n## Gotchas\n- Clock skew: add 30s leeway when verifying JWTs\n- Redis session keys use prefix `auth:` not `sess:`'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'monorepo', name: 'parent-monorepo/', type: 'folder', icon: 'Layers',
+                children: [
+                    {
+                        id: 'file-monorepo-root', name: 'CLAUDE.md', type: 'file', scope: 'All packages in repo', shared: 'Yes (Committed to Git)', loaded: 'Always',
+                        description: 'Describes overall structure and cross-package conventions, then points to each package\'s own CLAUDE.md for specifics.',
+                        putHere: 'Workspace map, cross-package conventions, pointers to child CLAUDE.md files.', dontPutHere: 'Package-specific rules (those go in the package\'s own CLAUDE.md).',
+                        example: '# Monorepo root\n\n## Workspace structure\n- packages/api — Express REST backend\n- packages/web — Next.js frontend\n\n## Cross-package rules\n- Shared types live in packages/shared only\n- Run `pnpm -r build` to build all packages\n\n## Package-specific rules\n- See packages/api/CLAUDE.md for API rules'
+                    }
+                ]
+            }
+        ];
+
+        const summaryData = [
+            { file: '~/.claude/CLAUDE.md', scope: 'All projects', shared: false, loaded: 'Always' },
+            { file: 'parent/CLAUDE.md', scope: 'All packages', shared: true, loaded: 'Always' },
+            { file: './CLAUDE.md', scope: 'Project-wide', shared: true, loaded: 'Always' },
+            { file: './CLAUDE.local.md', scope: 'Project-wide', shared: false, loaded: 'Always' },
+            { file: '.claude/rules/*.md', scope: 'Project-wide', shared: true, loaded: 'Always' },
+            { file: './src/feature/CLAUDE.md', scope: 'That folder only', shared: true, loaded: 'On demand' },
+        ];
+
+        let activeFileNode = null;
+
+        function renderTree(nodes, depth = 0) {
+            const container = document.createElement('div');
+
+            nodes.forEach(node => {
+                const isFolder = node.type === 'folder';
+                const paddingLeft = (depth * 1.5 + 0.5) + 'rem';
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'select-none';
+
+                const labelDiv = document.createElement('div');
+                labelDiv.className = `file-node flex items-center py-1.5 px-2 rounded-md transition-colors ${node.id === 'file-root' ? 'active' : ''}`;
+                labelDiv.style.paddingLeft = paddingLeft;
+                labelDiv.dataset.id = node.id;
+
+                const iconName = node.icon || (isFolder ? 'FolderOpen' : 'FileCode');
+                const iconHtml = icons[iconName];
+
+                labelDiv.innerHTML = `
+                    <span class="node-icon mr-2 ${isFolder ? 'text-blue-400' : 'text-slate-500'}">${iconHtml}</span>
+                    <span class="text-sm font-mono truncate">${node.name}</span>
+                `;
+
+                itemDiv.appendChild(labelDiv);
+
+                let childrenContainer = null;
+                if (isFolder && node.children) {
+                    childrenContainer = renderTree(node.children, depth + 1);
+                    childrenContainer.className = `children-container ${node.isOpenByDefault ? 'open' : ''} mt-1`;
+                    itemDiv.appendChild(childrenContainer);
+
+                    labelDiv.onclick = () => {
+                        childrenContainer.classList.toggle('open');
+                    };
+                } else {
+                    labelDiv.onclick = () => {
+                        document.querySelectorAll('.file-node').forEach(el => el.classList.remove('active'));
+                        labelDiv.classList.add('active');
+                        renderDetails(node);
+                        
+                        // Scroll to details on mobile screens
+                        if (window.innerWidth < 768) {
+                            const detailsSection = document.getElementById('file-details');
+                            const y = detailsSection.getBoundingClientRect().top + window.scrollY - 20;
+                            window.scrollTo({ top: y, behavior: 'smooth' });
+                        }
+                    };
+
+                    if (node.id === 'file-root') {
+                        activeFileNode = node;
+                    }
+                }
+
+                container.appendChild(itemDiv);
+            });
+
+            return container;
+        }
+
+        function renderDetails(node) {
+            if (!node) return;
+
+            const detailsHtml = `
+                <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide mb-4" style="background:rgba(141,168,215,0.15); color:#8da8d7; width: max-content;">
+                    Selected Context Node
+                </div>
+                <h2 class="text-2xl font-bold mb-6 font-mono flex items-center text-white">
+                    ${node.name}
+                </h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div class="p-3 rounded-lg border" style="background:rgba(255,255,255,0.02); border-color:#21262d;">
+                        <div class="text-xs text-slate-400 mb-1 flex items-center">${icons.Zap} <span class="ml-1">Scope</span></div>
+                        <div class="font-medium text-sm text-slate-200">${node.scope}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border" style="background:rgba(255,255,255,0.02); border-color:#21262d;">
+                        <div class="text-xs text-slate-400 mb-1 flex items-center">${icons.GitBranch} <span class="ml-1">Shared?</span></div>
+                        <div class="font-medium text-sm flex items-center text-slate-200">
+                            ${node.shared.includes('No') ? '<span class="text-red-400 mr-1 flex">' + icons.ShieldOff + '</span>' : '<span class="text-emerald-400 mr-1 flex">' + icons.CheckCircle2 + '</span>'}
+                            ${node.shared}
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-lg border" style="background:rgba(255,255,255,0.02); border-color:#21262d;">
+                        <div class="text-xs text-slate-400 mb-1 flex items-center">${icons.AlertTriangle} <span class="ml-1">Loaded</span></div>
+                        <div class="font-medium text-sm font-semibold" style="color:#8da8d7;">${node.loaded}</div>
+                    </div>
+                </div>
+
+                <p class="text-slate-300 mb-4 leading-relaxed text-lg">
+                    ${node.description}
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <div class="border-l-4 p-4 rounded-r-lg" style="background:rgba(16,185,129,0.05); border-color:#10b981;">
+                        <h4 class="text-sm font-bold mb-2 flex items-center" style="color:#34d399;">
+                            <span class="mr-1 flex">${icons.CheckCircle2}</span> Put here
+                        </h4>
+                        <p class="text-sm" style="color:#6ee7b7;">${node.putHere}</p>
+                    </div>
+                    <div class="border-l-4 p-4 rounded-r-lg" style="background:rgba(239,68,68,0.05); border-color:#ef4444;">
+                        <h4 class="text-sm font-bold mb-2 flex items-center" style="color:#f87171;">
+                            <span class="mr-1 flex">${icons.XCircle}</span> Don't put here
+                        </h4>
+                        <p class="text-sm" style="color:#fca5a5;">${node.dontPutHere}</p>
+                    </div>
+                </div>
+
+                ${node.example ? `
+                <div class="mt-6 rounded-lg overflow-hidden border shadow-inner" style="background:#0a0c10; border-color:#21262d;">
+                    <div class="px-4 py-2 text-xs font-mono flex items-center border-b" style="background:rgba(255,255,255,0.03); border-color:#21262d; color:#8da8d7;">
+                        <span class="mr-2 flex">${icons.FileCode}</span> Example Content
+                    </div>
+                    <pre class="p-4 text-sm font-mono overflow-x-auto whitespace-pre-wrap leading-relaxed" style="color:#c9d1d9;">${node.example}</pre>
+                </div>
+                ` : ''}
+            `;
+
+            const detailsEl = document.getElementById('file-details');
+            detailsEl.innerHTML = detailsHtml;
+
+            // Re-trigger animation
+            detailsEl.classList.remove('fade-in');
+            void detailsEl.offsetWidth;
+            detailsEl.classList.add('fade-in');
+        }
+
+        function renderSummaryTable() {
+            const tbody = document.getElementById('summary-table-body');
+            let html = '';
+
+            summaryData.forEach(row => {
+                const sharedBadge = row.shared
+                    ? '<span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium" style="background:rgba(16,185,129,0.15); color:#34d399;">Yes</span>'
+                    : '<span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium" style="background:rgba(255,255,255,0.1); color:#a1a1a1;">No</span>';
+
+                const loadedColor = row.loaded === 'Always' ? 'color:#8da8d7;' : 'color:#fbbf24;';
+
+                html += `
+                    <tr class="transition-colors hover:bg-white/5">
+                        <td class="px-6 py-4 font-mono whitespace-nowrap" style="color:#8da8d7;">${row.file}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-slate-300">${row.scope}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${sharedBadge}</td>
+                        <td class="px-6 py-4 whitespace-nowrap font-medium" style="${loadedColor}">${row.loaded}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const treeContainer = document.getElementById('file-tree');
+            treeContainer.appendChild(renderTree(fileSystem));
+
+            if (activeFileNode) {
+                renderDetails(activeFileNode);
+            }
+
+            renderSummaryTable();
+        });
+    </script>
+</body>
+
+</html>
