@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"section {$\\\\|^#intro\\\\|^#about\\\\|^#resume\\\\|^#portfolio\\\\|^#services\\\\|^#blog\\\\|^#contact\\\\|grey-section\\\\|section-bg\\\\|background:\" /Users/sakhawat/Shakil/Projects/shakiz.github.io/css/enhanced.css)"
+    ]
+  }
+}
