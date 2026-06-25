@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy — Taqwa: Mindful Muslim Living</title>
+    <style>
+        :root {
+            --navy: #004081;
+            --navy90: #1A5394;
+            --navy10: #E6EEF5;
+            --green: #57A11F;
+            --cyan: #00A9DC;
+            --ink: #0A0A0A;
+            --graphite: #4A4A4A;
+            --mist: #F4F6F8;
+            --paper: #FFFFFF;
+            --line: #E0E4E8;
+            --line-soft: #EDF0F3;
+            --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+            --measure: 68ch;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--sans);
+            color: var(--ink);
+            background: var(--paper);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* ---- Hero ---- */
+        .hero {
+            background: var(--navy);
+            color: #fff;
+            padding: 72px 24px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero__star {
+            position: absolute;
+            top: -90px;
+            right: -90px;
+            width: 320px;
+            height: 320px;
+            opacity: 0.10;
+            pointer-events: none;
+        }
+
+        .hero__inner {
+            max-width: 920px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .brand__mark {
+            width: 34px;
+            height: 34px;
+            flex: none;
+        }
+
+        .brand__name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            line-height: 1.1;
+            margin: 0 0 16px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            text-wrap: balance;
+            max-width: 18ch;
+        }
+
+        .hero__lede {
+            font-size: 1.075rem;
+            color: rgba(255, 255, 255, 0.82);
+            max-width: 56ch;
+            margin: 0 0 28px;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 28px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .meta b {
+            color: #fff;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ---- Layout ---- */
+        .wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        @media (min-width: 920px) {
+            .wrap {
+                grid-template-columns: 220px minmax(0, var(--measure));
+                gap: 56px;
+                justify-content: center;
+                max-width: 1080px;
+            }
+        }
+
+        /* ---- Table of contents ---- */
+        nav.toc {
+            padding-top: 56px;
+        }
+
+        @media (min-width: 920px) {
+            nav.toc {
+                position: sticky;
+                top: 0;
+                align-self: start;
+                max-height: 100vh;
+                overflow-y: auto;
+                padding-top: 56px;
+            }
+        }
+
+        .toc__label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--graphite);
+            margin: 0 0 14px;
+            font-weight: 600;
+        }
+
+        .toc ol {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            counter-reset: toc;
+        }
+
+        .toc li {
+            margin: 0 0 2px;
+        }
+
+        .toc a {
+            display: flex;
+            gap: 10px;
+            padding: 6px 10px 6px 0;
+            color: var(--graphite);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            transition: color 0.15s ease;
+        }
+
+        .toc a::before {
+            counter-increment: toc;
+            content: counter(toc, decimal-leading-zero);
+            font-family: var(--mono);
+            font-size: 0.74rem;
+            color: var(--navy);
+            opacity: 0.55;
+            padding-top: 2px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .toc a:hover {
+            color: var(--navy);
+        }
+
+        .toc a:focus-visible {
+            outline: 2px solid var(--navy);
+            outline-offset: 2px;
+        }
+
+        /* ---- Content ---- */
+        main {
+            padding: 56px 0 96px;
+            min-width: 0;
+        }
+
+        section {
+            scroll-margin-top: 24px;
+        }
+
+        section+section {
+            margin-top: 48px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--green);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            line-height: 1.25;
+            margin: 0 0 16px;
+            color: var(--navy);
+            letter-spacing: -0.01em;
+            font-weight: 700;
+            text-wrap: balance;
+        }
+
+        h3 {
+            font-size: 1.02rem;
+            margin: 26px 0 6px;
+            color: var(--ink);
+            font-weight: 650;
+        }
+
+        p {
+            margin: 0 0 14px;
+            color: #20262e;
+        }
+
+        a {
+            color: var(--navy90);
+        }
+
+        strong {
+            font-weight: 650;
+            color: var(--ink);
+        }
+
+        .intro p {
+            font-size: 1.075rem;
+        }
+
+        ul.clean {
+            list-style: none;
+            margin: 8px 0 16px;
+            padding: 0;
+        }
+
+        ul.clean li {
+            position: relative;
+            padding: 0 0 0 26px;
+            margin: 0 0 10px;
+            color: #20262e;
+        }
+
+        ul.clean li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 7px;
+            height: 7px;
+            border-radius: 2px;
+            background: var(--green);
+            transform: rotate(45deg);
+        }
+
+        /* Data table */
+        .table-scroll {
+            overflow-x: auto;
+            margin: 16px 0 8px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 0.92rem;
+            min-width: 460px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+
+        thead th {
+            background: var(--mist);
+            color: var(--navy);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            border-bottom: 2px solid var(--line);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        td:first-child {
+            font-weight: 600;
+            color: var(--ink);
+            white-space: nowrap;
+        }
+
+        /* Callout */
+        .callout {
+            background: var(--navy10);
+            border-left: 3px solid var(--navy);
+            border-radius: 0 10px 10px 0;
+            padding: 18px 22px;
+            margin: 20px 0;
+        }
+
+        .callout p {
+            margin: 0;
+        }
+
+        .callout--green {
+            background: #eef6e6;
+            border-left-color: var(--green);
+        }
+
+        /* Pills */
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 4px;
+        }
+
+        .pill {
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: var(--mist);
+            border: 1px solid var(--line);
+            color: var(--graphite);
+        }
+
+        /* Contact card */
+        .contact {
+            margin-top: 56px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 28px;
+            background: linear-gradient(180deg, var(--paper), var(--mist));
+        }
+
+        .contact h2 {
+            margin-top: 0;
+        }
+
+        .contact a {
+            font-weight: 600;
+        }
+
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 28px 24px 48px;
+            text-align: center;
+            color: var(--graphite);
+            font-size: 0.82rem;
+        }
+
+        footer .arabic {
+            font-size: 1.05rem;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+
+        ::selection {
+            background: var(--navy);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="hero">
+        <svg class="hero__star" viewBox="0 0 100 100" aria-hidden="true">
+            <polygon fill="#fff" points="50,0 61,39 100,50 61,61 50,100 39,61 0,50 39,39" />
+        </svg>
+        <div class="hero__inner">
+            <div class="brand">
+                <svg class="brand__mark" viewBox="0 0 100 100" aria-hidden="true">
+                    <polygon fill="#fff" points="50,4 60,40 96,50 60,60 50,96 40,60 4,50 40,40" />
+                </svg>
+                <span class="brand__name">Taqwa · Mindful Muslim Living</span>
+            </div>
+            <h1>Privacy Policy</h1>
+            <p class="hero__lede">Taqwa is built to help you keep your prayers, dhikr, and intentions — quietly and
+                respectfully. This policy explains exactly what we collect, why, and the control you keep over it.</p>
+            <div class="meta">
+                <span>Last updated <b>25 June 2026</b></span>
+                <span>Applies to <b>Taqwa for Android &amp; iOS</b></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <nav class="toc" aria-label="Sections">
+            <p class="toc__label">Contents</p>
+            <ol>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#collect">What we collect</a></li>
+                <li><a href="#use">How we use it</a></li>
+                <li><a href="#permissions">Device permissions</a></li>
+                <li><a href="#sharing">Sharing &amp; third parties</a></li>
+                <li><a href="#storage">Storage &amp; security</a></li>
+                <li><a href="#guest">Guest mode</a></li>
+                <li><a href="#rights">Your choices &amp; rights</a></li>
+                <li><a href="#children">Children's privacy</a></li>
+                <li><a href="#changes">Changes</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ol>
+        </nav>
+
+        <main>
+            <section id="overview" class="intro">
+                <span class="eyebrow">Overview</span>
+                <h2>The short version</h2>
+                <p>Taqwa collects only what it needs to run the features you use — your account details when you sign
+                    in, your device location to calculate prayer times and the Qibla, and the activity you choose to
+                    record (completed goals, dhikr counts, bookmarks, and community posts).</p>
+                <div class="callout callout--green">
+                    <p><strong>We never sell your data, show third-party advertising, or track you across other
+                            apps.</strong> If you use Taqwa as a guest, nothing you do is saved to our servers at all.
+                    </p>
+                </div>
+            </section>
+
+            <section id="collect">
+                <span class="eyebrow">Data</span>
+                <h2>Information we collect</h2>
+                <p>We only collect data tied to features you actually use. Here is everything, by category.</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>What it includes</th>
+                                <th>When</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Account</td>
+                                <td>Your name, email address, and profile photo, provided by Google when you sign in.
+                                </td>
+                                <td>Only if you sign in</td>
+                            </tr>
+                            <tr>
+                                <td>Location</td>
+                                <td>Your device's geographic coordinates, and an optional location label you can save to
+                                    your profile.</td>
+                                <td>When you grant the location permission</td>
+                            </tr>
+                            <tr>
+                                <td>Worship activity</td>
+                                <td>Completed daily goals, dhikr (zikr) counts, prayer streaks, Surah bookmarks, and
+                                    focus habits you track.</td>
+                                <td>While signed in</td>
+                            </tr>
+                            <tr>
+                                <td>Preferences</td>
+                                <td>Calculation method, prayer-reminder and adhan-sound toggles, and theme (light/dark).
+                                </td>
+                                <td>While signed in / on device</td>
+                            </tr>
+                            <tr>
+                                <td>Community</td>
+                                <td>Posts, comments, likes, joins, and shares you create in the community feed.</td>
+                                <td>When you post or interact</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>What we do <em>not</em> collect</h3>
+                <ul class="clean">
+                    <li>No advertising identifiers and no cross-app tracking.</li>
+                    <li>No contacts, photos library, microphone, or call/SMS data.</li>
+                    <li>No continuous or background location — coordinates are read only while the app is open and
+                        you've granted permission.</li>
+                </ul>
+            </section>
+
+            <section id="use">
+                <span class="eyebrow">Purpose</span>
+                <h2>How we use your information</h2>
+                <ul class="clean">
+                    <li><strong>Prayer times &amp; Qibla</strong> — your location is used to compute accurate prayer
+                        times and the Qibla direction. This calculation happens on your device.</li>
+                    <li><strong>Your account</strong> — your name and photo personalise the app; your email identifies
+                        your account so your data syncs across sessions.</li>
+                    <li><strong>Progress &amp; streaks</strong> — your goal and dhikr logs let the app show your daily
+                        progress and compute your current and longest streaks.</li>
+                    <li><strong>Community</strong> — content you post is shown to other signed-in members of the Taqwa
+                        community.</li>
+                    <li><strong>Reminders</strong> — if you enable prayer reminders, we send local notifications from
+                        your device.</li>
+                </ul>
+            </section>
+
+            <section id="permissions">
+                <span class="eyebrow">Permissions</span>
+                <h2>Device permissions we request</h2>
+                <p>Taqwa asks for these permissions only for the purpose described, and the app keeps working (with
+                    limited features) if you decline.</p>
+                <div class="pill-row">
+                    <span class="pill">Location</span>
+                    <span class="pill">Notifications</span>
+                    <span class="pill">Internet</span>
+                </div>
+                <h3>Location</h3>
+                <p>Used to calculate prayer times and the Qibla for where you are. If you decline, Taqwa falls back to a
+                    default location and you can still use the app.</p>
+                <h3>Notifications</h3>
+                <p>Used to deliver the prayer reminders you opt into. You can turn these off in the app or your device
+                    settings at any time.</p>
+            </section>
+
+            <section id="sharing">
+                <span class="eyebrow">Third parties</span>
+                <h2>Who we share data with</h2>
+                <p>We do not sell your personal data, and we share it only with the service providers that make the app
+                    function:</p>
+                <ul class="clean">
+                    <li><strong>Supabase</strong> — our backend and database host, which stores your account, activity,
+                        and community data securely on our behalf.</li>
+                    <li><strong>Google Sign-In</strong> — used to authenticate you. We receive your name, email, and
+                        photo; we do not receive your Google password.</li>
+                </ul>
+                <p>Community content you choose to post is visible to other signed-in users of Taqwa. We may disclose
+                    data if required by law, but we will never share it for advertising or marketing.</p>
+            </section>
+
+            <section id="storage">
+                <span class="eyebrow">Security</span>
+                <h2>How your data is stored &amp; protected</h2>
+                <p>Your data is stored in our Supabase backend and transmitted over encrypted (HTTPS) connections.
+                    Database access is protected by row-level security: each record is scoped to its owner, so your
+                    private profile and activity are only ever readable by you.</p>
+                <div class="callout">
+                    <p>Reference content — like the 99 Names, Surahs, and dhikr catalogue — is read-only and shared.
+                        Your personal logs, profile, and bookmarks are private to your account.</p>
+                </div>
+                <p>We keep your data for as long as your account exists. When you delete your account, the associated
+                    profile and activity records are removed.</p>
+            </section>
+
+            <section id="guest">
+                <span class="eyebrow">Guest</span>
+                <h2>Using Taqwa without an account</h2>
+                <p>You can browse Taqwa as a guest without signing in. In guest mode the app stores
+                    <strong>nothing</strong> on our servers — your goal completions and dhikr counts live only in the
+                    current session, and you cannot post to the community. Prayer times and the Qibla still work, since
+                    they're computed on your device.
+                </p>
+            </section>
+
+            <section id="rights">
+                <span class="eyebrow">Control</span>
+                <h2>Your choices and rights</h2>
+                <ul class="clean">
+                    <li><strong>Access &amp; correction</strong> — view and edit your profile details from the Profile
+                        screen in the app.</li>
+                    <li><strong>Delete your account</strong> — request deletion of your account and associated data;
+                        once deleted it cannot be recovered.</li>
+                    <li><strong>Withdraw permissions</strong> — revoke location or notification access at any time in
+                        your device settings.</li>
+                    <li><strong>Sign out</strong> — sign out at any time to stop syncing data to your account.</li>
+                </ul>
+                <p>To exercise any of these rights, contact us using the details below.</p>
+            </section>
+
+            <section id="children">
+                <span class="eyebrow">Children</span>
+                <h2>Children's privacy</h2>
+                <p>Taqwa is intended for a general audience and is not directed at children under 13. We do not
+                    knowingly collect personal data from children. If you believe a child has provided us with personal
+                    data, please contact us and we will remove it.</p>
+            </section>
+
+            <section id="changes">
+                <span class="eyebrow">Updates</span>
+                <h2>Changes to this policy</h2>
+                <p>We may update this policy as the app evolves. When we make material changes, we'll revise the "Last
+                    updated" date at the top and, where appropriate, notify you in the app. Continued use of Taqwa after
+                    an update means you accept the revised policy.</p>
+            </section>
+
+            <section id="contact" class="contact">
+                <span class="eyebrow">Get in touch</span>
+                <h2>Contact us</h2>
+                <p>Questions about this policy or your data? We're happy to help.</p>
+                <p style="margin:0;">Email: <a href="mailto:shakil.play335@gmail.com">shakil.play335@gmail.com</a></p>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <div class="arabic" lang="ar" dir="rtl">وَاللَّهُ خَيْرٌ حَافِظًا</div>
+        <div>Taqwa: Mindful Muslim Living · © 2026 · Built with care.</div>
+    </footer>
+
+</body>
+
+</html>
