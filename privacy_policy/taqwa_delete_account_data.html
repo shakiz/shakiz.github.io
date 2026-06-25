@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Your Taqwa Account and Data</title>
+    <style>
+        :root {
+            --paper: #ffffff;
+            --canvas: #f5f8fb;
+            --ink: #0e1b2c;
+            --muted: #56657a;
+            --faint: #8493a6;
+            --navy: #004081;
+            --green: #157a4e;
+            --danger: #c62828;
+            --line: #e3e9f0;
+            --line-soft: #eef2f6;
+            --navy-tint: #eaf1f8;
+            --danger-tint: #fcecec;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(1200px 600px at 50% -10%, #eaf1f8 0%, rgba(234, 241, 248, 0) 60%),
+                var(--canvas);
+            color: var(--ink);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.65;
+            font-size: 17px;
+        }
+
+        .wrap {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 64px 24px 96px;
+        }
+
+        .card {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 48px 44px;
+            box-shadow: 0 1px 2px rgba(14, 27, 44, 0.04), 0 18px 48px rgba(14, 27, 44, 0.07);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 18px;
+        }
+
+        .eyebrow svg {
+            display: block;
+        }
+
+        h1 {
+            font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+            font-weight: 700;
+            font-size: clamp(1.9rem, 5vw, 2.5rem);
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            text-wrap: balance;
+            color: var(--ink);
+            margin: 0 0 14px;
+        }
+
+        .lede {
+            font-size: 1.12rem;
+            color: var(--muted);
+            margin: 0;
+            max-width: 60ch;
+        }
+
+        .updated {
+            margin-top: 22px;
+            padding-top: 22px;
+            border-top: 1px solid var(--line-soft);
+            font-size: 0.85rem;
+            color: var(--faint);
+            letter-spacing: 0.01em;
+        }
+
+        h2 {
+            font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+            font-weight: 700;
+            font-size: 1.32rem;
+            color: var(--navy);
+            margin: 44px 0 14px;
+            text-wrap: balance;
+        }
+
+        p {
+            color: var(--muted);
+            margin: 0 0 1.1rem;
+        }
+
+        ol,
+        ul {
+            color: var(--muted);
+            margin: 0 0 1.3rem;
+            padding-left: 0;
+            list-style: none;
+            counter-reset: step;
+        }
+
+        ol li {
+            position: relative;
+            padding-left: 44px;
+            margin-bottom: 0.95rem;
+            counter-increment: step;
+        }
+
+        ol li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 1px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--navy-tint);
+            color: var(--navy);
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        ul.facts li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 0.95rem;
+        }
+
+        ul.facts li::before {
+            content: "";
+            position: absolute;
+            left: 4px;
+            top: 0.62em;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        strong {
+            color: var(--ink);
+            font-weight: 650;
+        }
+
+        a {
+            color: var(--navy);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0, 64, 129, 0.3);
+            transition: border-color 0.18s, color 0.18s;
+        }
+
+        a:hover {
+            border-bottom-color: var(--navy);
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--navy);
+            outline-offset: 3px;
+            border-radius: 3px;
+        }
+
+        .callout {
+            margin: 28px 0;
+            padding: 22px 24px;
+            background: var(--navy-tint);
+            border: 1px solid #d4e2f0;
+            border-radius: 14px;
+        }
+
+        .callout h2 {
+            margin-top: 0;
+            font-size: 1.12rem;
+        }
+
+        .callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        .danger-note {
+            margin: 28px 0 0;
+            padding: 18px 22px;
+            background: var(--danger-tint);
+            border-left: 3px solid var(--danger);
+            border-radius: 10px;
+        }
+
+        .danger-note p {
+            margin: 0;
+            color: #7d2a2a;
+        }
+
+        .danger-note strong {
+            color: var(--danger);
+        }
+
+        .contact {
+            margin-top: 40px;
+            padding-top: 28px;
+            border-top: 1px solid var(--line-soft);
+            font-size: 0.95rem;
+            color: var(--faint);
+        }
+
+        @media (max-width: 560px) {
+            .card {
+                padding: 34px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="wrap">
+        <article class="card">
+            <span class="eyebrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#004081" aria-hidden="true">
+                    <path d="M12 1l2.4 5.9L20 7l-4 4.3L17.6 18 12 14.8 6.4 18 8 11.3 4 7l5.6-.1L12 1z" />
+                </svg>
+                Taqwa · Mindful Muslim Living
+            </span>
+
+            <h1>Delete Your Account &amp; Data</h1>
+            <p class="lede">Your worship and your data are yours. You can ask Taqwa to deactivate and delete
+                your account at any time — from inside the app, or by email if you no longer have access.</p>
+            <div class="updated">Last updated: June 25, 2026</div>
+
+            <h2>Delete your account in the app</h2>
+            <p>The quickest way to remove your account is from within Taqwa:</p>
+            <ol>
+                <li>Open <strong>Taqwa</strong> and sign in with your Google account.</li>
+                <li>Open the <strong>Profile</strong> tab from the bottom navigation.</li>
+                <li>Scroll to the bottom and tap <strong>"Delete account"</strong>.</li>
+                <li>Read the confirmation and tap <strong>"Delete my account"</strong>.</li>
+            </ol>
+            <p>Your account is deactivated immediately and you are signed out on this device.</p>
+
+            <div class="callout">
+                <h2>You have 30 days to change your mind</h2>
+                <p>Deleting your account starts a <strong>30-day grace period</strong>. During this window your
+                    account is deactivated and hidden, but not yet erased. If you simply <strong>sign back in with the
+                        same Google account within 30 days</strong>, the deletion request is automatically cancelled and
+                    your account and data are fully restored — no extra steps needed.</p>
+            </div>
+
+            <h2>Request deletion by email</h2>
+            <p>If you can no longer open the app, you can request deletion manually:</p>
+            <ol>
+                <li>Email <strong><a href="mailto:shakil.play335@gmail.com">shakil.play335@gmail.com</a></strong> from
+                    the email address linked to your Taqwa account.</li>
+                <li>Use the subject line <strong>"Taqwa — Account Deletion Request"</strong>.</li>
+                <li>Confirm in the message that you want your account and all stored data permanently deleted.</li>
+                <li>We verify the request and permanently erase your data within <strong>30 days</strong>, then send you
+                    a confirmation email.</li>
+            </ol>
+
+            <h2>What gets deleted</h2>
+            <p>When your account is permanently deleted, the following data is removed:</p>
+            <ul class="facts">
+                <li><strong>Profile details</strong> — your name, email address, and profile photo.</li>
+                <li><strong>Worship activity</strong> — prayer and goal completions, zikr counts, daily focus history,
+                    and streaks.</li>
+                <li><strong>Preferences</strong> — prayer-time adjustments, calculation method, reminder settings, and
+                    Surah bookmarks.</li>
+                <li><strong>Community content</strong> — posts, comments, and reactions you created.</li>
+                <li><strong>Sign-in link</strong> — the association between your Google account and Taqwa is severed.
+                </li>
+            </ul>
+            <p>Reference content such as the Qur'an, the 99 Names, and prayer-time calculations is not personal data and
+                is unaffected.</p>
+
+            <div class="danger-note">
+                <p><strong>Permanent and irreversible.</strong> Once the 30-day grace period passes without a return —
+                    or once an emailed deletion request is processed — your data cannot be recovered.</p>
+            </div>
+
+            <div class="contact">
+                <p>Questions about your data or this process? Contact us at
+                    <a href="mailto:shakil.play335@gmail.com">shakil.play335@gmail.com</a>.
+                </p>
+            </div>
+        </article>
+    </main>
+</body>
+
+</html>
