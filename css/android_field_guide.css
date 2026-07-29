@@ -166,7 +166,7 @@ footer.end{margin-top:48px;border-top:1px solid var(--hair);padding-top:14px;col
 
 @media (max-width:940px){
   .shell{grid-template-columns:1fr}
-  .rail{position:static;height:auto;border-right:0;border-bottom:1px solid var(--hair);padding:18px 16px}
+  .rail{position:sticky;top:0;background:var(--bg);z-index:10;height:auto;border-right:0;border-bottom:1px solid var(--hair);padding:18px 16px}
   main{padding:18px 16px 60px}
   .g2,.g3,.dd,.steps,.checkrow{grid-template-columns:1fr}
   .dd>div+div{border-left:0;border-top:1px solid var(--hair)}
