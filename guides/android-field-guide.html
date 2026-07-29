@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>android-field-guide — coroutines · compose · nav2 · nav3 · gradle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="../css/android_field_guide.css" rel="stylesheet">
+</head>
+<body>
+<div class="shell">
+
+<aside class="rail">
+  <ul class="tree">
+    <li class="root">android-field-guide/</li>
+    <li class="dir">├─ src/</li>
+    <li><button data-sec="coroutines" aria-current="true"><span class="g">│  ├─ </span>coroutines.kt</button></li>
+    <li><button data-sec="compose"><span class="g">│  ├─ </span>compose.kt</button></li>
+    <li><button data-sec="nav2"><span class="g">│  ├─ </span>navigation2.kt</button></li>
+    <li><button data-sec="nav3"><span class="g">│  └─ </span>navigation3.kt</button></li>
+    <li><button data-sec="gradle"><span class="g">├─ </span>build.gradle.kts</button></li>
+    <li><button data-sec="checklist"><span class="g">└─ </span>CHECKLIST.md</button></li>
+  </ul>
+  <p class="railfoot">5 topics · 4 labs · kotlin dsl<br>follows developer.android.com</p>
+</aside>
+
+<main>
+<header class="hero">
+<p class="kdoc">/**
+ * <span class="t">Four stacks, one state-driven model.</span>
+ *
+ * <i>coroutines</i>   decide <b>which thread</b> and <b>who cancels</b>
+ * <i>compose</i>      renders <b>state</b>, nothing else
+ * <i>navigation</i>   stores <b>where you are</b>
+ * <i>gradle</i>       decides <b>what gets built, when</b>
+ *
+ * Each file: one lab you can poke at, the core ideas,
+ * real code, and the mistakes reviewers actually flag.
+ */</p>
+</header>
+
+<!-- ================= 00 COROUTINES ================= -->
+<section class="panel-sec active" id="sec-coroutines">
+  <div class="sec-head"><h2>coroutines.kt</h2><span class="path">// 00 · kotlinx.coroutines · lifecycle-runtime-ktx</span></div>
+  <p class="lede">A coroutine is a unit of work that can <b>suspend</b> without blocking a thread. Everything else — dispatchers, scopes, Flow — exists to answer two questions: <i>on which thread</i> and <i>who cancels it</i>.</p>
+
+  <h3 class="blk">lab · structured concurrency</h3>
+  <div class="lab">
+    <div class="controls" role="group" aria-label="Structured concurrency scenarios">
+      <button class="btn" data-co="idle" aria-pressed="true">Running</button>
+      <button class="btn" data-co="cancel" aria-pressed="false">Scope cancelled (screen closed)</button>
+      <button class="btn" data-co="failJob" aria-pressed="false">Child fails · coroutineScope</button>
+      <button class="btn" data-co="failSup" aria-pressed="false">Child fails · supervisorScope</button>
+    </div>
+    <svg viewBox="0 0 700 250" role="img" aria-label="Coroutine scope tree diagram">
+      <g id="co-edges">
+        <path class="edge" id="e1" d="M350 62 V92 H190 V118"/>
+        <path class="edge" id="e2" d="M350 62 V92 H520 V118"/>
+        <path class="edge" id="e3" d="M190 148 V178 H110 V204"/>
+        <path class="edge" id="e4" d="M190 148 V178 H270 V204"/>
+      </g>
+      <g class="node active" id="n-scope"><rect x="230" y="20" width="240" height="42" rx="10" stroke-width="1.4"/><text x="350" y="46" text-anchor="middle">viewModelScope · Job</text></g>
+      <g class="node active" id="n-a"><rect x="80" y="118" width="220" height="30" rx="9" stroke-width="1.4"/><text x="190" y="138" text-anchor="middle">launch { loadProfile() }</text></g>
+      <g class="node active" id="n-b"><rect x="410" y="118" width="220" height="30" rx="9" stroke-width="1.4"/><text x="520" y="138" text-anchor="middle">launch { observeCart() }</text></g>
+      <g class="node active" id="n-a1"><rect x="30" y="204" width="160" height="28" rx="8" stroke-width="1.4"/><text x="110" y="223" text-anchor="middle">async { user() }</text></g>
+      <g class="node active" id="n-a2"><rect x="200" y="204" width="160" height="28" rx="8" stroke-width="1.4"/><text x="280" y="223" text-anchor="middle">async { posts() }</text></g>
+    </svg>
+    <p class="caption" id="co-caption">Parent waits for every child. The scope is the owner — nothing escapes it.</p>
+  </div>
+
+  <h3 class="blk">key ideas</h3>
+  <div class="grid g2">
+    <div class="card"><h4>suspend ≠ background</h4><p><span class="k">suspend</span> only means “this can pause and resume”. It says nothing about threads. Moving off the main thread is <span class="k">withContext(dispatcher)</span>.</p></div>
+    <div class="card"><h4>Main-safety belongs to the callee</h4><p>A suspend function must be safe to call from the main thread. The caller should never have to know which dispatcher to use.</p></div>
+    <div class="card"><h4>Scope = lifetime</h4><p><span class="k">viewModelScope</span> dies with the ViewModel; <span class="k">lifecycleScope</span> with the lifecycle owner. Pick the shortest one that outlives the work.</p></div>
+    <div class="card"><h4>launch vs async</h4><p><span class="k">launch</span> = fire and forget, returns <span class="k">Job</span>. <span class="k">async</span> = returns <span class="k">Deferred&lt;T&gt;</span>, use only inside a scope you own, and always <span class="k">await</span> it.</p></div>
+    <div class="card"><h4>Cancellation is cooperative</h4><p>Cancellation only lands at a suspension point. CPU loops must check <span class="k">isActive</span> / call <span class="k">yield()</span>, or they keep burning after cancel.</p></div>
+    <div class="card"><h4>CancellationException is normal</h4><p>Never swallow it in a generic <span class="k">catch (e: Exception)</span>. Rethrow it, otherwise cancellation silently breaks.</p></div>
+    <div class="card"><h4>Failure propagation</h4><p>In a regular <span class="k">Job</span>, one failing child cancels its siblings and the parent. <span class="k">SupervisorJob</span> / <span class="k">supervisorScope</span> isolates siblings — use it for independent work.</p></div>
+    <div class="card"><h4>Cold vs hot</h4><p><span class="k">Flow</span> is cold: nothing runs until collected. <span class="k">StateFlow</span>/<span class="k">SharedFlow</span> are hot: they exist and emit whether anyone listens or not.</p></div>
+    <div class="card"><h4>Inject dispatchers</h4><p>Hard-coded <span class="k">Dispatchers.IO</span> cannot be replaced in tests. Pass a <span class="k">CoroutineDispatcher</span> with a default, or a small <code>DispatcherProvider</code>.</p></div>
+    <div class="card"><h4>One-shot vs stream</h4><p>Request/response → <span class="k">suspend fun</span>. Continuous data → <span class="k">Flow</span>. Don’t model a stream as repeated one-shot polling.</p></div>
+  </div>
+
+  <h3 class="blk">dispatchers at a glance</h3>
+  <div class="scroll-x"><table class="tbl">
+    <tr><th>Dispatcher</th><th>Backed by</th><th>Use for</th><th>Never</th></tr>
+    <tr><td>Main</td><td>UI thread</td><td>State updates, calling into UI, small work</td><td>Parsing, disk, network</td></tr>
+    <tr><td>Main.immediate</td><td>UI thread</td><td>Avoiding a re-dispatch when already on Main</td><td>As a “faster Main” everywhere</td></tr>
+    <tr><td>Default</td><td>CPU-bound pool (≈ cores)</td><td>Sorting, JSON, image/bitmap math, diffing</td><td>Blocking calls</td></tr>
+    <tr><td>IO</td><td>Elastic pool (64+)</td><td>Disk, network, Room/OkHttp blocking APIs</td><td>Heavy CPU loops</td></tr>
+    <tr><td>Unconfined</td><td>Caller’s thread</td><td>Library internals, some tests</td><td>App code</td></tr>
+  </table></div>
+
+  <h3 class="blk">code that matters</h3>
+  <figure class="code"><figcaption><b>Repository</b><span>main-safe + injectable dispatcher</span></figcaption><pre><span class="cl"><span class="k-kw">class</span> <span class="k-fn">NewsRepository</span>(</span><span class="cl">    <span class="k-kw">private</span> <span class="k-kw">val</span> api: NewsApi,</span><span class="cl">    <span class="k-kw">private</span> <span class="k-kw">val</span> dao: NewsDao,</span><span class="cl">    <span class="k-kw">private</span> <span class="k-kw">val</span> io: CoroutineDispatcher = Dispatchers.IO,   <span class="k-com">// injected, defaulted</span></span><span class="cl">) {</span><span class="cl">    <span class="k-com">// Safe to call from Main: the switch happens here, not at the call site.</span></span><span class="cl">    <span class="k-kw">suspend</span> <span class="k-kw">fun</span> <span class="k-fn">refresh</span>(): Result&lt;Unit&gt; = <span class="k-fn">withContext</span>(io) {</span><span class="cl">        runCatching { dao.<span class="k-fn">upsert</span>(api.<span class="k-fn">latest</span>()) }</span><span class="cl">    }</span><span class="cl"></span><span class="cl">    <span class="k-com">// Cold stream: Room already emits on a background thread.</span></span><span class="cl">    <span class="k-kw">fun</span> <span class="k-fn">articles</span>(): Flow&lt;List&lt;Article&gt;&gt; = dao.<span class="k-fn">observeAll</span>()</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>ViewModel</b><span>expose immutable state, never the mutable one</span></figcaption><pre><span class="cl"><span class="k-kw">class</span> <span class="k-fn">FeedViewModel</span>(<span class="k-kw">private</span> <span class="k-kw">val</span> repo: NewsRepository) : <span class="k-fn">ViewModel</span>() {</span><span class="cl"></span><span class="cl">    <span class="k-kw">val</span> uiState: StateFlow&lt;FeedUiState&gt; = repo.<span class="k-fn">articles</span>()</span><span class="cl">        .map { FeedUiState.<span class="k-fn">Success</span>(<span class="k-kw">it</span>) <span class="k-kw">as</span> FeedUiState }</span><span class="cl">        .<span class="k-kw">catch</span> { <span class="k-fn">emit</span>(FeedUiState.<span class="k-fn">Error</span>(<span class="k-kw">it</span>.message)) }</span><span class="cl">        .<span class="k-fn">stateIn</span>(</span><span class="cl">            scope = viewModelScope,</span><span class="cl">            started = SharingStarted.<span class="k-fn">WhileSubscribed</span>(<span class="k-num">5_000</span>), <span class="k-com">// survives rotation, stops in background</span></span><span class="cl">            initialValue = FeedUiState.Loading,</span><span class="cl">        )</span><span class="cl"></span><span class="cl">    <span class="k-kw">fun</span> <span class="k-fn">onRefresh</span>() {</span><span class="cl">        viewModelScope.launch { repo.<span class="k-fn">refresh</span>() }   <span class="k-com">// scoped: dies with the ViewModel</span></span><span class="cl">    }</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Parallel + isolated failure</b><span>coroutineScope vs supervisorScope</span></figcaption><pre><span class="cl"><span class="k-com">// Both must succeed -&gt; coroutineScope. One failure cancels the other.</span></span><span class="cl"><span class="k-kw">suspend</span> <span class="k-kw">fun</span> <span class="k-fn">profile</span>(id: String): Profile = coroutineScope {</span><span class="cl">    <span class="k-kw">val</span> user = async { userApi.<span class="k-fn">get</span>(id) }</span><span class="cl">    <span class="k-kw">val</span> posts = async { postApi.<span class="k-fn">list</span>(id) }</span><span class="cl">    <span class="k-fn">Profile</span>(user.<span class="k-fn">await</span>(), posts.<span class="k-fn">await</span>())</span><span class="cl">}</span><span class="cl"></span><span class="cl"><span class="k-com">// Independent jobs -&gt; supervisorScope. Photos failing must not kill notes.</span></span><span class="cl"><span class="k-kw">suspend</span> <span class="k-kw">fun</span> <span class="k-fn">sync</span>() = supervisorScope {</span><span class="cl">    launch { <span class="k-fn">syncPhotos</span>() }</span><span class="cl">    launch { <span class="k-fn">syncNotes</span>() }</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Cancellation</b><span>cooperative loops · cleanup that must finish</span></figcaption><pre><span class="cl"><span class="k-kw">suspend</span> <span class="k-kw">fun</span> <span class="k-fn">compress</span>(frames: List&lt;Frame&gt;) = <span class="k-fn">withContext</span>(Dispatchers.Default) {</span><span class="cl">    frames.forEach { frame -&gt;</span><span class="cl">        <span class="k-fn">ensureActive</span>()          <span class="k-com">// or: if (!isActive) return@withContext</span></span><span class="cl">        <span class="k-fn">encode</span>(frame)</span><span class="cl">    }</span><span class="cl">}</span><span class="cl"></span><span class="cl"><span class="k-kw">suspend</span> <span class="k-kw">fun</span> <span class="k-fn">upload</span>(file: File) {</span><span class="cl">    <span class="k-kw">try</span> {</span><span class="cl">        client.<span class="k-fn">put</span>(file)</span><span class="cl">    } <span class="k-kw">catch</span> (e: CancellationException) {</span><span class="cl">        <span class="k-kw">throw</span> e                 <span class="k-com">// ALWAYS rethrow</span></span><span class="cl">    } <span class="k-kw">catch</span> (e: IOException) {</span><span class="cl">        <span class="k-fn">report</span>(e)</span><span class="cl">    } <span class="k-kw">finally</span> {</span><span class="cl">        <span class="k-fn">withContext</span>(NonCancellable) { tmp.<span class="k-fn">delete</span>() }  <span class="k-com">// cleanup after cancel</span></span><span class="cl">    }</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Collecting safely</b><span>Compose · Views</span></figcaption><pre><span class="cl"><span class="k-com">// Compose: stops collecting when the screen is not visible.</span></span><span class="cl"><span class="k-ann">@Composable</span></span><span class="cl"><span class="k-kw">fun</span> <span class="k-fn">FeedRoute</span>(vm: FeedViewModel = <span class="k-fn">viewModel</span>()) {</span><span class="cl">    <span class="k-kw">val</span> state <span class="k-kw">by</span> vm.uiState.<span class="k-fn">collectAsStateWithLifecycle</span>()</span><span class="cl">    <span class="k-fn">FeedScreen</span>(state = state, onRefresh = vm::onRefresh)</span><span class="cl">}</span><span class="cl"></span><span class="cl"><span class="k-com">// Views / Fragment:</span></span><span class="cl">viewLifecycleOwner.lifecycleScope.launch {</span><span class="cl">    viewLifecycleOwner.<span class="k-fn">repeatOnLifecycle</span>(Lifecycle.State.STARTED) {</span><span class="cl">        vm.uiState.<span class="k-fn">collect</span>(::render)</span><span class="cl">    }</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Test</b><span>runTest + virtual time</span></figcaption><pre><span class="cl"><span class="k-ann">@Test</span></span><span class="cl"><span class="k-kw">fun</span> `refresh emits success`() = runTest {</span><span class="cl">    <span class="k-kw">val</span> repo = <span class="k-fn">NewsRepository</span>(<span class="k-fn">FakeApi</span>(), <span class="k-fn">FakeDao</span>(), <span class="k-fn">StandardTestDispatcher</span>(testScheduler))</span><span class="cl">    <span class="k-kw">val</span> vm = <span class="k-fn">FeedViewModel</span>(repo)</span><span class="cl"></span><span class="cl">    backgroundScope.launch { vm.uiState.<span class="k-fn">collect</span>() }   <span class="k-com">// give stateIn a subscriber</span></span><span class="cl">    <span class="k-fn">advanceUntilIdle</span>()</span><span class="cl"></span><span class="cl">    assertIs&lt;FeedUiState.Success&gt;(vm.uiState.value)</span><span class="cl">}</span></pre></figure>
+
+  <h3 class="blk">flow family</h3>
+  <div class="scroll-x"><table class="tbl">
+    <tr><th>Type</th><th>Hot/Cold</th><th>Holds value</th><th>Use for</th></tr>
+    <tr><td>Flow</td><td>Cold</td><td>No</td><td>Data source: Room, DataStore, paging, mapped chains</td></tr>
+    <tr><td>StateFlow</td><td>Hot</td><td>Yes (always 1)</td><td>Screen state. Conflated — skips intermediate values</td></tr>
+    <tr><td>SharedFlow</td><td>Hot</td><td>Configurable replay</td><td>One-off events: navigation, snackbars, analytics</td></tr>
+    <tr><td>callbackFlow</td><td>Cold</td><td>No</td><td>Wrapping listener APIs; must <span class="k">awaitClose</span></td></tr>
+    <tr><td>channelFlow</td><td>Cold</td><td>No</td><td>Concurrent emission from multiple coroutines</td></tr>
+  </table></div>
+  <div class="note"><b>Operator order matters.</b> <span class="k">flowOn</span> affects everything <i>upstream</i> of it; <span class="k">map</span>/<span class="k">filter</span> after it run on the collector’s context. <span class="k">distinctUntilChanged</span> before an expensive <span class="k">map</span>, not after. <span class="k">conflate</span> or <span class="k">collectLatest</span> when the consumer is slower than the producer.</div>
+
+  <h3 class="blk">do / don't</h3>
+  <div class="dd">
+    <div class="do"><h4>do</h4><ul>
+      <li>Expose <code>StateFlow</code>/<code>Flow</code>, keep <code>MutableStateFlow</code> private.</li>
+      <li><code>withContext</code> inside the function so callers stay dumb.</li>
+      <li><code>viewModelScope</code>, <code>lifecycleScope</code>, or an injected scope.</li>
+      <li><code>collectAsStateWithLifecycle()</code> / <code>repeatOnLifecycle</code>.</li>
+      <li>Rethrow <code>CancellationException</code>.</li>
+      <li>Inject dispatchers; assert with <code>runTest</code>.</li>
+      <li><code>WorkManager</code> for work that must survive process death.</li>
+    </ul></div>
+    <div class="dont"><h4>don't</h4><ul>
+      <li><code>GlobalScope</code> — unowned, untestable, leaks.</li>
+      <li><code>runBlocking</code> on the main thread.</li>
+      <li><code>Dispatchers.IO</code> for CPU-heavy work (or <code>Default</code> for blocking IO).</li>
+      <li><code>launch</code> in a composable body — use <code>LaunchedEffect</code>.</li>
+      <li><code>collect</code> in <code>onCreate</code> without <code>repeatOnLifecycle</code>.</li>
+      <li>Fire-and-forget <code>async</code> whose result nobody awaits.</li>
+      <li>Making UI state a <code>SharedFlow</code> — rotation loses it.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ================= 01 COMPOSE ================= -->
+<section class="panel-sec" id="sec-compose">
+  <div class="sec-head"><h2>compose.kt</h2><span class="path">// 01 · compose-bom · material3</span></div>
+  <p class="lede">You don’t mutate a view tree; you write a function of state. When state changes, Compose re-runs only the functions that read it. Everything below is a consequence of that one rule.</p>
+
+  <h3 class="blk">lab · what actually re-runs</h3>
+  <div class="lab">
+    <div class="controls" role="group" aria-label="Compose phase scenarios">
+      <button class="btn" data-ph="text" aria-pressed="true">Text changes</button>
+      <button class="btn" data-ph="offset" aria-pressed="false">Modifier.offset { } value changes</button>
+      <button class="btn" data-ph="alpha" aria-pressed="false">graphicsLayer { alpha } changes</button>
+      <button class="btn" data-ph="unstable" aria-pressed="false">Unstable param passed down</button>
+    </div>
+    <svg viewBox="0 0 700 130" role="img" aria-label="Composition, layout and drawing phases">
+      <g class="phase on" id="p-comp"><rect x="10" y="30" width="200" height="60" rx="12" stroke-width="1.4"/>
+        <text x="110" y="55" text-anchor="middle">1 · Composition</text><text x="110" y="74" text-anchor="middle" style="font-size:10px;fill:#585C64">what to show</text></g>
+      <g class="phase on" id="p-lay"><rect x="250" y="30" width="200" height="60" rx="12" stroke-width="1.4"/>
+        <text x="350" y="55" text-anchor="middle">2 · Layout</text><text x="350" y="74" text-anchor="middle" style="font-size:10px;fill:#585C64">measure &amp; place</text></g>
+      <g class="phase on" id="p-draw"><rect x="490" y="30" width="200" height="60" rx="12" stroke-width="1.4"/>
+        <text x="590" y="55" text-anchor="middle">3 · Drawing</text><text x="590" y="74" text-anchor="middle" style="font-size:10px;fill:#585C64">render pixels</text></g>
+      <path class="edge" d="M212 60 H248"/><path class="edge" d="M452 60 H488"/>
+    </svg>
+    <p class="caption" id="ph-caption">A state read inside composition re-runs all three phases. The later you read state, the less work happens.</p>
+  </div>
+
+  <h3 class="blk">key ideas</h3>
+  <div class="grid g2">
+    <div class="card"><h4>UI = f(state)</h4><p>No <code>findViewById</code>, no imperative setters. Change the state, let Compose diff. Same input → same output, every time.</p></div>
+    <div class="card"><h4>remember vs rememberSaveable</h4><p><span class="k">remember</span> survives recomposition. <span class="k">rememberSaveable</span> also survives rotation and process death (Bundle-able types only).</p></div>
+    <div class="card"><h4>State hoisting</h4><p>Stateless composable takes <code>value</code> + <code>onValueChange</code>. State lives at the lowest common ancestor that needs it. State down, events up.</p></div>
+    <div class="card"><h4>Modifier is a first-class param</h4><p>Every reusable composable: <span class="k">modifier: Modifier = Modifier</span> as the first optional parameter, applied to the root element, never consumed internally.</p></div>
+    <div class="card"><h4>Recomposition is unreliable by design</h4><p>It may run out of order, in parallel, be skipped, or be cancelled halfway. So a composable must be side-effect free and fast.</p></div>
+    <div class="card"><h4>Effects have keys</h4><p><span class="k">LaunchedEffect(key)</span> restarts when the key changes and cancels on leave. Wrong key = a coroutine that never restarts, or restarts every frame.</p></div>
+    <div class="card"><h4>Keys in lazy lists</h4><p><span class="k">key = { it.id }</span> keeps scroll position, animations and internal state correct when the list reorders.</p></div>
+    <div class="card"><h4>Modifier order is semantics</h4><p><code>padding().background()</code> ≠ <code>background().padding()</code>. Chains build outside-in: the first modifier is the outermost box.</p></div>
+    <div class="card"><h4>Stability &amp; skipping</h4><p>A composable is skippable only if all params are stable. <code>List</code>, <code>var</code> fields and interfaces from other modules are unstable → use immutable data classes, persistent collections, or <span class="k">@Immutable</span>.</p></div>
+    <div class="card"><h4>Defer state reads</h4><p>Pass a lambda instead of a value (<code>{ scroll.value }</code>), or read inside <span class="k">graphicsLayer</span>/<span class="k">drawBehind</span>, so a scroll or animation skips composition entirely.</p></div>
+    <div class="card"><h4>derivedStateOf, not recompute</h4><p>Use it when many state changes map to few output changes (e.g. <code>items → isEmpty</code>). Don’t wrap plain cheap expressions in it.</p></div>
+    <div class="card"><h4>Measure in release</h4><p>Debug builds are not representative. Profile an R8 release build, ship a Baseline Profile, and check jank with Macrobenchmark — not with a stopwatch.</p></div>
+  </div>
+
+  <h3 class="blk">side-effect picker</h3>
+  <div class="scroll-x"><table class="tbl">
+    <tr><th>API</th><th>Runs when</th><th>Typical use</th></tr>
+    <tr><td>LaunchedEffect(key)</td><td>Enters composition / key changes; cancels on exit</td><td>Load on first show, animate, show snackbar</td></tr>
+    <tr><td>rememberCoroutineScope()</td><td>You call it — from a callback</td><td><code>onClick { scope.launch { … } }</code></td></tr>
+    <tr><td>DisposableEffect(key)</td><td>Enter + cleanup on exit/key change</td><td>Register/unregister listeners, observers</td></tr>
+    <tr><td>SideEffect</td><td>After every successful composition</td><td>Publish state to a non-Compose object</td></tr>
+    <tr><td>rememberUpdatedState</td><td>—</td><td>Fresh lambda inside a long-lived effect without restarting it</td></tr>
+    <tr><td>produceState</td><td>Enters composition</td><td>Convert non-Compose async source into State</td></tr>
+    <tr><td>snapshotFlow</td><td>On observed state change</td><td>Turn Compose state into a Flow (e.g. log visible items)</td></tr>
+  </table></div>
+
+  <h3 class="blk">code that matters</h3>
+  <figure class="code"><figcaption><b>Hoisting</b><span>stateless leaf + stateful wrapper</span></figcaption><pre><span class="cl"><span class="k-com">// Reusable, previewable, testable — owns nothing.</span></span><span class="cl"><span class="k-ann">@Composable</span></span><span class="cl"><span class="k-kw">fun</span> <span class="k-fn">SearchField</span>(</span><span class="cl">    query: String,</span><span class="cl">    onQueryChange: (String) -&gt; Unit,</span><span class="cl">    modifier: Modifier = Modifier,   <span class="k-com">// first optional param, applied to root</span></span><span class="cl">) {</span><span class="cl">    <span class="k-fn">OutlinedTextField</span>(value = query, onValueChange = onQueryChange, modifier = modifier)</span><span class="cl">}</span><span class="cl"></span><span class="cl"><span class="k-com">// Only the wrapper owns state.</span></span><span class="cl"><span class="k-ann">@Composable</span></span><span class="cl"><span class="k-kw">fun</span> <span class="k-fn">SearchBar</span>(modifier: Modifier = Modifier) {</span><span class="cl">    <span class="k-kw">var</span> query <span class="k-kw">by</span> rememberSaveable { <span class="k-fn">mutableStateOf</span>(<span class="k-str">""</span>) }</span><span class="cl">    <span class="k-fn">SearchField</span>(query, onQueryChange = { query = <span class="k-kw">it</span> }, modifier = modifier)</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Screen wiring</b><span>route composable = state + events, nothing else</span></figcaption><pre><span class="cl"><span class="k-ann">@Composable</span></span><span class="cl"><span class="k-kw">fun</span> <span class="k-fn">CartRoute</span>(</span><span class="cl">    onCheckout: (OrderId) -&gt; Unit,          <span class="k-com">// navigation as a lambda, not a NavController</span></span><span class="cl">    vm: CartViewModel = <span class="k-fn">viewModel</span>(),</span><span class="cl">) {</span><span class="cl">    <span class="k-kw">val</span> state <span class="k-kw">by</span> vm.uiState.<span class="k-fn">collectAsStateWithLifecycle</span>()</span><span class="cl">    <span class="k-kw">val</span> snackbar = remember { <span class="k-fn">SnackbarHostState</span>() }</span><span class="cl"></span><span class="cl">    <span class="k-com">// Keyed on the event id: fires once per new error, not on every recomposition.</span></span><span class="cl">    <span class="k-fn">LaunchedEffect</span>(state.errorId) {</span><span class="cl">        state.errorMessage?.let { snackbar.<span class="k-fn">showSnackbar</span>(<span class="k-kw">it</span>) }</span><span class="cl">    }</span><span class="cl"></span><span class="cl">    <span class="k-fn">CartScreen</span>(</span><span class="cl">        state = state,</span><span class="cl">        snackbarHostState = snackbar,</span><span class="cl">        onQuantityChange = vm::setQuantity,</span><span class="cl">        onCheckout = { vm.<span class="k-fn">checkout</span>(onSuccess = onCheckout) },</span><span class="cl">    )</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Lists</b><span>stable keys, no index-based identity</span></figcaption><pre><span class="cl"><span class="k-fn">LazyColumn</span>(state = listState) {</span><span class="cl">    <span class="k-fn">items</span>(</span><span class="cl">        items = state.articles,</span><span class="cl">        key = { <span class="k-kw">it</span>.id },                  <span class="k-com">// identity survives reorder / insert</span></span><span class="cl">        contentType = { <span class="k-kw">it</span>.layoutType },  <span class="k-com">// better item reuse</span></span><span class="cl">    ) { article -&gt;</span><span class="cl">        <span class="k-fn">ArticleRow</span>(article, onClick = { <span class="k-fn">onOpen</span>(article.id) })</span><span class="cl">    }</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Performance</b><span>the same header, two costs</span></figcaption><pre><span class="cl"><span class="k-com">// BAD: reads scroll during composition -&gt; recomposes on every scroll pixel.</span></span><span class="cl"><span class="k-fn">Header</span>(alpha = <span class="k-num">1f</span> - (scroll.value / <span class="k-num">300f</span>).<span class="k-fn">coerceIn</span>(<span class="k-num">0f</span>, <span class="k-num">1f</span>))</span><span class="cl"></span><span class="cl"><span class="k-com">// GOOD: read moved into the draw phase -&gt; composition and layout are skipped.</span></span><span class="cl"><span class="k-fn">Header</span>(</span><span class="cl">    modifier = Modifier.graphicsLayer {</span><span class="cl">        alpha = <span class="k-num">1f</span> - (scroll.value / <span class="k-num">300f</span>).<span class="k-fn">coerceIn</span>(<span class="k-num">0f</span>, <span class="k-num">1f</span>)</span><span class="cl">    }</span><span class="cl">)</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Stability</b><span>make the state class skippable</span></figcaption><pre><span class="cl"><span class="k-com">// Unstable: List is an interface, Compose can't prove it won't change in place.</span></span><span class="cl"><span class="k-kw">data</span> <span class="k-kw">class</span> <span class="k-fn">FeedUiState</span>(<span class="k-kw">val</span> articles: List&lt;Article&gt;, <span class="k-kw">val</span> loading: Boolean)</span><span class="cl"></span><span class="cl"><span class="k-com">// Stable: persistent collection from kotlinx.collections.immutable</span></span><span class="cl"><span class="k-kw">data</span> <span class="k-kw">class</span> <span class="k-fn">FeedUiState</span>(</span><span class="cl">    <span class="k-kw">val</span> articles: ImmutableList&lt;Article&gt; = <span class="k-fn">persistentListOf</span>(),</span><span class="cl">    <span class="k-kw">val</span> loading: Boolean = <span class="k-kw">false</span>,</span><span class="cl">)</span></pre></figure>
+
+  <div class="note"><b>Diagnose before you optimise.</b> Enable Compose compiler metrics (<code>reports</code>/<code>metrics</code> destination in the compose compiler options) to see which composables are <i>restartable</i> and <i>skippable</i>, and use Layout Inspector’s recomposition counts. Guessing at stability wastes days.</div>
+
+  <h3 class="blk">do / don't</h3>
+  <div class="dd">
+    <div class="do"><h4>do</h4><ul>
+      <li>One <code>UiState</code> per screen, exposed as <code>StateFlow</code>.</li>
+      <li>Pass <code>state</code> down, lambdas up.</li>
+      <li><code>@Preview</code> the stateless composables.</li>
+      <li>Hoist only as high as needed.</li>
+      <li>Use <code>Modifier</code> params for layout decisions from the parent.</li>
+      <li>Slot APIs (<code>content: @Composable () -&gt; Unit</code>) for flexibility.</li>
+    </ul></div>
+    <div class="dont"><h4>don't</h4><ul>
+      <li><code>mutableStateOf</code> without <code>remember</code>.</li>
+      <li>Network / DB / navigation calls in a composable body.</li>
+      <li>Pass the ViewModel into child composables.</li>
+      <li>Read <code>LocalContext</code> to hunt for an Activity.</li>
+      <li><code>Modifier.fillMaxSize()</code> inside a reusable leaf — that’s the parent’s call.</li>
+      <li>Depend on recomposition order or count.</li>
+      <li>Nest scrollable containers of the same axis.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ================= 02 NAVIGATION 2 ================= -->
+<section class="panel-sec" id="sec-nav2">
+  <div class="sec-head"><h2>navigation2.kt</h2><span class="path">// 02 · navigation-compose · type-safe routes</span></div>
+  <p class="lede">Nav2 owns the back stack for you. You declare a graph, ask a <span class="k">NavController</span> to navigate, and observe the result. It is mature, deep-link rich, and the right choice while Fragments or XML are still in the app.</p>
+
+  <div class="lab">
+    <svg viewBox="0 0 700 150" role="img" aria-label="Navigation 2 ownership diagram">
+      <g class="node active"><rect x="20" y="45" width="180" height="58" rx="11" stroke-width="1.4"/>
+        <text x="110" y="70" text-anchor="middle">Your UI</text><text x="110" y="88" text-anchor="middle" style="font-size:10px;fill:#585C64">navigate(route)</text></g>
+      <g class="node error"><rect x="255" y="30" width="190" height="88" rx="11" stroke-width="1.4"/>
+        <text x="350" y="60" text-anchor="middle">NavController</text><text x="350" y="79" text-anchor="middle" style="font-size:10px;fill:#D9A0A0">internal back stack</text>
+        <text x="350" y="96" text-anchor="middle" style="font-size:10px;fill:#D9A0A0">source of truth #2</text></g>
+      <g class="node active"><rect x="500" y="45" width="180" height="58" rx="11" stroke-width="1.4"/>
+        <text x="590" y="70" text-anchor="middle">NavHost</text><text x="590" y="88" text-anchor="middle" style="font-size:10px;fill:#585C64">renders current entry</text></g>
+      <path class="edge" d="M202 74 H253"/><path class="edge" d="M447 74 H498"/>
+      <path class="edge" d="M590 110 V132 H110 V106" stroke-dasharray="4 4"/>
+      <text x="350" y="146" text-anchor="middle" style="font-family:var(--mono);font-size:10px;fill:#585C64">UI observes state it does not own</text>
+    </svg>
+  </div>
+
+  <h3 class="blk">key ideas</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Three pieces</h4><p><span class="k">NavController</span> (who navigates) + <span class="k">NavHost</span> (where screens render) + destinations. Hoist the controller at the top of the app, not inside features.</p></div>
+    <div class="card"><h4>Type-safe routes</h4><p>Since Navigation 2.8, routes are <span class="k">@Serializable</span> objects/data classes instead of string templates. Compile-time argument checking, no manual encoding.</p></div>
+    <div class="card"><h4>Pass IDs, not objects</h4><p>Arguments belong in the back stack (and in a saved bundle). Send a key; load the entity from the repository on the destination side.</p></div>
+    <div class="card"><h4>Features must not see NavController</h4><p>Expose <code>onOpenX: (Id) -&gt; Unit</code> lambdas. Only the app module wires them. This keeps feature modules independent and previewable.</p></div>
+    <div class="card"><h4>Nested graphs per feature</h4><p>Group a feature’s screens in a nested graph with its own start destination, so <span class="k">popUpTo(FeatureGraph)</span> clears the whole flow at once.</p></div>
+    <div class="card"><h4>Arguments arrive via SavedStateHandle</h4><p>In the destination’s ViewModel: <code>savedStateHandle.toRoute&lt;Detail&gt;()</code>. No need to pass args through composable parameters into the ViewModel.</p></div>
+    <div class="card"><h4>Bottom bar semantics</h4><p><span class="k">saveState</span> + <span class="k">restoreState</span> + <span class="k">launchSingleTop</span> + <span class="k">popUpTo(startDestination)</span> is the standard tab pattern. Anything else duplicates entries.</p></div>
+    <div class="card"><h4>Scoped ViewModels</h4><p>A ViewModel can be scoped to a back stack entry (per screen) or to a nested graph entry (shared across a flow). Choose deliberately; graph scope is a common leak of state between flows.</p></div>
+    <div class="card"><h4>Deep links &amp; testing</h4><p><span class="k">navDeepLink&lt;Route&gt;</span> for type-safe links; test the graph with <code>TestNavHostController</code> and assert the current destination, not the pixels.</p></div>
+  </div>
+
+  <h3 class="blk">code that matters</h3>
+  <figure class="code"><figcaption><b>Type-safe graph</b><span>Navigation 2.8+</span></figcaption><pre><span class="cl"><span class="k-ann">@Serializable</span> <span class="k-kw">data</span> <span class="k-kw">object</span> Home</span><span class="cl"><span class="k-ann">@Serializable</span> <span class="k-kw">data</span> <span class="k-kw">class</span> <span class="k-fn">Product</span>(<span class="k-kw">val</span> id: String)</span><span class="cl"></span><span class="cl"><span class="k-ann">@Composable</span></span><span class="cl"><span class="k-kw">fun</span> <span class="k-fn">AppNavHost</span>(navController: NavHostController = <span class="k-fn">rememberNavController</span>()) {</span><span class="cl">    <span class="k-fn">NavHost</span>(navController = navController, startDestination = Home) {</span><span class="cl"></span><span class="cl">        composable&lt;Home&gt; {</span><span class="cl">            <span class="k-fn">HomeRoute</span>(onOpenProduct = { id -&gt; navController.<span class="k-fn">navigate</span>(<span class="k-fn">Product</span>(id)) })</span><span class="cl">        }</span><span class="cl"></span><span class="cl">        composable&lt;Product&gt; { entry -&gt;</span><span class="cl">            <span class="k-kw">val</span> route: Product = entry.<span class="k-fn">toRoute</span>()      <span class="k-com">// typed, no string keys</span></span><span class="cl">            <span class="k-fn">ProductRoute</span>(id = route.id, onBack = navController::popBackStack)</span><span class="cl">        }</span><span class="cl">    }</span><span class="cl">}</span><span class="cl"></span><span class="cl"><span class="k-com">// In the destination's ViewModel:</span></span><span class="cl"><span class="k-kw">class</span> <span class="k-fn">ProductViewModel</span>(handle: SavedStateHandle) : <span class="k-fn">ViewModel</span>() {</span><span class="cl">    <span class="k-kw">private</span> <span class="k-kw">val</span> args = handle.toRoute&lt;Product&gt;()</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Bottom navigation</b><span>the only correct incantation</span></figcaption><pre><span class="cl"><span class="k-kw">fun</span> NavHostController.<span class="k-fn">switchTab</span>(route: Any) = <span class="k-fn">navigate</span>(route) {</span><span class="cl">    <span class="k-fn">popUpTo</span>(graph.<span class="k-fn">findStartDestination</span>().id) { saveState = <span class="k-kw">true</span> }</span><span class="cl">    launchSingleTop = <span class="k-kw">true</span>      <span class="k-com">// no duplicate copies of the same tab</span></span><span class="cl">    restoreState = <span class="k-kw">true</span>         <span class="k-com">// bring back the tab's scroll/state</span></span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Nested feature graph</b><span>clear a whole flow in one pop</span></figcaption><pre><span class="cl"><span class="k-ann">@Serializable</span> <span class="k-kw">data</span> <span class="k-kw">object</span> Checkout          <span class="k-com">// graph</span></span><span class="cl"><span class="k-ann">@Serializable</span> <span class="k-kw">data</span> <span class="k-kw">object</span> Address           <span class="k-com">// destinations</span></span><span class="cl"><span class="k-ann">@Serializable</span> <span class="k-kw">data</span> <span class="k-kw">object</span> Payment</span><span class="cl"></span><span class="cl">navigation&lt;Checkout&gt;(startDestination = Address) {</span><span class="cl">    composable&lt;Address&gt; { <span class="k-fn">AddressRoute</span>(onNext = { navController.<span class="k-fn">navigate</span>(Payment) }) }</span><span class="cl">    composable&lt;Payment&gt; { <span class="k-fn">PaymentRoute</span>(onDone = {</span><span class="cl">        navController.<span class="k-fn">navigate</span>(Home) { popUpTo&lt;Checkout&gt; { inclusive = <span class="k-kw">true</span> } }</span><span class="cl">    }) }</span><span class="cl">}</span></pre></figure>
+
+  <h3 class="blk">do / don't</h3>
+  <div class="dd">
+    <div class="do"><h4>do</h4><ul>
+      <li>One <code>NavHost</code> per navigation area; hoist the controller.</li>
+      <li>Serializable route types + <code>toRoute()</code>.</li>
+      <li>Navigate from callbacks and effects.</li>
+      <li>Model “tab” state as the back stack, not a separate variable.</li>
+      <li>Test destinations with <code>TestNavHostController</code>.</li>
+    </ul></div>
+    <div class="dont"><h4>don't</h4><ul>
+      <li>Pass Parcelable entities as arguments.</li>
+      <li>Call <code>navigate()</code> from a composable body — it fires on recomposition.</li>
+      <li>Inject <code>NavController</code> into ViewModels.</li>
+      <li>Concatenate route strings by hand.</li>
+      <li>Keep a second copy of “current screen” in a ViewModel.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ================= 03 NAVIGATION 3 ================= -->
+<section class="panel-sec" id="sec-nav3">
+  <div class="sec-head"><h2>navigation3.kt</h2><span class="path">// 03 · navigation3-runtime · navigation3-ui · stable 1.0</span></div>
+  <p class="lede">Nav3 removes the hidden state. The back stack is a plain list of keys that <b>you</b> hold in Compose state; <span class="k">NavDisplay</span> observes it and renders. Navigation finally obeys single-source-of-truth.</p>
+
+  <h3 class="blk">lab · you own the list</h3>
+  <div class="lab">
+    <div class="controls">
+      <button class="btn" id="n3-push-list">backStack.add(ProductList)</button>
+      <button class="btn" id="n3-push-detail">backStack.add(ProductDetail(id))</button>
+      <button class="btn" id="n3-pop">removeLastOrNull()</button>
+      <button class="btn" id="n3-reset">reset to [Home]</button>
+    </div>
+    <div class="stackbox" id="n3-stack"></div>
+    <p class="caption" id="n3-caption">Top of the list = what the user sees. Mutating the list <i>is</i> navigating — no controller, no events.</p>
+  </div>
+
+  <h3 class="blk">nav2 → nav3 in one table</h3>
+  <div class="scroll-x"><table class="tbl">
+    <tr><th>Concern</th><th>Navigation 2</th><th>Navigation 3</th></tr>
+    <tr><td>Back stack</td><td>Inside NavController</td><td>Your <code>List&lt;NavKey&gt;</code> in Compose state</td></tr>
+    <tr><td>Navigate</td><td><code>navController.navigate(route)</code></td><td><code>backStack.add(key)</code></td></tr>
+    <tr><td>Back</td><td><code>popBackStack()</code></td><td><code>backStack.removeLastOrNull()</code></td></tr>
+    <tr><td>Declare screens</td><td><code>NavHost { composable&lt;T&gt; { } }</code></td><td><code>entryProvider { entry&lt;T&gt; { } }</code></td></tr>
+    <tr><td>Render</td><td><code>NavHost</code></td><td><code>NavDisplay</code></td></tr>
+    <tr><td>Multi-pane</td><td>Manual / adaptive workarounds</td><td><code>SceneStrategy</code> — several entries visible at once</td></tr>
+    <tr><td>Per-screen ViewModel / state</td><td>Built in</td><td>Opt-in via <code>entryDecorators</code></td></tr>
+    <tr><td>Fragments &amp; XML</td><td>Supported</td><td>Compose only</td></tr>
+    <tr><td>Multiplatform</td><td>Partial</td><td>Runtime is cross-platform; JetBrains ships a CMP display</td></tr>
+  </table></div>
+
+  <h3 class="blk">key ideas</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Keys, not routes</h4><p>Each screen is a <span class="k">@Serializable</span> type implementing <span class="k">NavKey</span>. The key carries its own arguments as normal Kotlin properties.</p></div>
+    <div class="card"><h4>rememberNavBackStack</h4><p>Creates a back stack that is saved and restored across configuration change and process death — as long as the keys are <span class="k">NavKey</span> + serializable.</p></div>
+    <div class="card"><h4>entryProvider maps key → content</h4><p><span class="k">entry&lt;Detail&gt; { key -&gt; … }</span> receives the typed key. No bundles, no <code>toRoute()</code>, no argument plumbing.</p></div>
+    <div class="card"><h4>Decorators are opt-in behaviour</h4><p>Saved state and per-entry <code>ViewModelStore</code> come from <span class="k">entryDecorators</span>. Forget them and your screen state or ViewModel scope disappears.</p></div>
+    <div class="card"><h4>onBack takes a count</h4><p>Predictive back may pop several entries. Honour the count instead of assuming one.</p></div>
+    <div class="card"><h4>Scenes = adaptive layout</h4><p>A <span class="k">SceneStrategy</span> can decide that the top two keys should be shown side by side. List-detail on a tablet becomes a strategy plus metadata, not a fork in your UI code.</p></div>
+    <div class="card"><h4>Navigation state is testable</h4><p>Because it’s a list, you can unit-test navigation logic in a plain JVM test — no Robolectric, no controller.</p></div>
+    <div class="card"><h4>Own it in one place</h4><p>Put the list and its mutations in a single class (e.g. a <code>Navigator</code> held above the UI). A list that anyone can mutate from anywhere is worse than Nav2.</p></div>
+    <div class="card"><h4>Migration order</h4><p>Routes → <code>NavKey</code>; hold the stack; replace controller calls with list edits; graph → <code>entryProvider</code>; <code>NavHost</code> → <code>NavDisplay</code>. Migrate one feature at a time.</p></div>
+  </div>
+
+  <h3 class="blk">code that matters</h3>
+  <figure class="code"><figcaption><b>Minimal app</b><span>keys · back stack · NavDisplay</span></figcaption><pre><span class="cl"><span class="k-ann">@Serializable</span> <span class="k-kw">data</span> <span class="k-kw">object</span> Home : NavKey</span><span class="cl"><span class="k-ann">@Serializable</span> <span class="k-kw">data</span> <span class="k-kw">class</span> <span class="k-fn">ProductDetail</span>(<span class="k-kw">val</span> id: String) : NavKey</span><span class="cl"></span><span class="cl"><span class="k-ann">@Composable</span></span><span class="cl"><span class="k-kw">fun</span> <span class="k-fn">App</span>() {</span><span class="cl">    <span class="k-kw">val</span> backStack = <span class="k-fn">rememberNavBackStack</span>(Home)      <span class="k-com">// saved across process death</span></span><span class="cl"></span><span class="cl">    <span class="k-fn">NavDisplay</span>(</span><span class="cl">        backStack = backStack,</span><span class="cl">        onBack = { count -&gt; <span class="k-fn">repeat</span>(count) { backStack.<span class="k-fn">removeLastOrNull</span>() } },</span><span class="cl">        entryDecorators = <span class="k-fn">listOf</span>(</span><span class="cl">            <span class="k-fn">rememberSceneSetupNavEntryDecorator</span>(),</span><span class="cl">            <span class="k-fn">rememberSavedStateNavEntryDecorator</span>(),      <span class="k-com">// per-entry rememberSaveable</span></span><span class="cl">            <span class="k-fn">rememberViewModelStoreNavEntryDecorator</span>(),  <span class="k-com">// per-entry ViewModel scope</span></span><span class="cl">        ),</span><span class="cl">        entryProvider = entryProvider {</span><span class="cl">            entry&lt;Home&gt; {</span><span class="cl">                <span class="k-fn">HomeRoute</span>(onOpen = { id -&gt; backStack.<span class="k-fn">add</span>(<span class="k-fn">ProductDetail</span>(id)) })</span><span class="cl">            }</span><span class="cl">            entry&lt;ProductDetail&gt; { key -&gt;</span><span class="cl">                <span class="k-fn">ProductRoute</span>(id = key.id)               <span class="k-com">// typed args, no bundle</span></span><span class="cl">            }</span><span class="cl">        },</span><span class="cl">    )</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Adaptive list-detail</b><span>two entries, one scene</span></figcaption><pre><span class="cl"><span class="k-kw">val</span> sceneStrategy = rememberListDetailSceneStrategy&lt;NavKey&gt;()</span><span class="cl"></span><span class="cl"><span class="k-fn">NavDisplay</span>(</span><span class="cl">    backStack = backStack,</span><span class="cl">    sceneStrategy = sceneStrategy,</span><span class="cl">    onBack = { count -&gt; <span class="k-fn">repeat</span>(count) { backStack.<span class="k-fn">removeLastOrNull</span>() } },</span><span class="cl">    entryProvider = entryProvider {</span><span class="cl">        entry&lt;ProductList&gt;(metadata = ListDetailSceneStrategy.<span class="k-fn">listPane</span>()) {</span><span class="cl">            <span class="k-fn">ProductListRoute</span>(onOpen = { backStack.<span class="k-fn">add</span>(<span class="k-fn">ProductDetail</span>(<span class="k-kw">it</span>)) })</span><span class="cl">        }</span><span class="cl">        entry&lt;ProductDetail&gt;(metadata = ListDetailSceneStrategy.<span class="k-fn">detailPane</span>()) { key -&gt;</span><span class="cl">            <span class="k-fn">ProductRoute</span>(key.id)</span><span class="cl">        }</span><span class="cl">    },</span><span class="cl">)</span><span class="cl"><span class="k-com">// Phone: detail replaces list. Tablet: both panes visible. Same back stack.</span></span></pre></figure>
+
+  <figure class="code"><figcaption><b>Owning the state</b><span>one class, testable, no NavController</span></figcaption><pre><span class="cl"><span class="k-kw">class</span> <span class="k-fn">Navigator</span>(initial: NavKey = Home) {</span><span class="cl">    <span class="k-kw">val</span> backStack: SnapshotStateList&lt;NavKey&gt; = <span class="k-fn">mutableStateListOf</span>(initial)</span><span class="cl"></span><span class="cl">    <span class="k-kw">fun</span> <span class="k-fn">goTo</span>(key: NavKey) { backStack.<span class="k-fn">add</span>(key) }</span><span class="cl"></span><span class="cl">    <span class="k-kw">fun</span> <span class="k-fn">back</span>(count: Int = <span class="k-num">1</span>) { <span class="k-fn">repeat</span>(count) { backStack.<span class="k-fn">removeLastOrNull</span>() } }</span><span class="cl"></span><span class="cl">    <span class="k-kw">fun</span> <span class="k-fn">switchTab</span>(tab: NavKey) {           <span class="k-com">// clear to a single root</span></span><span class="cl">        backStack.<span class="k-fn">clear</span>(); backStack.<span class="k-fn">add</span>(tab)</span><span class="cl">    }</span><span class="cl">}</span><span class="cl"></span><span class="cl"><span class="k-com">// Plain JVM test — no Android, no Robolectric.</span></span><span class="cl"><span class="k-ann">@Test</span> <span class="k-kw">fun</span> `checkout clears cart flow`() {</span><span class="cl">    <span class="k-kw">val</span> nav = <span class="k-fn">Navigator</span>()</span><span class="cl">    nav.<span class="k-fn">goTo</span>(Cart); nav.<span class="k-fn">goTo</span>(Payment); nav.<span class="k-fn">switchTab</span>(Home)</span><span class="cl">    <span class="k-fn">assertEquals</span>(<span class="k-fn">listOf</span>(Home), nav.backStack.<span class="k-fn">toList</span>())</span><span class="cl">}</span></pre></figure>
+
+  <div class="note"><b>Which one for a new screen?</b> Compose-only app, or you want adaptive multi-pane and testable navigation → Nav3. Still hosting Fragments, XML, or relying on Nav2 features you have not replaced yet → stay on Nav2 and migrate feature by feature. Don’t run both in the same navigation area.</div>
+
+  <h3 class="blk">do / don't</h3>
+  <div class="dd">
+    <div class="do"><h4>do</h4><ul>
+      <li>Keep the back stack in one owner above the UI.</li>
+      <li>Use <code>rememberNavBackStack</code> so state survives process death.</li>
+      <li>Add all three decorators unless you know why you’re dropping one.</li>
+      <li>Respect the <code>count</code> in <code>onBack</code>.</li>
+      <li>Unit-test navigation as list operations.</li>
+    </ul></div>
+    <div class="dont"><h4>don't</h4><ul>
+      <li>Mutate the list from deep inside feature composables.</li>
+      <li>Put non-serializable objects in keys.</li>
+      <li>Rebuild a NavController abstraction on top of Nav3.</li>
+      <li>Mix <code>NavHost</code> and <code>NavDisplay</code> in one area.</li>
+      <li>Assume back always pops exactly one entry.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ================= 04 GRADLE ================= -->
+<section class="panel-sec" id="sec-gradle">
+  <div class="sec-head"><h2>build.gradle.kts</h2><span class="path">// 04 · kotlin dsl · version catalog · agp</span></div>
+  <p class="lede">Gradle is not a config file, it’s a program with three phases. Most “Gradle is slow” and “it works on my machine” problems are really work happening in the wrong phase, or versions declared in the wrong place.</p>
+
+  <h3 class="blk">lab · the three phases</h3>
+  <div class="lab">
+    <div class="steps" role="group" aria-label="Gradle build lifecycle">
+      <button class="step" data-gr="init" aria-pressed="true"><span class="n">PHASE 01</span><span class="t">Initialization</span></button>
+      <button class="step" data-gr="conf" aria-pressed="false"><span class="n">PHASE 02</span><span class="t">Configuration</span></button>
+      <button class="step" data-gr="exec" aria-pressed="false"><span class="n">PHASE 03</span><span class="t">Execution</span></button>
+    </div>
+    <p class="caption" id="gr-caption"></p>
+  </div>
+
+  <h3 class="blk">which file does what</h3>
+  <div class="scroll-x"><table class="tbl">
+    <tr><th>File</th><th>Answers</th><th>Put here</th></tr>
+    <tr><td>settings.gradle.kts</td><td>Which modules exist? Where do dependencies come from?</td><td>Module includes, repositories, version catalog wiring</td></tr>
+    <tr><td>gradle/libs.versions.toml</td><td>Which versions?</td><td>Every version, library and plugin alias</td></tr>
+    <tr><td>build.gradle.kts (root)</td><td>Shared plugin declarations</td><td><code>plugins { alias(…) apply false }</code> only</td></tr>
+    <tr><td>build.gradle.kts (module)</td><td>How is this module built?</td><td>android { }, dependencies, module-specific config</td></tr>
+    <tr><td>build-logic / buildSrc</td><td>What do all modules share?</td><td>Convention plugins</td></tr>
+    <tr><td>gradle.properties</td><td>How does Gradle itself run?</td><td>JVM args, caching, parallel, config cache</td></tr>
+    <tr><td>gradle/wrapper/…properties</td><td>Which Gradle?</td><td>Distribution URL — commit it, never bypass the wrapper</td></tr>
+  </table></div>
+
+  <h3 class="blk">key ideas</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Always use the wrapper</h4><p><code>./gradlew</code>, never a locally installed <code>gradle</code>. The wrapper pins the version for every machine and CI runner.</p></div>
+    <div class="card"><h4>implementation vs api</h4><p><span class="k">implementation</span> hides the dependency from consumers and keeps recompiles small. <span class="k">api</span> leaks it into their compile classpath — use it only when the type appears in your public signatures.</p></div>
+    <div class="card"><h4>Version catalog is the only place for versions</h4><p><code>libs.versions.toml</code> + <code>alias(libs.plugins.x)</code>. No hardcoded version strings in module files, no <code>1.+</code>.</p></div>
+    <div class="card"><h4>BOMs align families</h4><p><code>implementation(platform(libs.compose.bom))</code> then declare Compose artifacts without versions. Same for Firebase, OkHttp, Kotlin coroutines.</p></div>
+    <div class="card"><h4>Build types vs flavors</h4><p>Build type = how it’s built (debug/release, minify, signing). Flavor = which product (free/paid, brand, environment). Variants are the cross-product — keep it small.</p></div>
+    <div class="card"><h4>KSP over kapt</h4><p>kapt runs javac stub generation and blocks incremental Kotlin compilation. Every library that offers KSP should be on KSP.</p></div>
+    <div class="card"><h4>Convention plugins, not allprojects</h4><p><code>subprojects { }</code> / <code>allprojects { }</code> couple every module and break configuration cache. Put shared setup in a precompiled script plugin in <code>build-logic</code>.</p></div>
+    <div class="card"><h4>Configuration cache changes the rules</h4><p>No reading env vars, files, or <code>project</code> at execution time. Use lazy <code>Provider</code>/<code>Property</code> APIs. Then the whole configuration phase is skipped on re-runs.</p></div>
+    <div class="card"><h4>The module graph is the build time</h4><p>Deep chains serialize the build. Wide, shallow graphs with <code>:core:*</code> leaves and api/impl separation parallelize. Measure with a build scan before splitting modules.</p></div>
+    <div class="card"><h4>Release quality gates</h4><p>R8 with <code>isMinifyEnabled</code> + <code>isShrinkResources</code>, a Baseline Profile, <code>bundleRelease</code> for the Play Store, and no secrets in the repo.</p></div>
+    <div class="card"><h4>Reproducible CI</h4><p>Same wrapper, remote build cache, <code>--no-daemon</code> only if the runner is ephemeral, and dependency verification/locking for supply-chain safety.</p></div>
+  </div>
+
+  <h3 class="blk">code that matters</h3>
+  <figure class="code"><figcaption><b>gradle/libs.versions.toml</b><span>one source of truth · pin real versions from the release notes</span></figcaption><pre><span class="cl">[versions]</span><span class="cl">agp = <span class="k-str">"8.13.0"</span></span><span class="cl">kotlin = <span class="k-str">"2.2.20"</span></span><span class="cl">ksp = <span class="k-str">"2.2.20-2.0.4"</span></span><span class="cl">composeBom = <span class="k-str">"2025.11.00"</span></span><span class="cl">nav3 = <span class="k-str">"1.0.0"</span></span><span class="cl"></span><span class="cl">[libraries]</span><span class="cl">compose-bom       = { group = <span class="k-str">"androidx.compose"</span>, name = <span class="k-str">"compose-bom"</span>, version.ref = <span class="k-str">"composeBom"</span> }</span><span class="cl">compose-ui        = { group = <span class="k-str">"androidx.compose.ui"</span>, name = <span class="k-str">"ui"</span> }              <span class="k-com"># version from BOM</span></span><span class="cl">compose-material3 = { group = <span class="k-str">"androidx.compose.material3"</span>, name = <span class="k-str">"material3"</span> }</span><span class="cl">nav3-runtime      = { group = <span class="k-str">"androidx.navigation3"</span>, name = <span class="k-str">"navigation3-runtime"</span>, version.ref = <span class="k-str">"nav3"</span> }</span><span class="cl">nav3-ui           = { group = <span class="k-str">"androidx.navigation3"</span>, name = <span class="k-str">"navigation3-ui"</span>, version.ref = <span class="k-str">"nav3"</span> }</span><span class="cl">lifecycle-vm-nav3 = { group = <span class="k-str">"androidx.lifecycle"</span>, name = <span class="k-str">"lifecycle-viewmodel-navigation3"</span>, version = <span class="k-str">"1.0.0"</span> }</span><span class="cl"></span><span class="cl">[plugins]</span><span class="cl">android-application = { id = <span class="k-str">"com.android.application"</span>, version.ref = <span class="k-str">"agp"</span> }</span><span class="cl">kotlin-android      = { id = <span class="k-str">"org.jetbrains.kotlin.android"</span>, version.ref = <span class="k-str">"kotlin"</span> }</span><span class="cl">compose-compiler    = { id = <span class="k-str">"org.jetbrains.kotlin.plugin.compose"</span>, version.ref = <span class="k-str">"kotlin"</span> }</span><span class="cl">kotlin-serialization = { id = <span class="k-str">"org.jetbrains.kotlin.plugin.serialization"</span>, version.ref = <span class="k-str">"kotlin"</span> }</span><span class="cl">ksp                 = { id = <span class="k-str">"com.google.devtools.ksp"</span>, version.ref = <span class="k-str">"ksp"</span> }</span></pre></figure>
+
+  <figure class="code"><figcaption><b>app/build.gradle.kts</b><span>readable module config</span></figcaption><pre><span class="cl">plugins {</span><span class="cl">    <span class="k-fn">alias</span>(libs.plugins.android.application)</span><span class="cl">    <span class="k-fn">alias</span>(libs.plugins.kotlin.android)</span><span class="cl">    <span class="k-fn">alias</span>(libs.plugins.compose.compiler)</span><span class="cl">    <span class="k-fn">alias</span>(libs.plugins.kotlin.serialization)</span><span class="cl">}</span><span class="cl"></span><span class="cl">android {</span><span class="cl">    namespace = <span class="k-str">"com.example.shop"</span></span><span class="cl">    compileSdk = <span class="k-num">36</span></span><span class="cl"></span><span class="cl">    defaultConfig {</span><span class="cl">        applicationId = <span class="k-str">"com.example.shop"</span></span><span class="cl">        minSdk = <span class="k-num">24</span></span><span class="cl">        targetSdk = <span class="k-num">36</span></span><span class="cl">        versionCode = <span class="k-num">1</span></span><span class="cl">        versionName = <span class="k-str">"1.0.0"</span></span><span class="cl">    }</span><span class="cl"></span><span class="cl">    buildTypes {</span><span class="cl">        release {</span><span class="cl">            isMinifyEnabled = <span class="k-kw">true</span></span><span class="cl">            isShrinkResources = <span class="k-kw">true</span></span><span class="cl">            <span class="k-fn">proguardFiles</span>(<span class="k-fn">getDefaultProguardFile</span>(<span class="k-str">"proguard-android-optimize.txt"</span>), <span class="k-str">"proguard-rules.pro"</span>)</span><span class="cl">        }</span><span class="cl">        debug { applicationIdSuffix = <span class="k-str">".debug"</span> }   <span class="k-com">// install both side by side</span></span><span class="cl">    }</span><span class="cl"></span><span class="cl">    buildFeatures { compose = <span class="k-kw">true</span> }</span><span class="cl">}</span><span class="cl"></span><span class="cl">dependencies {</span><span class="cl">    <span class="k-fn">implementation</span>(<span class="k-fn">platform</span>(libs.compose.bom))     <span class="k-com">// versions come from the BOM</span></span><span class="cl">    <span class="k-fn">implementation</span>(libs.compose.ui)</span><span class="cl">    <span class="k-fn">implementation</span>(libs.compose.material3)</span><span class="cl">    <span class="k-fn">implementation</span>(libs.nav3.runtime)</span><span class="cl">    <span class="k-fn">implementation</span>(libs.nav3.ui)</span><span class="cl">    <span class="k-fn">implementation</span>(libs.lifecycle.vm.nav3)</span><span class="cl"></span><span class="cl">    <span class="k-fn">androidTestImplementation</span>(<span class="k-fn">platform</span>(libs.compose.bom))</span><span class="cl">}</span></pre></figure>
+
+  <figure class="code"><figcaption><b>gradle.properties</b><span>the cheapest build-speed win you will ever get</span></figcaption><pre><span class="cl">org.gradle.jvmargs=-Xmx4g -XX:+UseParallelGC</span><span class="cl">org.gradle.parallel=<span class="k-kw">true</span></span><span class="cl">org.gradle.caching=<span class="k-kw">true</span></span><span class="cl">org.gradle.configuration-cache=<span class="k-kw">true</span></span><span class="cl"></span><span class="cl">android.useAndroidX=<span class="k-kw">true</span></span><span class="cl">android.nonTransitiveRClass=<span class="k-kw">true</span></span><span class="cl">kotlin.incremental=<span class="k-kw">true</span></span></pre></figure>
+
+  <figure class="code"><figcaption><b>build-logic convention plugin</b><span>stop copy-pasting android { } into 30 modules</span></figcaption><pre><span class="cl"><span class="k-com">// build-logic/convention/src/main/kotlin/shop.android.library.gradle.kts</span></span><span class="cl">plugins {</span><span class="cl">    <span class="k-fn">id</span>(<span class="k-str">"com.android.library"</span>)</span><span class="cl">    <span class="k-fn">id</span>(<span class="k-str">"org.jetbrains.kotlin.android"</span>)</span><span class="cl">}</span><span class="cl"></span><span class="cl">android {</span><span class="cl">    compileSdk = <span class="k-num">36</span></span><span class="cl">    defaultConfig { minSdk = <span class="k-num">24</span> }</span><span class="cl">    compileOptions {</span><span class="cl">        sourceCompatibility = JavaVersion.VERSION_17</span><span class="cl">        targetCompatibility = JavaVersion.VERSION_17</span><span class="cl">    }</span><span class="cl">}</span><span class="cl"></span><span class="cl"><span class="k-com">// Then in any module:</span></span><span class="cl">plugins { <span class="k-fn">id</span>(<span class="k-str">"shop.android.library"</span>) }</span></pre></figure>
+
+  <figure class="code"><figcaption><b>Commands worth memorising</b><span>diagnose before you guess</span></figcaption><pre><span class="cl">./gradlew :app:dependencies --configuration releaseRuntimeClasspath   <span class="k-com"># who pulled that in</span></span><span class="cl">./gradlew :app:assembleDebug --scan                                   <span class="k-com"># shareable build report</span></span><span class="cl">./gradlew build --configuration-cache                                  <span class="k-com"># find cache violations</span></span><span class="cl">./gradlew :app:bundleRelease                                           <span class="k-com"># AAB for Play</span></span><span class="cl">./gradlew --stop                                                       <span class="k-com"># kill stale daemons</span></span><span class="cl">./gradlew :app:lintRelease :app:testDebugUnitTest                      <span class="k-com"># the CI minimum</span></span></pre></figure>
+
+  <h3 class="blk">do / don't</h3>
+  <div class="dd">
+    <div class="do"><h4>do</h4><ul>
+      <li>Commit the wrapper and use <code>./gradlew</code> everywhere.</li>
+      <li>Keep module files short: plugins, android, dependencies.</li>
+      <li>Move shared logic into convention plugins.</li>
+      <li>Turn on build cache + configuration cache and keep them green.</li>
+      <li>Keep secrets in <code>local.properties</code> / CI secrets, injected lazily.</li>
+      <li>Review dependency additions like code.</li>
+    </ul></div>
+    <div class="dont"><h4>don't</h4><ul>
+      <li>Dynamic versions (<code>1.+</code>, <code>latest.release</code>).</li>
+      <li><code>allprojects { dependencies { … } }</code>.</li>
+      <li>Run tasks or shell commands at configuration time.</li>
+      <li>Use <code>api</code> as the default configuration.</li>
+      <li>Disable lint or minification to “fix” the release build.</li>
+      <li>Split into modules without measuring first.</li>
+    </ul></div>
+  </div>
+</section>
+
+
+<!-- ================= CHECKLIST ================= -->
+<section class="panel-sec" id="sec-checklist">
+  <div class="sec-head"><h2>CHECKLIST.md</h2><span class="path">// what to verify before you call it done</span></div>
+  <p class="lede">The same questions apply whether you wrote the code or are reviewing it. If an answer is “I’m not sure”, that’s the thing to go look at.</p>
+
+  <h3 class="blk">the four rules underneath everything</h3>
+  <div class="grid g2">
+    <div class="card"><h4>one owner per piece of state</h4><p>UI state in a state holder, navigation state in one list or one controller, build config in one catalog. Two copies of a truth is the root of most bugs in all four topics.</p></div>
+    <div class="card"><h4>lifetime is explicit</h4><p>Every coroutine has a scope, every screen has an entry, every remember has a lifetime. If you can’t say what cancels or clears it, it leaks.</p></div>
+    <div class="card"><h4>state down, events up</h4><p>Composables and features receive values and emit callbacks. Nothing deep in the tree reaches sideways for a ViewModel, a NavController, or a Context.</p></div>
+    <div class="card"><h4>declare, don’t command</h4><p>Compose declares UI, Gradle declares work, Nav3 declares a stack. Imperative escapes — mutating during composition, running tasks at configuration time — are where correctness goes.</p></div>
+  </div>
+
+  <h3 class="blk">review checklist</h3>
+  <div class="checkrow"><div class="who">concurrency</div><ul>
+    <li>Scope is owned by something that dies — no <code>GlobalScope</code>.</li>
+    <li>Suspend functions are main-safe; dispatchers injected, not hardcoded.</li>
+    <li><code>CancellationException</code> rethrown, cleanup in <code>NonCancellable</code>.</li>
+    <li>Mutable state private; only <code>StateFlow</code>/<code>Flow</code> exposed.</li>
+    <li>Collection is lifecycle-aware (<code>collectAsStateWithLifecycle</code> / <code>repeatOnLifecycle</code>).</li>
+    <li>Independent work uses <code>supervisorScope</code>; dependent work uses <code>coroutineScope</code>.</li>
+  </ul></div>
+  <div class="checkrow"><div class="who">compose</div><ul>
+    <li>Leaf composables are stateless; state hoisted to the lowest common owner.</li>
+    <li><code>modifier: Modifier = Modifier</code> present and applied to the root.</li>
+    <li>Effects keyed correctly; no I/O, navigation or mutation in a composable body.</li>
+    <li>Lazy lists have stable <code>key</code>s.</li>
+    <li>Per-frame values (scroll, animation) read in layout/draw, not composition.</li>
+    <li>Screen state is one immutable type; performance claims measured in a release build.</li>
+  </ul></div>
+  <div class="checkrow"><div class="who">navigation</div><ul>
+    <li>Arguments are IDs, not entities; route/key types are serializable.</li>
+    <li>Feature modules see lambdas, never a controller or a back stack.</li>
+    <li>One source of truth for the current destination.</li>
+    <li>Back is handled correctly, including multi-pop from predictive back.</li>
+    <li>Nav2 and Nav3 are not mixed inside one navigation area.</li>
+  </ul></div>
+  <div class="checkrow"><div class="who">build</div><ul>
+    <li>Every version lives in <code>libs.versions.toml</code>; no dynamic versions.</li>
+    <li><code>implementation</code> unless a type is in the public signature.</li>
+    <li>Shared config in convention plugins, not <code>allprojects { }</code>.</li>
+    <li>Nothing executes at configuration time; configuration cache still green.</li>
+    <li>Release build minifies and shrinks; no secrets committed.</li>
+    <li>A new module has a measured reason to exist.</li>
+  </ul></div>
+
+  <h3 class="blk">primary sources</h3>
+  <div class="grid g2">
+    <div class="card"><h4>coroutines &amp; compose</h4><p><a href="https://developer.android.com/kotlin/coroutines">Coroutines on Android</a> · <a href="https://developer.android.com/develop/ui/compose/mental-model">Compose mental model</a> · <a href="https://developer.android.com/develop/ui/compose/performance">Compose performance</a> · <a href="https://developer.android.com/develop/ui/compose/state">State &amp; hoisting</a></p></div>
+    <div class="card"><h4>navigation &amp; build</h4><p><a href="https://developer.android.com/guide/navigation">Navigation 2</a> · <a href="https://developer.android.com/guide/navigation/navigation-3">Navigation 3</a> · <a href="https://developer.android.com/build">Configure your build</a> · <a href="https://developer.android.com/topic/architecture">Architecture guide</a></p></div>
+  </div>
+</section>
+
+<footer class="end">
+  <span>structure follows the official android documentation · versions in samples are illustrative</span>
+  <span>utf-8 · kotlin dsl · single-file</span>
+</footer>
+</main>
+</div>
+
+<script>
+/* ---------- file switching ---------- */
+(function(){
+  const secs = [...document.querySelectorAll('.panel-sec')];
+  const btns = [...document.querySelectorAll('.tree button')];
+  function show(id){
+    if (!document.getElementById('sec-'+id)) return;
+    secs.forEach(s => s.classList.toggle('active', s.id === 'sec-'+id));
+    btns.forEach(b => b.setAttribute('aria-current', String(b.dataset.sec === id)));
+    window.scrollTo({top:0, behavior:'smooth'});
+    history.replaceState(null,'','#'+id);
+  }
+  btns.forEach(b => b.addEventListener('click', () => show(b.dataset.sec)));
+  const initial = location.hash.replace('#','');
+  if (initial) show(initial);
+})();
+
+/* ---------- lab: structured concurrency ---------- */
+(function(){
+  const ids = ['n-scope','n-a','n-b','n-a1','n-a2'];
+  const STATES = {
+    idle:    {n:{'n-scope':'active','n-a':'active','n-b':'active','n-a1':'active','n-a2':'active'},
+              c:'Running. The scope is the parent of every coroutine — nothing escapes it, and the parent only completes once all children complete.'},
+    cancel:  {n:{'n-scope':'cancelled','n-a':'cancelled','n-b':'cancelled','n-a1':'cancelled','n-a2':'cancelled'},
+              c:'ViewModel cleared → viewModelScope cancelled → the whole subtree is cancelled. This is exactly what GlobalScope gives up: nobody would ever cancel it.'},
+    failJob: {n:{'n-scope':'cancelled','n-a':'error','n-b':'cancelled','n-a1':'error','n-a2':'cancelled'},
+              c:'A failing child in a regular Job cancels its siblings and its parent — observeCart() dies too. Correct when the results are useless without each other.'},
+    failSup: {n:{'n-scope':'active','n-a':'error','n-b':'active','n-a1':'error','n-a2':'cancelled'},
+              c:'supervisorScope stops the failure at the boundary: loadProfile() fails, observeCart() keeps running. Handle the failure per child.'}
+  };
+  const cap = document.getElementById('co-caption');
+  const btns = [...document.querySelectorAll('[data-co]')];
+  function apply(key){
+    const st = STATES[key];
+    ids.forEach(id => { const g = document.getElementById(id); if (g) g.setAttribute('class','node '+st.n[id]); });
+    cap.textContent = st.c;
+    btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.co === key)));
+  }
+  btns.forEach(b => b.addEventListener('click', () => apply(b.dataset.co)));
+  apply('idle');
+})();
+
+/* ---------- lab: compose phases ---------- */
+(function(){
+  const P = {
+    text:     {on:['p-comp','p-lay','p-draw'], c:'New text → composition produces a different tree, layout re-measures, drawing repaints. All three phases, and that is fine.'},
+    offset:   {on:['p-lay','p-draw'],          c:'Modifier.offset { } reads the value in the layout phase → composition is skipped. Use the lambda overloads for anything that changes per frame.'},
+    alpha:    {on:['p-draw'],                  c:'graphicsLayer / drawBehind read state in the draw phase only. Cheapest possible animation: no recomposition, no re-layout.'},
+    unstable: {on:['p-comp','p-lay','p-draw'], c:'An unstable parameter makes the composable non-skippable, so it recomposes even when the value is identical. Fix the type, not the call site.'}
+  };
+  const all = ['p-comp','p-lay','p-draw'];
+  const cap = document.getElementById('ph-caption');
+  const btns = [...document.querySelectorAll('[data-ph]')];
+  function apply(key){
+    const st = P[key];
+    all.forEach(id => { const g = document.getElementById(id); if (g) g.setAttribute('class','phase '+(st.on.includes(id)?'on':'off')); });
+    cap.textContent = st.c;
+    btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.ph === key)));
+  }
+  btns.forEach(b => b.addEventListener('click', () => apply(b.dataset.ph)));
+  apply('text');
+})();
+
+/* ---------- lab: nav3 back stack ---------- */
+(function(){
+  const box = document.getElementById('n3-stack');
+  const cap = document.getElementById('n3-caption');
+  let stack = ['Home'], n = 1;
+  function render(msg){
+    box.innerHTML = '';
+    if (!stack.length){
+      const d = document.createElement('div');
+      d.className = 'empty';
+      d.textContent = 'backStack is empty → nothing to display. Keep at least one root key.';
+      box.appendChild(d);
+    } else {
+      stack.forEach((k, i) => {
+        const top = i === stack.length - 1;
+        const d = document.createElement('div');
+        d.className = 'entry' + (top ? ' top' : '');
+        d.textContent = (top ? '[' + i + '] ' : '[' + i + '] ') + k + (top ? '   ← visible' : '');
+        box.appendChild(d);
+      });
+    }
+    if (msg) cap.textContent = msg;
+  }
+  document.getElementById('n3-push-list').onclick   = () => { stack.push('ProductList'); render('backStack.add(ProductList) → NavDisplay observes the change and renders the new top. No controller involved.'); };
+  document.getElementById('n3-push-detail').onclick = () => { stack.push('ProductDetail(id="sku-' + (n++) + '")'); render('The key carries its arguments as ordinary properties — typed, no bundle, no toRoute().'); };
+  document.getElementById('n3-pop').onclick         = () => { stack.pop(); render(stack.length ? 'removeLastOrNull() → back. Predictive back can request several pops at once, so honour the count in onBack.' : 'The list is empty. Guard your last pop, or let the system close the app.'); };
+  document.getElementById('n3-reset').onclick       = () => { stack = ['Home']; n = 1; render('Reset. Because navigation is a list, this is also how you unit-test it — plain JVM, no Robolectric.'); };
+  render();
+})();
+
+/* ---------- lab: gradle phases ---------- */
+(function(){
+  const G = {
+    init: 'Initialization — Gradle reads settings.gradle.kts, decides which modules are in the build and where dependencies come from. Avoid: repositories declared per module instead of in dependencyResolutionManagement.',
+    conf: 'Configuration — every build script runs and the task graph is assembled. This is the phase that makes builds feel slow. Avoid: running commands, reading files or env vars here, and allprojects { } — all of it also breaks the configuration cache.',
+    exec: 'Execution — only the required tasks run, in parallel where possible, reusing outputs from the build cache. Avoid: tasks without declared inputs and outputs, since nothing can then be cached or skipped.'
+  };
+  const cap = document.getElementById('gr-caption');
+  const btns = [...document.querySelectorAll('[data-gr]')];
+  function apply(key){
+    cap.textContent = G[key];
+    btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.gr === key)));
+  }
+  btns.forEach(b => b.addEventListener('click', () => apply(b.dataset.gr)));
+  apply('init');
+})();
+</script>
+</body>
+</html>
