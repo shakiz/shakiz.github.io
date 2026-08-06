@@ -22,7 +22,7 @@ h1,h2,h3,h4{font-weight:500;margin:0;letter-spacing:-.01em}
 .acc{color:var(--acc)}
 
 .shell{display:grid;grid-template-columns:238px minmax(0,1fr);max-width:1180px;margin:0 auto}
-.rail{border-right:1px solid var(--hair);padding:30px 20px 60px;position:sticky;top:0;align-self:start;height:100vh}
+.rail{border-right:1px solid var(--hair);padding:30px 20px 60px;position:sticky;top:45px;align-self:start;height:calc(100vh - 45px)}
 main{padding:30px 34px 80px;min-width:0}
 
 /* ---------- signature: file tree ---------- */
@@ -166,7 +166,7 @@ footer.end{margin-top:48px;border-top:1px solid var(--hair);padding-top:14px;col
 
 @media (max-width:940px){
   .shell{grid-template-columns:1fr}
-  .rail{position:sticky;top:0;background:var(--bg);z-index:10;height:auto;border-right:0;border-bottom:1px solid var(--hair);padding:18px 16px}
+  .rail{position:sticky;top:45px;background:var(--bg);z-index:10;height:auto;border-right:0;border-bottom:1px solid var(--hair);padding:18px 16px}
   main{padding:18px 16px 60px}
   .g2,.g3,.dd,.steps,.checkrow{grid-template-columns:1fr}
   .dd>div+div{border-left:0;border-top:1px solid var(--hair)}
@@ -178,3 +178,41 @@ footer.end{margin-top:48px;border-top:1px solid var(--hair);padding-top:14px;col
   .tree button .g{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ---------- Back Bar ---------- */
+.back-bar {
+  position: sticky;
+  top: 0;
+  height: 45px;
+  z-index: 200;
+  background: var(--bg);
+  border-bottom: 1px solid var(--hair);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+.back-bar a {
+  color: var(--fn);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: none;
+}
+.back-bar a:hover {
+  color: var(--acc);
+  border-bottom: none;
+}
+.back-bar-sep,
+.back-bar-current {
+  font-size: 13px;
+  color: var(--fg-dim);
+}
+.back-bar-current {
+  color: var(--fg);
+}
