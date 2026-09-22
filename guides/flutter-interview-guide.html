@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flutter Senior &amp; Staff Interview Guide | Sakhawat Hossain</title>
+<meta name="description" content="An interactive Flutter senior and staff interview guide by Sakhawat Hossain — 182 questions across 22 chapters covering Dart async, rendering internals, state, architecture, payments, offline data, performance and leadership.">
+<meta name="author" content="Sakhawat Hossain">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/flutter_interview_guide.css">
+</head>
+<body>
+
+<div class="back-bar">
+  <a href="../mobile_dev.html">&#8592; Mobile Dev</a>
+  <span class="back-bar-sep">/</span>
+  <span class="back-bar-current">Flutter Senior &amp; Staff Interview Guide</span>
+</div>
+
+
+<div class="bar"><div class="bar-in">
+  <button class="brand" id="home">
+    <span class="mk"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3 20 7.2 12 11.4 4 7.2Z"/><path d="M4 12.2 12 16.4l8-4.2"/></svg></span>
+    <span class="bl"><b>Flutter Senior &amp; Staff</b><span class="bs">Interview practice</span></span>
+  </button>
+  <div class="bar-sp"></div>
+  <label class="srch">
+    <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+    <input id="q" type="search" placeholder="Search 182 questions…" aria-label="Search questions">
+  </label>
+  <button class="tbtn solid" id="btn-drill"><svg class="ic" viewBox="0 0 24 24"><path d="M13.5 2.5 5 13.5h6L10.5 21.5 19 10.5h-6Z"/></svg>Drill</button>
+  <button class="tbtn icononly" id="btn-stats" aria-label="Study history" title="Study history"><svg class="ic" viewBox="0 0 24 24"><path d="M4 3.5v17h16"/><rect x="7.5" y="12" width="3.2" height="5" rx=".6"/><rect x="13.3" y="7.5" width="3.2" height="9.5" rx=".6"/></svg></button>
+  <button class="tbtn icononly" id="btn-theme" aria-label="Switch theme"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg></button>
+</div></div>
+
+<main class="wrap" id="app"></main>
+
+<div class="drill" id="drill" hidden role="dialog" aria-modal="true" aria-label="Drill">
+  <div class="dtop">
+    <span class="pos" id="d-pos">1 / 1</span>
+    <span class="dprog"><i id="d-prog"></i></span>
+    <button class="tbtn" id="d-close">Close</button>
+  </div>
+  <div class="dbody"><div class="dinner">
+    <div class="dsrc" id="d-src"></div>
+    <p class="dq" id="d-q"></p>
+    <div id="d-a" hidden></div>
+  </div></div>
+  <div class="dfoot">
+    <button class="rv" id="d-reveal">Show answer</button>
+    <span class="drate">
+      <button class="cf c1" id="d-c1">Shaky</button>
+      <button class="cf c2" id="d-c2">Getting there</button>
+      <button class="cf c3" id="d-c3">Solid</button>
+    </span>
+    <button class="flagb" id="d-flag">Flag</button>
+    <button id="d-skip">Skip</button>
+    <span class="hint">space · 1/2/3 rate · f flag · esc</span>
+  </div>
+</div>
+
+<script>
+const ICONS = {
+  roadmap:'<path d="M3 18h4l3-12h4l3 12h4"/><circle cx="7" cy="18" r="1.6"/><circle cx="12" cy="6" r="1.6"/><circle cx="17" cy="18" r="1.6"/>',
+  principles:'<circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5 10.5 10.5 8.5 15.5 13.5 13.5Z"/>',
+  loop:'<path d="M4.5 12a7.5 7.5 0 1 1 2.6 5.7"/><path d="M3 13.5 4.6 18l4.4-1.4"/><circle cx="12" cy="12" r="2"/>',
+  trees:'<path d="M12 3 20 7.2 12 11.4 4 7.2Z"/><path d="M4 12.2 12 16.4l8-4.2"/><path d="M4 17.2 12 21.4l8-4.2"/>',
+  scopes:'<rect x="2.5" y="4.5" width="19" height="15" rx="2"/><rect x="6" y="8" width="12" height="8" rx="1.5"/><rect x="9.5" y="11" width="5" height="2.5" rx="1"/>',
+  split:'<path d="M12 3v7"/><path d="M12 14v7"/><path d="m8.5 10.5 7 3.5"/><path d="m15.5 10.5-7 3.5"/><rect x="3" y="9" width="5" height="6" rx="1.2"/><rect x="16" y="9" width="5" height="6" rx="1.2"/>',
+  layers:'<rect x="4" y="3.5" width="16" height="4" rx="1.2"/><rect x="4" y="10" width="16" height="4" rx="1.2"/><rect x="4" y="16.5" width="16" height="4" rx="1.2"/><path d="M12 7.5v2.5M12 14v2.5"/>',
+  solid:'<path d="M12 3v10"/><path d="m8.5 9.5 3.5 3.5 3.5-3.5"/><rect x="3.5" y="16" width="17" height="5" rx="1.4"/><path d="M8.5 16v5M15.5 16v5"/>',
+  network:'<circle cx="12" cy="12" r="3"/><path d="M12 2.5v5.6M12 15.9v5.6M2.5 12h5.6M15.9 12h5.6"/><path d="m5.6 5.6 3 3M15.4 15.4l3 3M18.4 5.6l-3 3M8.6 15.4l-3 3"/>',
+  offline:'<path d="M7 16.5a3.8 3.8 0 0 1 .5-7.6 5.3 5.3 0 0 1 10.2 1.3 3.4 3.4 0 0 1-.7 6.3"/><path d="M12 12.5v7"/><path d="m9.2 16.8 2.8 2.8 2.8-2.8"/>',
+  payment:'<rect x="2.5" y="5" width="19" height="14" rx="2.2"/><path d="M2.5 9.5h19"/><path d="M6.5 14.5h4"/><circle cx="17" cy="14.5" r="2"/>',
+  gauge:'<path d="M4 17.5a9 9 0 1 1 16 0"/><path d="m12 13.5 4-4"/><circle cx="12" cy="17.5" r="1.4"/>',
+  plug:'<path d="M9 3v5M15 3v5"/><path d="M6.5 8h11v3a5.5 5.5 0 0 1-11 0Z"/><path d="M12 16.5V21"/>',
+  flask:'<path d="M9.5 3v6.2L4.8 17.6A2 2 0 0 0 6.6 20.6h10.8a2 2 0 0 0 1.8-3L14.5 9.2V3"/><path d="M8 3h8"/><path d="M7.4 14.5h9.2"/>',
+  code:'<path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5-3 14"/>',
+  bank:'<rect x="3" y="3.5" width="7.5" height="7.5" rx="1.4"/><rect x="13.5" y="3.5" width="7.5" height="7.5" rx="1.4"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.4"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.4"/>',
+  people:'<circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0"/><path d="M14.5 20a4 4 0 0 1 7-2.6"/>',
+  bolt:'<path d="M13.5 2.5 5 13.5h6L10.5 21.5 19 10.5h-6Z"/>',
+  compile:'<path d="M4 6h7"/><path d="M4 12h5"/><path d="M4 18h7"/><path d="m14.5 7.5 4.5 4.5-4.5 4.5"/>',
+  rocket:'<path d="M12 2.5c3.2 2.4 5 6 5 10l-2.6 3.2h-4.8L7 12.5c0-4 1.8-7.6 5-10Z"/><circle cx="12" cy="10" r="1.8"/><path d="M9.6 17.2 8 21l3.2-1.6M14.4 17.2 16 21l-3.2-1.6"/>',
+  sheet:'<path d="M5 3.5h9l5 5v12H5Z"/><path d="M14 3.5v5h5"/><path d="M8.5 13h7M8.5 16.5h5"/>',
+  ask:'<path d="M20.5 15.5a2.5 2.5 0 0 1-2.5 2.5H9l-4.5 3.5V6a2.5 2.5 0 0 1 2.5-2.5h11a2.5 2.5 0 0 1 2.5 2.5Z"/><path d="M10 9a2.3 2.3 0 1 1 3 2.2v1.3"/><path d="M13 15.2h.01"/>',
+  back:'<path d="m14 6-6 6 6 6"/>',
+  fwd:'<path d="m10 6 6 6-6 6"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.3V12l3.6 2.1"/>',
+  chart:'<path d="M4 3.5v17h16"/><rect x="7.5" y="12" width="3.2" height="5" rx=".6"/><rect x="13.3" y="7.5" width="3.2" height="9.5" rx=".6"/>',
+  check:'<path d="M4 6.5h3.5v3.5H4Z"/><path d="M4 14h3.5v3.5H4Z"/><path d="M11 8.2h9M11 15.8h9"/>'
+};
+
+const CH_ICON = {
+  roadmap:'roadmap', principles:'principles', 'dart-async':'loop', internals:'trees',
+  state:'scopes', basecontroller:'split', architecture:'layers', solid:'solid',
+  network:'network', offline:'offline', payments:'payment', performance:'gauge',
+  native:'plug', testing:'flask', coding:'code', scenarios:'bank', leadership:'people',
+  rapidfire:'bolt', 'dart-lang':'compile', production:'rocket', cheatsheet:'sheet', ask:'ask'
+};
+
+const GROUPS = [
+  { id:'g1', label:'Foundations',  note:'How the interview runs, and the language underneath everything else.', chapters:['roadmap','principles','dart-async','dart-lang'] },
+  { id:'g2', label:'The framework', note:'Rendering, lifecycle and where state is allowed to live.',            chapters:['internals','state','basecontroller'] },
+  { id:'g3', label:'Architecture',  note:'Boundaries, dependency direction and the principles behind them.',    chapters:['architecture','solid'] },
+  { id:'g4', label:'Hard problems', note:'Concurrency, money, offline data and native hardware.',               chapters:['network','offline','payments','native'] },
+  { id:'g5', label:'Craft',         note:'Making it fast, proving it works, keeping it alive in production.',    chapters:['performance','testing','coding','production'] },
+  { id:'g6', label:'Judgement',     note:'The staff-level half: scenarios, leadership, and recall under pressure.', chapters:['scenarios','leadership','rapidfire','cheatsheet','ask'] }
+];
+
+const DIAGRAMS = (() => {
+  const tx = (x, y, t, c='tx') => { const L=[].concat(t); const s=y-(L.length-1)*7.5;
+    return L.map((l,i)=>`<text class="${c}" x="${x}" y="${s+i*15}">${l}</text>`).join(''); };
+  const bx = (x,y,w,h,t,c='') => `<rect class="b ${c}" x="${x}" y="${y}" width="${w}" height="${h}" rx="7"/>` + tx(x+w/2, y+h/2, t);
+  const lb = (x,y,t,a='middle',c='lb') => `<text class="${c}" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
+  const mk = c => c==='tl' ? 'url(#mt)' : c==='am' ? 'url(#ma)' : 'url(#mi)';
+  const ar = (x1,y1,x2,y2,c='') => `<line class="ln ${c}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-end="${mk(c)}"/>`;
+  const li = (x1,y1,x2,y2,c='') => `<line class="ln ${c}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+  const pa = (d,c='') => `<path class="ln ${c}" d="${d}" marker-end="${mk(c)}"/>`;
+  const F = (h, b) => `<div class="fig"><svg viewBox="0 0 560 ${h}" xmlns="http://www.w3.org/2000/svg"><defs>`
+    + ['mi:var(--ink-2)','mt:var(--teal)','ma:var(--amber)'].map(s=>{const[i,f]=s.split(':');
+      return `<marker id="${i}" markerWidth="7" markerHeight="7" refX="6.4" refY="3.5" orient="auto"><path d="M0 0 7 3.5 0 7Z" fill="${f}"/></marker>`;}).join('')
+    + `</defs>${b}</svg></div>`;
+
+  /* chain of boxes across two rows */
+  const chain = (steps, hi) => {
+    const w = 128, xs = [8,146,284,422], r1 = steps.slice(0,4), r2 = steps.slice(4);
+    let b = r1.map((s,i)=>bx(xs[i],14,w,36,s, hi===i?'bt':'')).join('');
+    b += r1.slice(0,-1).map((_,i)=>ar(xs[i]+w,32,xs[i+1]-2,32)).join('');
+    if (r2.length){
+      b += pa(`M ${xs[3]+64} 50 V 64 H ${xs[0]+64} V 80`);
+      b += r2.map((s,i)=>bx(xs[i],82,w,36,s, hi===i+4?'bt':'')).join('');
+      b += r2.slice(0,-1).map((_,i)=>ar(xs[i]+w,100,xs[i+1]-2,100)).join('');
+    }
+    return F(r2.length?128:62, b);
+  };
+
+  return {
+  /* ---- 1.2 answer framework ---- */
+  '1.2': chain(['Clarify','Real problem','Ownership','Simplest design','Failure modes','Trade-offs','Observability','Rollout & measure']),
+
+  /* ---- 3.1 event loop ---- */
+  '3.1': F(150,
+    lb(90,14,'1 · Synchronous') + lb(280,14,'2 · Microtask queue') + lb(470,14,'3 · Event queue')
+    + bx(8,22,164,72,['print(\'A\')','print(\'D\')'],'bt')
+    + bx(198,22,164,72,'scheduleMicrotask → C')
+    + bx(388,22,164,72,'Future(...) → B')
+    + ar(174,58,196,58) + ar(364,58,386,58)
+    + lb(90,108,'runs to completion') + lb(280,108,'drained to exhaustion') + lb(470,108,'one per loop turn')
+    + `<line class="ln dsh" x1="8" y1="120" x2="552" y2="120"/>`
+    + tx(280,138,'A  →  D  →  C  →  B','tx mono')),
+
+  /* ---- 3.3 future vs isolate ---- */
+  '3.3': F(168,
+    lb(8,16,'Parsing on the UI isolate','start')
+    + bx(8,24,150,28,'frames OK','bt') + bx(162,24,238,28,'20 MB parse — frames dropped','ba') + bx(404,24,148,28,'frames OK','bt')
+    + lb(8,82,'Parsing moved to a worker','start')
+    + bx(8,90,544,28,'UI isolate keeps rendering every frame','bt')
+    + bx(162,132,238,28,'Isolate.run(parse)')
+    + pa('M 200 118 V 130','tl') + pa('M 360 132 V 120','tl')
+    + lb(120,152,'send payload','end') + lb(440,152,'return compact result','start')),
+
+  /* ---- 4.1 three trees ---- */
+  '4.1': F(180,
+    lb(95,14,'Widget tree') + lb(280,14,'Element tree') + lb(465,14,'RenderObject tree')
+    + lb(95,30,'immutable config') + lb(280,30,'identity + State') + lb(465,30,'layout + paint')
+    + bx(47,42,96,26,'root') + bx(23,96,64,24,'child') + bx(103,96,64,24,'child')
+    + li(95,68,55,96) + li(95,68,135,96)
+    + bx(232,42,96,26,'Element','bt') + bx(208,96,64,24,'El','bt') + bx(288,96,64,24,'El','bt')
+    + li(280,68,240,96) + li(280,68,320,96)
+    + bx(417,42,96,26,'Render') + bx(433,96,64,24,'Render')
+    + li(465,68,465,96)
+    + `<line class="ln dsh" x1="145" y1="55" x2="228" y2="55"/><line class="ln dsh" x1="330" y1="55" x2="413" y2="55"/>`
+    + lb(187,48,'inflates') + lb(372,48,'creates')
+    + lb(280,148,'Widgets are thrown away and rebuilt constantly.')
+    + lb(280,164,'Elements persist, so State survives. RenderObjects are reused.')),
+
+  /* ---- 4.3 setState ---- */
+  '4.3': chain(['setState()','Element marked dirty','Subtree rebuilt','Reconcile widget ↔ element','RenderObjects updated','Layout only where dirty','Paint only where dirty','One frame'],1),
+
+  /* ---- 4.4 keys ---- */
+  '4.4': F(158,
+    bx(8,8,264,142,'','bd') + bx(288,8,264,142,'','bd')
+    + lb(140,28,'Reordered without a key') + lb(420,28,'Reordered with ValueKey(id)')
+    + bx(24,40,110,26,'A · state 1') + bx(146,40,110,26,'B · state 2')
+    + bx(304,40,110,26,'A · state 1') + bx(426,40,110,26,'B · state 2')
+    + ar(140,70,140,86) + ar(420,70,420,86)
+    + bx(24,88,110,26,'B · state 1','ba') + bx(146,88,110,26,'A · state 2','ba')
+    + bx(304,88,110,26,'B · state 2','bt') + bx(426,88,110,26,'A · state 1','bt')
+    + lb(140,134,'State stayed with the position') + lb(420,134,'State followed the identity')),
+
+  /* ---- 4.6 lifecycle ---- */
+  '4.6': F(272,
+    [['createState',''],['initState','controllers, subscriptions, first fetch'],
+     ['didChangeDependencies','inherited data — re-runs when Theme,'],['build',''],
+     ['didUpdateWidget','parent rebuilt with new configuration'],['build',''],
+     ['dispose','cancel every timer, listener, controller']]
+      .map(([t,note],i)=>{ const y=10+i*38;
+        return bx(90,y,200,28,t,i===6?'ba':i===1?'bt':'')
+          + (i<6 ? ar(190,y+28,190,y+36) : '')
+          + (note ? lb(304,y+13,note,'start') + (i===2?lb(304,y+26,'MediaQuery or a Provider change','start'):'') : ''); }).join('')),
+
+  /* ---- 5.2 state scopes ---- */
+  '5.2': F(176,
+    bx(8,8,336,158,'','bd') + lb(20,26,'Application / session','start')
+    + bx(32,44,288,110,'','bd') + lb(44,62,'Feature','start')
+    + bx(56,80,240,58,'','bt') + lb(176,109,'Widget-local')
+    + li(344,26,400,26) + lb(408,30,'Auth, KYC, user session','start')
+    + li(320,62,400,62) + lb(408,66,'Pagination, filters, checkout','start')
+    + li(296,109,400,109) + lb(408,113,'Text field, animation, expansion','start')
+    + lb(280,172,'Escalate a scope only when a second owner genuinely needs to observe it.')),
+
+  /* ---- 5.3 screens ---- */
+  '5.3': F(170,
+    bx(8,8,544,146,'','bd') + lb(22,28,'FeatureScope — one lifecycle above all three screens','start')
+    + bx(32,44,150,32,'FeatureCubit','bt') + bx(220,44,150,32,'Navigator')
+    + bx(180,106,110,30,'Screen 1') + bx(300,106,110,30,'Screen 2') + bx(420,106,110,30,'Screen 3')
+    + li(295,76,235,106) + li(295,76,355,106) + li(295,76,475,106)
+    + pa('M 107 76 V 121 H 176','tl') + lb(120,94,'observe','start')
+    + pa('M 530 121 H 545 V 60 H 374','am') + lb(452,138,'update — never call Screen 1 directly')),
+
+  /* ---- 6.1 base controller ---- */
+  '6.1': F(178,
+    ['API client','Logger','Analytics','Storage'].map((t,i)=>bx(48+i*122,10,110,26,t)).join('')
+    + [0,1,2,3].map(i=>li(103+i*122,36,280,66)).join('')
+    + bx(195,66,170,32,'BaseController','ba')
+    + ['LoginController','PaymentController','ProfileController'].map((t,i)=>bx(20+i*182,126,160,28,t)).join('')
+    + [0,1,2].map(i=>ar(280,98,100+i*182,124)).join('')
+    + lb(280,172,'Every subclass inherits every dependency — and declares none of them.')),
+
+  /* ---- 6.2 KYC capability ---- */
+  '6.2': F(228,
+    bx(110,8,150,28,'Remote API') + bx(300,8,150,28,'Local cache')
+    + ar(185,36,255,54) + ar(375,36,305,54)
+    + bx(205,56,150,30,'KycRepository','bt') + ar(280,86,280,98)
+    + bx(190,100,180,28,'GetKycStatus (if real rules)','bd') + ar(280,128,280,140)
+    + bx(205,142,150,30,'KycCubit','bt')
+    + ['Home','Payment','Profile'].map((t,i)=>bx(70+i*150,190,130,28,t)).join('')
+    + [0,1,2].map(i=>ar(280,172,135+i*150,188)).join('')),
+
+  /* ---- 7.1 layering ---- */
+  '7.1': F(208,
+    [['Presentation',''],['Feature state — Cubit / BLoC','no raw networking'],
+     ['Use case — when it earns it','no pass-through ceremony'],['Repository','no UI-specific logic'],
+     ['Local / remote data sources','no business decisions']]
+      .map(([t,n],i)=>{const y=10+i*38; return bx(8,y,320,30,t,i===1?'bt':'')
+        + (i<4?ar(168,y+30,168,y+38):'') + (n?lb(344,y+19,n,'start'):'');}).join('')
+    + lb(280,200,'Each layer may know the one below it, and nothing about the one above.')),
+
+  /* ---- 8.9 DIP ---- */
+  '8.9': F(212,
+    bx(8,8,264,196,'','bd') + bx(288,8,264,196,'','bd')
+    + lb(140,28,'DI without DIP') + lb(420,28,'DI with DIP')
+    + bx(50,42,180,30,'LoginCubit') + ar(140,72,140,96,'am')
+    + bx(50,98,180,30,'FirebaseAuth','ba') + lb(140,146,'Business logic depends') + lb(140,162,'on infrastructure')
+    + bx(330,42,180,30,'LoginCubit') + ar(420,72,420,96,'tl')
+    + bx(330,98,180,30,'AuthRepository','bd') + lb(420,146,'implements') + ar(420,186,420,132,'tl')
+    + bx(330,188,180,26,'FirebaseAuthRepository','bt')),
+
+  /* ---- 9.1 single-flight refresh ---- */
+  '9.1': F(204,
+    lb(62,16,'10 in-flight requests')
+    + [0,1,2,3,4].map(i=>bx(8,24+i*22,110,16,'','ba')).join('')
+    + ar(122,68,196,84,'am') + lb(160,62,'all 401')
+    + bx(200,70,180,40,'One refresh operation','bt')
+    + ar(384,90,432,90,'tl') + bx(436,76,116,28,'new token','bt')
+    + pa('M 494 104 V 148 H 64 V 136','tl') + lb(280,172,'each waiting request retries once — never twice')
+    + lb(280,192,'The refresh call itself must be exempt from the interceptor, or it recurses.')),
+
+  /* ---- 9.3 loading counter ---- */
+  '9.3': F(152,
+    bx(80,30,250,22,'request A','bt') + bx(170,60,300,22,'request B','bt')
+    + li(80,26,80,120,'dsh') + li(170,56,170,120,'dsh') + li(330,26,330,120,'dsh') + li(470,56,470,120,'dsh')
+    + li(20,120,540,120)
+    + lb(125,138,'count 1') + lb(250,138,'count 2') + lb(400,138,'count 1') + lb(505,138,'count 0')
+    + lb(330,18,'a boolean would hide the overlay here','middle','lb am')),
+
+  /* ---- 10.1 offline read ---- */
+  '10.1': F(132,
+    bx(8,46,150,36,'Screen') + bx(205,46,150,36,'Local database','bt') + bx(402,46,150,36,'Server')
+    + ar(398,64,360,64) + ar(201,64,163,64,'tl')
+    + lb(380,38,'fetch, then store') + lb(182,38,'observe')
+    + lb(280,104,'The screen reads one source and never waits on a socket.')
+    + lb(280,120,'The network is a background job that updates the database.')),
+
+  /* ---- 10.2 offline write ---- */
+  '10.2': F(180,
+    bx(8,30,120,32,'User action') + ar(130,46,146,46)
+    + bx(148,30,130,32,'Local PENDING','bt') + ar(280,46,296,46)
+    + bx(298,30,110,32,'Sync queue') + ar(410,46,426,46)
+    + bx(428,30,124,32,'Server')
+    + pa('M 490 62 V 88 H 430','tl') + pa('M 490 62 V 88 H 546 V 108','am')
+    + bx(320,92,110,28,'SYNCED','bt') + bx(490,108,62,26,'FAILED','ba')
+    + pa('M 490 134 V 156 H 353 V 124','am') + lb(420,170,'bounded retry with backoff')
+    + lb(140,150,'Durable queue, unique operation id, defined give-up rule.')),
+
+  /* ---- 11.1 payment state machine ---- */
+  '11.1': F(192,
+    bx(14,20,122,30,'INITIATED') + ar(138,35,178,35)
+    + bx(180,20,140,30,'PROCESSING','bt')
+    + ar(322,32,392,22) + ar(322,38,392,62) + ar(322,44,392,102,'am')
+    + bx(396,8,150,28,'SUCCESS','bt') + bx(396,48,150,28,'FAILED')
+    + bx(396,88,150,28,'UNKNOWN','ba')
+    + pa('M 471 116 V 144 H 326','am') + bx(180,130,140,30,'STATUS CHECK')
+    + pa('M 250 130 V 54','tl') + lb(242,96,'reconcile before any retry','end')
+    + lb(280,184,'A timeout is not a failure — it means the client does not know.')),
+
+  /* ---- 12.2 jank threads ---- */
+  '12.2': (() => {
+    const fr=[[26,14],[30,16],[70,18],[28,16],[20,50],[26,14]], base=126, x0=96, w=52, gap=20;
+    let b = li(70,base,548,base) + li(70,base-68,548,base-68,'dsh')
+      + lb(64,base-64,'16.7 ms','end') + lb(64,base-50,'budget','end');
+    fr.forEach(([u,r],i)=>{ const x=x0+i*(w+gap), t=u+r, over=t>68;
+      b += `<rect class="b br" x="${x}" y="${base-r}" width="${w}" height="${r}" rx="3"/>`;
+      b += `<rect class="b bt" x="${x}" y="${base-t}" width="${w}" height="${u}" rx="3"/>`;
+      if (over) b += `<rect class="b ovr" x="${x-3}" y="${base-t-3}" width="${w+6}" height="${t+6}" rx="5"/>`;
+      b += lb(x+w/2, base+16, 'f'+(i+1));
+      if (over) b += lb(x+w/2, base-t-8, u>40?'UI over':'raster over','middle','lb am'); });
+    b += `<rect class="b bt" x="96" y="150" width="14" height="11" rx="2"/>` + lb(118,160,'UI (Dart) thread: build() work, rebuilds, sync parsing, layout','start')
+       + `<rect class="b br" x="96" y="172" width="14" height="11" rx="2"/>` + lb(118,182,'raster thread: image decode, opacity, shaders, too many layers','start');
+    return F(196, b);
+  })(),
+
+  /* ---- 13.3 BLE ---- */
+  '13.3': F(176,
+    bx(8,26,116,30,'DISCONNECTED') + ar(126,41,146,41)
+    + bx(148,26,116,30,'SCANNING') + ar(266,41,286,41)
+    + bx(288,26,116,30,'CONNECTING') + ar(406,41,426,41)
+    + bx(428,26,116,30,'CONNECTED','bt')
+    + bx(288,104,116,30,'RECONNECTING','ba')
+    + pa('M 486 56 V 119 H 408','am') + pa('M 286 119 H 206 V 58','tl')
+    + lb(450,90,'link drops') + lb(196,90,'bounded backoff','end')
+    + lb(280,160,'Rediscover services and resubscribe characteristics on every reconnect.')),
+
+  /* ---- 14.1 test layers ---- */
+  '14.1': F(184,
+    [['Integration',120,'critical journeys, platform'],['Widget',180,'important UI behaviour'],
+     ['Cubit / BLoC',248,'action → state, concurrency'],['Repository',300,'caching, mapping, failures'],
+     ['Domain',350,'rules, transitions, edge cases']]
+      .map(([t,w,n],i)=>{const y=10+i*33; return bx(185-w/2,y,w,27,t,i>2?'bt':'') + lb(372,y+18,n,'start');}).join('')
+    + lb(280,176,'Most of the value is in the layers where the failure modes live.')),
+
+  /* ---- 15.1 debounce + stale ---- */
+  '15.1': F(164,
+    lb(8,22,'request A · older query','start') + bx(150,28,320,22,'','ba')
+    + lb(8,62,'request B · newer query','start') + bx(240,68,140,22,'','bt')
+    + li(380,24,380,112,'dsh') + li(470,24,470,112,'dsh')
+    + lb(380,126,'B lands — correct') + lb(478,126,'A lands — overwrites B','start','lb am')
+    + lb(280,152,'Debounce cuts request count. Only a token or cancellation fixes ordering.')),
+
+  /* ---- 15.3 LRU + TTL ---- */
+  '15.3': F(164,
+    lb(8,34,'before','start')
+    + ['A','B','C','D'].map((t,i)=>bx(140+i*84,20,76,28,t)).join('')
+    + ar(280,52,280,68,'tl') + lb(296,64,'get(C) moves it to the most-recent end','start')
+    + lb(8,96,'after','start')
+    + ['C','A','B','D'].map((t,i)=>bx(140+i*84,82,76,28,t,i===0?'bt':i===3?'ba':'')).join('')
+    + lb(478,126,'evicted on the next put','end')
+    + lb(280,152,'LRU bounds memory · TTL bounds staleness · keys are scoped to the user')),
+
+  /* ---- 17.4 incident ---- */
+  '17.4': F(146,
+    ['Detect','Assess scope','Mitigate','Diagnose'].map((t,i)=>bx(8+i*138,14,128,32,t,i===2?'bt':'')).join('')
+    + [0,1,2].map(i=>ar(136+i*138,30,144+i*138,30)).join('')
+    + pa('M 486 46 V 60 H 72 V 76')
+    + ['Fix','Test','Staged rollout','Monitor & learn'].map((t,i)=>bx(8+i*138,78,128,32,t)).join('')
+    + [0,1,2].map(i=>ar(136+i*138,94,144+i*138,94)).join('')
+    + lb(280,136,'Mitigate before you diagnose — understanding the cause is not a prerequisite for stopping harm.')),
+
+  /* ---- 19.1 JIT vs AOT ---- */
+  '19.1': F(166,
+    lb(8,22,'Development','start') + bx(140,10,120,28,'Dart source') + ar(262,24,278,24)
+    + bx(280,10,130,28,'Dart VM · JIT','bt') + ar(412,24,428,24) + bx(430,10,122,28,'Hot reload','bt')
+    + lb(8,72,'Release · mobile','start') + bx(140,60,120,28,'Dart source') + ar(262,74,278,74)
+    + bx(280,60,130,28,'AOT compiler') + ar(412,74,428,74) + bx(430,60,122,28,'Native code','bt')
+    + lb(8,122,'Release · web','start') + bx(140,110,120,28,'Dart source') + ar(262,124,278,124)
+    + bx(280,110,130,28,'dart2js / wasm') + ar(412,124,428,124) + bx(430,110,122,28,'JS / WebAssembly')
+    + lb(280,158,'No JVM anywhere in the picture.'))
+  };
+})();
+
+/* answers whose ASCII block the diagram replaces */
+const DIAGRAM_REPLACES_CODE = new Set(['4.6','7.1','9.1','9.3','10.1','10.2','11.1','13.3','15.1','17.4','6.1','6.2','3.1']);
+
+const CHAPTERS_A = [
+{
+  n: 1, id: "roadmap", title: "Interview Roadmap & Answer Framework",
+  kicker: "How the conversation is shaped, and the shape your answers should take.",
+  items: [
+    { id: "1.1", q: "How does a 30–60 minute senior Flutter interview typically unfold?",
+      a: "Five layers. Warm-up (3–5 min) on a recent project, your ownership and its architecture. Flutter/Dart (8–12 min) on the event loop, widgets, rendering, lifecycle and async. Architecture (10–15 min) on state ownership, repositories, DI, navigation and modularity. Scenario or coding (10–20 min) on races, payments, pagination, offline and performance. Staff discussion (5–10 min) on trade-offs, migration, leadership and incidents. As seniority rises, the weight shifts from syntax toward judgement and system behaviour." },
+    { id: "1.2", q: "What is the answer framework you should run every scenario through?",
+      a: "Clarify the requirement → identify the real problem → define ownership → propose the simplest design that fits → discuss failure modes → explain trade-offs → add observability → describe rollout and measurement. Saying this structure out loud is itself a seniority signal: it shows you have a repeatable method rather than a bag of remembered APIs." },
+    { id: "1.3", q: "Interviewers say they want 'evidence of seniority'. What does that look like per capability area?",
+      a: "<ul><li><strong>Flutter fundamentals</strong> — you explain the mechanism and its performance implications, not just the API.</li><li><strong>State &amp; architecture</strong> — you choose the simplest appropriate boundary.</li><li><strong>Async &amp; concurrency</strong> — you name failure modes before you write code.</li><li><strong>Production engineering</strong> — you think past the happy path.</li><li><strong>System design</strong> — you make trade-offs explicit rather than asserting a 'best practice'.</li><li><strong>Leadership</strong> — you optimise for team and business outcomes, not for your preferred stack.</li></ul>" },
+    { id: "1.4", q: "How long should a scenario answer be before you stop talking?",
+      a: "30–90 seconds. Open with the decision and the one idea it hinges on, then stop and let the interviewer probe. Expanding unprompted into every edge case reads as nervousness; having the depth ready and only deploying it when asked reads as senior. Practise each scenario aloud at that length.", added: true }
+  ]
+},
+{
+  n: 2, id: "principles", title: "Senior / Staff Answer Principles",
+  kicker: "Eight habits that separate a strong answer from a correct one.",
+  items: [
+    { id: "2.1", q: "What are the core principles behind a senior-level answer?",
+      a: "<ul><li>Start with the business and technical constraint; don't jump straight to a package name.</li><li>Separate state, events, commands, data access and UI concerns.</li><li>Name failure modes explicitly: races, retries, stale responses, duplicate requests, lifecycle changes, offline behaviour, partial failure.</li><li>Prefer composition and dependency injection over inheritance-heavy base classes.</li><li>Explain why you choose an approach <em>and when you would not</em>.</li><li>Avoid unnecessary rewrites; prefer incremental migration while the system still delivers value.</li><li>For critical workflows, define the source of truth and the reconciliation strategy.</li><li>Measure performance and reliability rather than relying on assumptions.</li></ul>" },
+    { id: "2.2", q: "Why is 'and when I would not choose it' such a strong phrase in an interview?",
+      a: "It demonstrates you understand the trade-off surface rather than having adopted a technology as identity. Any engineer can advocate for BLoC or Riverpod; a senior one can state the conditions under which that choice becomes the wrong one — small team, tiny app, heavy existing investment in something else, or a boundary that doesn't need reactivity at all." },
+    { id: "2.3", q: "What is the single biggest tell of a mid-level answer?",
+      a: "Jumping to a package or a diagram before establishing who owns the state and how long it should live. The second biggest is describing only the happy path — no mention of what happens when the request is slow, duplicated, cancelled, or arrives after the screen is gone.", added: true }
+  ]
+},
+{
+  n: 3, id: "dart-async", title: "Dart Fundamentals — Event Loop, Futures & Isolates",
+  kicker: "The concurrency model, and the six ways async work breaks in production.",
+  items: [
+    { id: "3.1", q: "What does this print, and why?",
+      code: "print('A');\nFuture(() => print('B'));\nscheduleMicrotask(() => print('C'));\nprint('D');",
+      a: "<code>A D C B</code>. <code>A</code> and <code>D</code> are synchronous, so they run first in source order. When the synchronous work finishes, the event loop drains the <strong>microtask queue</strong> to exhaustion before touching the event queue — so <code>C</code> runs next. <code>Future(...)</code> schedules onto the event queue, so <code>B</code> is last. The practical takeaway: a microtask that schedules another microtask can starve the event queue entirely, which is why you should not use microtasks for work that could recur." },
+    { id: "3.2", q: "Does using a Future mean your work runs on another thread?",
+      a: "No. This is the most commonly failed fundamentals question. A Future is a handle on a value that will exist later; the callback runs on the <em>same</em> isolate, on the same single thread, when the event loop gets to it. Asynchronous I/O and CPU-heavy work are different problems: async solves waiting, isolates solve computing." },
+    { id: "3.3", q: "When do you reach for an isolate rather than a plain Future?",
+      a: "<table><tr><th>Use case</th><th>Approach</th><th>Reason</th></tr><tr><td>HTTP request</td><td>Future / async-await</td><td>I/O is already asynchronous</td></tr><tr><td>Database query</td><td>Async API</td><td>Avoid blocking the UI isolate</td></tr><tr><td>Large JSON parsing</td><td>Isolate when CPU-heavy</td><td>Move computation off the UI isolate</td></tr><tr><td>Heavy computation</td><td>Isolate or native</td><td>CPU work causes dropped frames</td></tr><tr><td>Small transformation</td><td>Normal Dart</td><td>Concurrency overhead isn't free</td></tr></table>" },
+    { id: "3.4", q: "Name the six async failure modes you should be able to reel off.",
+      a: "<ul><li><strong>Stale response</strong> — an older request finishes after a newer one and overwrites fresh state.</li><li><strong>Duplicate request</strong> — retries or repeated taps create multiple side effects.</li><li><strong>Refresh storm</strong> — many requests independently refresh the same expired token.</li><li><strong>Lost state</strong> — critical pending work exists only in memory and dies with the process.</li><li><strong>Unbounded retry</strong> — a failure produces an infinite retry loop.</li><li><strong>Cancellation gap</strong> — a screen is gone but an async callback still targets it.</li></ul>" },
+    { id: "3.5", q: "What actually crosses an isolate boundary, and what is the cost?",
+      a: "Isolates don't share mutable memory; they exchange messages over ports. Most objects are deep-copied, which means sending a huge already-parsed object graph back can cost as much as the parsing you moved off-thread. Prefer to send the raw payload in and return a compact result, or use transferable byte buffers for large binary data. <code>Isolate.run</code> (and <code>compute</code> in Flutter) wrap the spawn/send/receive/kill cycle for the common one-shot case.", added: true },
+    { id: "3.6", q: "How do you cancel async work in Dart when Futures aren't cancellable?",
+      a: "You don't cancel the Future — you make its result irrelevant. Three standard techniques: a monotonically increasing request token that the completion handler checks before writing state; a <code>CancelToken</code>-style object that the transport layer (Dio, for example) honours by aborting the socket; and a <code>StreamSubscription</code> you can <code>cancel()</code> for stream-based work. For the token approach, compare on completion and discard non-matching results.",
+      code: "int _token = 0;\n\nFuture<void> search(String q) async {\n  final t = ++_token;\n  final r = await repo.search(q);\n  if (t != _token) return; // a newer search superseded this one\n  emit(Results(r));\n}", added: true },
+    { id: "3.7", q: "Stream vs Future — when does each belong, and what are the gotchas?",
+      a: "A Future is one value (or one error) and completes once. A Stream is zero-to-many values over time. Gotchas that come up in review: single-subscription streams throw if listened to twice, so use <code>asBroadcastStream()</code> or a broadcast controller for fan-out; every <code>StreamSubscription</code> and <code>StreamController</code> you create must be cancelled or closed in <code>dispose()</code>, or you leak; and a broadcast stream does not replay history, so a late listener sees nothing until the next event — use a <code>BehaviorSubject</code>-style holder if consumers need the current value.", added: true },
+    { id: "3.8", q: "What's the difference between async* / yield and returning a Future of a List?",
+      a: "<code>async*</code> produces a lazy Stream — values are computed as the consumer pulls them, and the generator is paused between yields. Returning <code>Future&lt;List&gt;</code> computes everything before the caller sees anything. Use the generator for paged or incremental data, progress reporting, or anything you might want to stop early; use the list when the caller genuinely needs the full set atomically.", added: true },
+    { id: "3.9", q: "Why can await inside a loop be a performance bug, and what's the fix?",
+      a: "<code>for (final id in ids) await fetch(id);</code> serialises N round trips. If they're independent, launch them together and await the collection: <code>await Future.wait(ids.map(fetch))</code>. Caveats worth saying out loud: <code>Future.wait</code> fails fast on the first error while the others keep running (use <code>eagerError: false</code> semantics and handle per-item results), and unbounded fan-out can hammer the backend — chunk it or use a small worker pool for large N.",
+      code: "// serial: N x latency\nfor (final id in ids) { await fetch(id); }\n\n// parallel, bounded\nconst limit = 6;\nfor (var i = 0; i < ids.length; i += limit) {\n  await Future.wait(ids.skip(i).take(limit).map(fetch));\n}", added: true },
+    { id: "3.10", q: "Where do zones fit, and do you need them?",
+      a: "A Zone is an execution context that can intercept uncaught async errors, print calls and timer creation. In practice you need exactly one use of it: wrapping <code>runApp</code> in <code>runZonedGuarded</code> to catch errors that escape the Flutter framework's own handler. Framework errors go through <code>FlutterError.onError</code>, and platform-level async errors through <code>PlatformDispatcher.instance.onError</code>. Wire all three to your crash reporter.", added: true }
+  ]
+},
+{
+  n: 4, id: "internals", title: "Flutter Internals — The Three Trees, Keys & Lifecycle",
+  kicker: "Widget, Element, RenderObject: what each is for and why it explains everything else.",
+  items: [
+    { id: "4.1", q: "Explain the three trees at staff level.",
+      a: "Flutter maintains three parallel trees. The <strong>Widget tree</strong> is immutable configuration — lightweight objects like <code>Scaffold</code>, <code>Column</code>, <code>Text</code> that describe what the UI should be. The <strong>Element tree</strong> is what Flutter keeps alive: each Element holds a widget's position and identity in the tree, its relationships to children, and (for a StatefulWidget) its State. The <strong>RenderObject tree</strong> does layout, sizing, positioning, painting and hit testing — <code>RenderFlex</code>, <code>RenderParagraph</code>. Not every widget creates a RenderObject, so that tree is the smallest of the three." },
+    { id: "4.2", q: "Why does Flutter separate them at all?",
+      a: "It splits three responsibilities that change at different rates: configuration, identity/state, and rendering. Because widgets are cheap and immutable, Flutter can throw them away and rebuild them constantly; because Elements persist, State survives those rebuilds; because RenderObjects persist and are only updated when something they care about changed, expensive layout and paint infrastructure isn't recreated every frame. Every performance and key question downstream is a consequence of this split." },
+    { id: "4.3", q: "What actually happens when you call setState()?",
+      a: "<code>setState</code> runs your mutation, then marks the associated Element dirty and schedules a frame. In the build phase Flutter rebuilds that Element's subtree, producing new widget objects, then reconciles them against the existing Elements — same runtimeType and key means reuse the Element and update its widget reference; otherwise unmount and inflate a new one. RenderObjects are updated only where their configuration changed, then layout and paint run for what's actually dirty. So 'setState redraws the whole screen' is wrong; it rebuilds one subtree and repaints considerably less." },
+    { id: "4.4", q: "What are Keys really for?",
+      a: "Keys participate in <em>reconciliation</em>: they tell Flutter which new widget corresponds to which existing Element when the child structure changes. They matter when stateful children are inserted, removed or reordered in a list — without a key, Flutter matches by position and type, so reordering two <code>TodoTile</code>s swaps their configuration but leaves their State where it was. A key is not a general performance optimisation; it solves an identity-matching problem." },
+    { id: "4.5", q: "ValueKey, ObjectKey, UniqueKey, GlobalKey — when does each apply?",
+      a: "<code>ValueKey</code> when a stable domain value identifies the item (an id). <code>ObjectKey</code> when identity is the object instance itself. <code>UniqueKey</code> when you deliberately want a new identity every build — i.e. force the old State to be discarded. <code>GlobalKey</code> when you need to reach an Element or State from outside its subtree, or move a subtree to a new parent while preserving State; it is expensive and a smell if used routinely for cross-widget communication.", added: true },
+    { id: "4.6", q: "Walk the StatefulWidget lifecycle and say where each responsibility lives.",
+      code: "createState\n   ↓\ninitState\n   ↓\ndidChangeDependencies\n   ↓\nbuild\n   ↓\ndidUpdateWidget   (when the parent rebuilds with new config)\n   ↓\nbuild\n   ↓\ndispose",
+      a: "<code>initState</code> — one-time setup that needs no <code>InheritedWidget</code> lookup: controllers, initial fetch trigger. <code>didChangeDependencies</code> — anything depending on inherited data (Theme, MediaQuery, a Provider), and it re-runs when those change. <code>didUpdateWidget</code> — react to a new configuration from the parent, e.g. resubscribe when <code>widget.userId</code> changed. <code>dispose</code> — cancel every subscription, timer, listener, controller and native resource. A rebuild does not create a new State object; a new Element does." },
+    { id: "4.7", q: "Why is 'a rebuild happened' not automatically a performance problem?",
+      a: "Rebuilding is constructing a few immutable configuration objects; Flutter is designed to do this a lot. Frames are dropped by expensive work <em>inside</em> build, by layout that has to walk too much of the tree, by rasterisation cost, by image decode, by memory pressure or by CPU work on the UI isolate. So the rule is profile first: use DevTools to find which of those it actually is before choosing an optimisation." },
+    { id: "4.8", q: "What does const actually buy you in a widget tree?",
+      a: "A <code>const</code> widget is canonicalised at compile time, so the same instance is reused across rebuilds. During reconciliation Flutter can short-circuit: identical widget instance means the subtree's configuration cannot have changed, so it skips rebuilding it. That is a genuine and free win, which is why <code>prefer_const_constructors</code> is worth enforcing in lint. It does nothing for layout or raster cost.", added: true },
+    { id: "4.9", q: "What is RepaintBoundary and when is it the right tool?",
+      a: "It gives a subtree its own compositing layer so repainting it doesn't force its neighbours to repaint. It's correct when a small region animates continuously over expensive static content — a spinner over a complex page, a cursor, a rapidly-updating chart. It's wrong as a blanket optimisation: every boundary costs memory and a layer, and the DevTools repaint-rainbow overlay should be your evidence that you need one.", added: true },
+    { id: "4.10", q: "BuildContext across an async gap — what's the bug and what's the fix?",
+      a: "After <code>await</code>, the widget may have been removed from the tree; using the captured <code>context</code> to navigate or show a SnackBar can throw or act on a dead Element. Guard with <code>if (!mounted) return;</code> immediately after the await (Flutter's <code>use_build_context_synchronously</code> lint catches it). Better still, capture what you need <em>before</em> the await — <code>final messenger = ScaffoldMessenger.of(context);</code> — so you aren't depending on the tree at all afterwards.",
+      code: "Future<void> save() async {\n  final messenger = ScaffoldMessenger.of(context); // capture first\n  await repo.save(draft);\n  if (!mounted) return;                            // then guard\n  messenger.showSnackBar(const SnackBar(content: Text('Saved')));\n}", added: true },
+    { id: "4.11", q: "What is an InheritedWidget and why does it underpin most state libraries?",
+      a: "It's a widget that exposes data down the tree and registers dependent Elements when they call <code>of(context)</code>. When it's replaced and <code>updateShouldNotify</code> returns true, Flutter rebuilds exactly those registered dependents — an O(dependents) notification rather than a tree walk. Provider, Riverpod's scope, <code>BlocProvider</code>, Theme and MediaQuery are all built on it. Knowing this lets you answer 'how does Provider actually work' without hand-waving.", added: true },
+    { id: "4.12", q: "Does every widget have a RenderObject?",
+      a: "No. Inherited widgets, builders, providers and most composition widgets participate in the Widget and Element trees without ever creating a RenderObject. Only <code>RenderObjectWidget</code>s (the leaf-ish ones doing real layout and paint — <code>Padding</code>'s RenderPadding, <code>Text</code>'s RenderParagraph) do." },
+    { id: "4.13", q: "Give the quick mental model in one line each.",
+      a: "Widget tree — <em>what should the UI be?</em> Element tree — <em>which node's identity and state survives?</em> RenderObject tree — <em>how and where does it lay out and paint?</em>" }
+  ]
+},
+{
+  n: 5, id: "state", title: "State Management & State Ownership",
+  kicker: "The question is never 'which library' — it's who owns this, and for how long.",
+  items: [
+    { id: "5.1", q: "What is the core question behind every state-management decision?",
+      a: "Who owns this state, who is allowed to modify it, who needs to observe it, and how long should it live? Answer those four and the library choice becomes a detail. Leading with 'I'd use Riverpod' instead is the classic mid-level move." },
+    { id: "5.2", q: "Map state scopes to their typical owners.",
+      a: "<table><tr><th>Scope</th><th>Examples</th><th>Typical owner</th></tr><tr><td>Widget-local</td><td>Text field, expansion, animation</td><td>StatefulWidget / ValueNotifier</td></tr><tr><td>Feature</td><td>Pagination, filters, checkout</td><td>Cubit / BLoC / feature state</td></tr><tr><td>Shared feature</td><td>Transactions across several screens</td><td>Feature-scoped state + repository</td></tr><tr><td>Application / session</td><td>Auth, KYC, user session</td><td>Authenticated app scope</td></tr></table>" },
+    { id: "5.3", q: "Screen 1 → Screen 2 → Screen 3. Screen 3 needs to update Screen 1. How?",
+      a: "First decide which of two different problems this is. If Screen 3 only needs to report an outcome — 'saved' — that's a <strong>navigation result</strong>, and the answer is one line. If several screens need to observe the same live business state, that's a <strong>shared state owner scoped above all three</strong>, with the Navigator underneath it. What you never do is call Screen 1 directly from Screen 3. And if Screen 1 was disposed while away, it must be able to read current state on return — which is an argument for the state living above it, not inside it.",
+      code: "// one-off outcome\nfinal updated = await Navigator.push(...);\nif (updated == true) refresh();\n\n// shared reactive state\nFeatureScope\n  ├── FeatureCubit\n  └── Navigator\n        ├── Screen 1\n        ├── Screen 2\n        └── Screen 3" },
+    { id: "5.4", q: "Two screens are unrelated in the widget tree but share business data — say Home and Payment both show balance. What now?",
+      a: "Establish a state owner above both with an explicit lifecycle — a <code>BalanceCubit</code> provided at the authenticated-session scope — and let both screens observe it. Do not thread the value through navigation arguments just because the widget tree doesn't connect them; that makes every intermediate route a courier for data it doesn't care about, and it goes stale the moment anything else changes the balance." },
+    { id: "5.5", q: "When is a plain setState still the right answer?",
+      a: "When the state is genuinely widget-local and dies with the widget: a text field's controller, an expansion toggle, an animation value, a form's validation flag. Reaching for a Cubit here adds indirection, a provider, a lifecycle question and a test file to protect a boolean. Seniority shows in <em>not</em> escalating.", added: true },
+    { id: "5.6", q: "Cubit vs BLoC — how do you choose?",
+      a: "Cubit exposes methods and emits states; BLoC takes an event stream in and emits states out. Use Cubit by default — it's less ceremony and reads better. Reach for BLoC when you genuinely need the event stream as a first-class thing: event transformers (debounce, throttle, <code>concurrent</code> vs <code>droppable</code> vs <code>restartable</code>), an audit trail of what the user did, or complex ordering guarantees between actions. 'Events give me a log and transformers' is the honest reason; 'BLoC is more architectural' is not.", added: true },
+    { id: "5.7", q: "Why does state equality matter in BLoC/Cubit, and how do you get it right?",
+      a: "<code>emit</code> is a no-op if the new state <code>==</code> the old one, and listeners rebuild when it isn't. So mutating a list in place and re-emitting the same instance silently drops the update, while emitting a fresh-but-equivalent object with default identity equality causes needless rebuilds. Fix it with value equality — Equatable or freezed — and treat state objects as immutable, always constructing a new one with <code>copyWith</code>.", added: true },
+    { id: "5.8", q: "How should you model a screen's state — flags or a sealed type?",
+      a: "Prefer a sealed/union type over a bag of booleans. <code>isLoading</code>, <code>error</code> and <code>data</code> as three independent fields allows sixteen combinations, most of which are nonsense and at least one of which you will render by accident. A sealed hierarchy makes the illegal states unrepresentable and lets the compiler force you to handle every branch in an exhaustive switch.",
+      code: "sealed class SearchState {}\nfinal class SearchIdle    extends SearchState {}\nfinal class SearchLoading extends SearchState {}\nfinal class SearchData    extends SearchState { final List<Item> items; SearchData(this.items); }\nfinal class SearchFailed  extends SearchState { final AppError e; SearchFailed(this.e); }\n\n// exhaustive — the compiler catches a missing branch\nWidget build(BuildContext c) => switch (state) {\n  SearchIdle()      => const Hint(),\n  SearchLoading()   => const Spinner(),\n  SearchData(:final items) => ResultList(items),\n  SearchFailed(:final e)   => ErrorView(e),\n};", added: true },
+    { id: "5.9", q: "How do you handle one-off effects — a toast, a navigation — in a state-based architecture?",
+      a: "They aren't state, so don't store them in state; a state object that carries <code>navigateToReceipt: true</code> will re-fire on the next rebuild or on restore. Model them as a separate single-consumption channel: a stream of effects the widget listens to, or <code>BlocListener</code> which fires on transitions rather than on builds. The distinction is the same one as event vs state: an effect describes something that happened once.", added: true }
+  ]
+},
+{
+  n: 6, id: "basecontroller", title: "Replacing BaseController / BaseViewModel",
+  kicker: "Why the shared base class rots, and what a shared capability looks like instead.",
+  items: [
+    { id: "6.1", q: "What goes wrong with a BaseController that holds API, logger, analytics, storage, loading and error handling?",
+      a: "Four things. It <strong>hides dependencies</strong> — you cannot tell from a subclass's signature what it actually touches. It <strong>accretes</strong> — unrelated functionality accumulates because the base class is the path of least resistance. It <strong>hurts testing and ownership</strong> — every test drags in the whole graph, and no one owns the base. And it turns <strong>inheritance into a coupling mechanism</strong> rather than a useful abstraction: subclasses are bound to each other's changes through a parent none of them chose." },
+    { id: "6.2", q: "Five features need the user's KYC status. Where does that live?",
+      a: "Treat KYC as a domain capability, not a method on a base class. <code>KycRepository</code> is the data boundary coordinating remote API and local cache. Add a <code>GetKycStatus</code> use case only if there are real business rules — evaluate eligibility, derive a decision — rather than a pass-through. If features need to <em>react</em> to changes, put a <code>KycCubit</code> at the authenticated scope and let them observe it. Crucially, separate <em>reading current KYC state</em> from <em>fetching it from the server</em>: those are different operations with different costs.",
+      code: "         KycRepository\n        /            \\\n   Remote API     Local Cache\n         \\            /\n          GetKycStatus\n               |\n            KycCubit\n         /     |      \\\n      Home  Payment  Profile" },
+    { id: "6.3", q: "Five screens each call the KYC endpoint on open. How do you get to one call?",
+      a: "Cache according to freshness and security requirements — KYC status tolerates a short TTL, a balance may not. Deduplicate simultaneous in-flight requests so five concurrent opens share one network call. Keep the server authoritative for anything that gates money or access. And clear all user-scoped cache on logout or session change, or the next user sees the last one's data." },
+    { id: "6.4", q: "Isn't a single global AppCubit with auth, KYC, balance, profile, notifications and settings the pragmatic answer?",
+      a: "No — that is a BaseController wearing a different hat. Any change to notifications invalidates the state object that the payment screen observes, ownership becomes collective (so nobody's), and the lifecycle is wrong because those concerns do not all live and die together. Split by business ownership and lifecycle. Global scope is a lifecycle decision, not a convenience shortcut." },
+    { id: "6.5", q: "Is a base class ever justified?",
+      a: "Yes, and saying so is the mature answer. A base class is fine when it represents a genuine shared abstraction whose subtypes really are substitutable for it — a <code>PaymentProcessor</code>, a <code>SyncOperation</code>. It's wrong when it exists to give subclasses convenient access to unrelated services. The test: does the parent express behaviour every child truly is, or does it express a set of things every child happens to need? The second case is what dependency injection is for." }
+  ]
+},
+{
+  n: 7, id: "architecture", title: "Architecture — Composition, DI & Boundaries",
+  kicker: "What each layer owes the others, and what it must never do.",
+  items: [
+    { id: "7.1", q: "Sketch the layering and say what each component must avoid.",
+      code: "Presentation\n    ↓\nFeature State (Cubit / BLoC)\n    ↓\nUse Case (when useful)\n    ↓\nRepository\n    ↓\nLocal / Remote Data Sources",
+      a: "<table><tr><th>Component</th><th>Responsibility</th><th>Avoid</th></tr><tr><td>State holder</td><td>UI-facing state and orchestration</td><td>Raw networking</td></tr><tr><td>Use case</td><td>A meaningful business operation</td><td>One-line pass-through ceremony</td></tr><tr><td>Repository</td><td>Data access and source coordination</td><td>UI-specific logic</td></tr><tr><td>API client</td><td>Transport concerns</td><td>Business decisions</td></tr><tr><td>DI</td><td>Composition and lifecycle</td><td>Hidden dependencies</td></tr></table>" },
+    { id: "7.2", q: "When is a use case worth the file?",
+      a: "When it expresses business behaviour that doesn't belong to any single repository: fetch KYC → evaluate eligibility against the requested product → return a domain decision. If it only forwards one repository call with the same signature, it is ceremony — it adds a file, a mock and an indirection while protecting nothing." },
+    { id: "7.3", q: "Repository vs DataSource vs Service — draw the lines.",
+      a: "A <strong>DataSource</strong> speaks to one concrete source: a REST client, a SQLite DAO, a cache, a platform API. A <strong>Repository</strong> exposes domain-shaped operations and coordinates sources — cache-then-network, mapping DTOs to domain models, deciding what's authoritative. <strong>Service</strong> is the weakest of the three names: if you can't say what boundary it owns, that's a signal the class has no clear responsibility, not that it needs a better name." },
+    { id: "7.4", q: "Event bus or state? How do you decide?",
+      a: "<table><tr><th>Need</th><th>Prefer</th><th>Why</th></tr><tr><td>Current KYC status</td><td>Reactive state</td><td>Consumers need the current value</td></tr><tr><td>Payment progress</td><td>State machine</td><td>It must be observable and resumable</td></tr><tr><td>One-time global notification</td><td>Event mechanism</td><td>Genuinely transient</td></tr><tr><td>Edit → save → return</td><td>Navigation result</td><td>Simple local communication</td></tr></table><p>The distinction to say out loud: <strong>events describe something that happened; state describes what is true now.</strong> An event bus used as a source of truth is a symptom of missing state ownership — a late subscriber has no way to learn the current value.</p>" },
+    { id: "7.5", q: "How do you decide module boundaries in a large Flutter codebase?",
+      a: "By business capability and by rate of change, not by technical layer. <code>feature_payments</code>, <code>feature_kyc</code>, <code>core_network</code>, <code>design_system</code> beats <code>widgets</code>, <code>models</code>, <code>services</code> — the latter forces every feature change to touch every folder. Enforce direction with package boundaries so features can depend on core but never on each other; cross-feature needs go through a shared contract package. The win is compile-time enforcement of the architecture diagram instead of a wiki page nobody reads.", added: true },
+    { id: "7.6", q: "How do you handle navigation as an architectural concern?",
+      a: "Keep route definitions declarative and centralised (go_router or equivalent) so deep links, web URLs and auth redirects are one concern rather than scattered <code>Navigator.push</code> calls. Make auth gating a redirect driven by session state rather than a check inside each screen. Keep the state layer free of <code>BuildContext</code>: a Cubit should emit 'payment succeeded', and the widget layer should decide that this means pushing the receipt route.", added: true }
+  ]
+},
+{
+  n: 8, id: "solid", title: "SOLID, Dependency Injection & Dependency Inversion",
+  kicker: "Principles as tools for controlling coupling — not as a checklist of interfaces to create.",
+  items: [
+    { id: "8.1", q: "Dependency Injection vs Dependency Inversion — what's the actual difference?",
+      a: "<strong>Dependency Inversion (DIP)</strong> is a design principle about <em>direction</em>: high-level policy should not depend on low-level implementation detail; both should depend on an abstraction. <strong>Dependency Injection (DI)</strong> is a <em>technique</em> for supplying a dependency from outside rather than letting the object construct or locate it. One is about which way the arrow points; the other is about how the object gets handed its collaborators." },
+    { id: "8.2", q: "Can you have DI without DIP?",
+      a: "Yes, and it's common. <code>LoginCubit(FirebaseAuth auth)</code> is constructor injection — that's DI. But the presentation layer now depends directly on a concrete external technology, so DIP is violated: swapping auth providers or testing without Firebase means changing the Cubit. Inject an <code>AuthRepository</code> contract instead and you have both." },
+    { id: "8.3", q: "Can you have DIP without GetIt or any container?",
+      a: "Yes. Manual constructor wiring at the top of the app satisfies DIP completely. A container is a convenience for assembling a large object graph and managing lifetimes; it is not what makes the dependency direction correct. Many small apps are better off without one." },
+    { id: "8.4", q: "Is GetIt dependency injection?",
+      a: "Strictly, GetIt is a <strong>service locator</strong>: objects ask it for what they need. It becomes good architecture when you use it only at the composition root to build objects, while the business classes themselves take dependencies through their constructors. A <code>getIt&lt;PaymentRepository&gt;()</code> call buried inside a Cubit is a hidden global dependency — invisible in the type signature and awkward to replace in a test." },
+    { id: "8.5", q: "S — Single Responsibility. What's the misreading?",
+      a: "That it means one method per class. It means one cohesive responsibility, i.e. one reason to change. A <code>PaymentCubit</code> that validates cards, calls APIs, writes to the database, generates PDF receipts and fires analytics has five unrelated reasons to change, and five teams touching it. Keep UI-state orchestration in the Cubit and delegate rules, persistence, receipts and analytics to collaborators." },
+    { id: "8.6", q: "O — Open/Closed. Does it mean never modifying existing code?",
+      a: "No. It means creating stable extension points where variation is genuinely expected. Rather than growing an if/else chain for card, bKash, Nagad and whatever comes next, define a <code>PaymentProcessor</code> contract and add an implementation per method. The staff-level caveat: don't manufacture an abstraction to satisfy OCP when there is no real extension point — speculative pluggability is a cost with no payer." },
+    { id: "8.7", q: "L — Liskov. Give a concrete Flutter/Dart violation.",
+      a: "<code>PaymentMethod</code> declares <code>refund()</code>, and <code>CashPayment</code> implements it by throwing <code>UnsupportedError</code>. Every caller now has to know the concrete type to use the base type safely, which defeats the abstraction. The fix is to model capability honestly — a separate <code>Refundable</code> interface that only refundable methods implement — rather than forcing subtypes to pretend." },
+    { id: "8.8", q: "I — Interface Segregation. What does it look like in a real app?",
+      a: "A single <code>UserRepository</code> carrying login, logout, KYC, profile upload and transaction history forces the login screen to depend on transaction APIs, and every test of it to stub methods it never calls. Split it into <code>AuthRepository</code>, <code>KycRepository</code>, <code>ProfileRepository</code> and <code>TransactionRepository</code> when those are genuinely separate domain responsibilities." },
+    { id: "8.9", q: "D — Dependency Inversion in practice.",
+      a: "<code>LoginCubit</code> depends on the <code>AuthRepository</code> abstraction; <code>FirebaseAuthRepository</code> implements it; the composition root wires the two together. Authentication technology is infrastructure, and infrastructure should be a detail the business layer is protected from. The test of whether you got it right: can the domain layer compile with no Firebase import anywhere in it?" },
+    { id: "8.10", q: "Is the repository pattern the same as dependency inversion?",
+      a: "No — this is a favourite trap. Repository is a pattern for abstracting data access; DIP is a principle about dependency direction. A Cubit that depends directly on <code>PaymentRepositoryImpl</code> has a repository and still violates DIP. Having the class does not mean the arrow points the right way." },
+    { id: "8.11", q: "Do all repositories need an interface?",
+      a: "No. An interface earns its place when it isolates infrastructure, marks a meaningful architectural boundary, supports more than one implementation, enables independent testing, or lets two parts evolve separately. Generating <code>IFooRepository</code>/<code>FooRepositoryImpl</code> pairs by reflex doubles the file count and protects nothing. With good fakes and a sane build, 'I need it for testing' is often no longer a sufficient reason on its own." },
+    { id: "8.12", q: "Constructor injection vs service-locator calls — argue it concretely.",
+      a: "<code>PaymentCubit(mockRepository)</code> is a complete test setup. A hidden <code>getIt&lt;PaymentRepository&gt;()</code> inside the Cubit means every test needs global registration, tests can leak state into one another, and the class's real dependencies are invisible until you read the body. Constructor dependencies are self-documenting; use the container at the composition root to build the objects." },
+    { id: "8.13", q: "Composition over inheritance — why, in one answer?",
+      a: "Inheritance models an is-a relationship and is right when a subtype truly satisfies the parent contract. Deep hierarchies produce tight coupling, fragile base classes and behaviour that's hard to locate. Composition assembles behaviour from explicit collaborators, so dependencies are visible, replaceable and testable. Prefer <code>PaymentCubit</code> composed of <code>AuthRepository</code>, <code>KycRepository</code> and <code>PaymentRepository</code> over a chain of BaseController subclasses." },
+    { id: "8.14", q: "Can SOLID make an architecture worse?",
+      a: "Yes, applied mechanically. A small feature does not need <code>IUserRepository</code>, <code>UserRepositoryImpl</code>, <code>ILoginUseCase</code>, <code>LoginUseCaseImpl</code>, <code>IUserService</code> and three data-source interfaces. SOLID exists to control coupling and reasons for change, not to maximise interface count. Introduce an abstraction where it protects a real boundary or an expected variation — and be willing to say in the interview that you've removed abstractions as well as added them." },
+    { id: "8.15", q: "Where do Dart mixins fit in the composition-vs-inheritance conversation?",
+      a: "A mixin is horizontal reuse — behaviour without an is-a claim — which makes it a decent middle ground for cross-cutting concerns like a logging helper or a disposal pattern. The risk is that mixins can re-create the BaseController problem quietly: stack four onto a Cubit and you again have hidden dependencies and unclear ownership, just spelled differently. Use them for stateless, self-contained behaviour; use collaborators for anything with dependencies.", added: true },
+    { id: "8.16", q: "Give the staff-level summary of your position on SOLID.",
+      a: "\"I treat SOLID as guidance for managing coupling and change rather than a checklist. Dependency Inversion defines the direction of dependencies; Dependency Injection is one technique for supplying them. I prefer explicit constructor injection in business classes and keep container wiring near the composition root. I add interfaces, repositories and use cases when they protect a meaningful boundary or real business semantics, not because a Clean Architecture diagram contains them.\"" }
+  ]
+}
+];
+
+const CHAPTERS_B = [
+{
+  n: 9, id: "network", title: "Networking, Authentication & Reliability",
+  kicker: "Single-flight refresh, concurrent loading, and an error model the UI can act on.",
+  items: [
+    { id: "9.1", q: "Ten in-flight requests all return 401 at once. What happens?",
+      code: "10 requests\n    ↓\n10 × 401\n    ↓\nONE refresh operation\n    ↓\nnew token\n    ↓\nretry the waiting requests",
+      a: "Single-flight refresh. The first 401 starts a refresh and stores the in-progress Future; every subsequent 401 awaits that same Future rather than starting its own, then retries with the new token. Four things make it production-safe: the refresh call itself must be exempt from the interceptor so it cannot recurse; retries must be bounded (one retry per request, typically); a failed refresh must be handled centrally as a session-level transition to logged-out rather than as N independent errors; and requests queued during refresh need a timeout so a hung refresh doesn't hang the app." },
+    { id: "9.2", q: "Sketch the single-flight refresh.",
+      code: "Future<String>? _refreshing;\n\nFuture<String> _token() {\n  return _refreshing ??= _doRefresh()\n      .whenComplete(() => _refreshing = null);\n}\n\n// interceptor\nonError(err, handler) async {\n  if (err.response?.statusCode != 401 || err.isRefreshCall) return handler.next(err);\n  if (err.requestOptions.extra['retried'] == true) return handler.next(err);\n  try {\n    final t = await _token();\n    err.requestOptions.extra['retried'] = true;\n    handler.resolve(await _retry(err.requestOptions, t));\n  } catch (_) {\n    sessionController.expire();   // one transition, not ten errors\n    handler.next(err);\n  }\n}",
+      a: "The whole trick is the nullable in-flight Future assigned with <code>??=</code> and cleared in <code>whenComplete</code>. Callers either create the refresh or join the existing one. The <code>retried</code> flag bounds retries per request; the <code>isRefreshCall</code> check prevents recursion.", added: true },
+    { id: "9.3", q: "Why is a global loading boolean wrong, and what replaces it?",
+      code: "Request A starts → activeRequests = 1\nRequest B starts → activeRequests = 2\nRequest A ends   → activeRequests = 1\nRequest B ends   → activeRequests = 0  → hide overlay",
+      a: "With a boolean, the first request to finish hides the overlay while the second is still running. A counter incremented on start and decremented on completion is correct under concurrency. Two details to mention: decrement in a <code>finally</code> so errors don't leak the count, and consider whether a global overlay is the right UX at all — per-section loading usually is." },
+    { id: "9.4", q: "What does a good error model look like?",
+      code: "NetworkError\nAuthenticationError\nValidationError\nServerError\nTimeoutError\nUnknownError",
+      a: "Map low-level transport failures — <code>SocketException</code>, <code>DioException</code>, status codes, parse failures — into a small domain error type at the repository boundary, and let the feature decide presentation. This keeps <code>dio</code> out of the UI layer, makes error handling exhaustively switchable, and means a transport change doesn't ripple into every screen. Carry a correlation id on the error so a user-reported issue maps to a server log line." },
+    { id: "9.5", q: "How do you design retries so they help rather than hurt?",
+      a: "Retry only <em>idempotent</em> operations automatically — GETs, and writes carrying an idempotency key. Use exponential backoff with jitter so a recovering backend isn't hit by a synchronised thundering herd. Bound the attempts and the total time. Never retry a 4xx other than 408/429 — the request is wrong, and repeating it won't fix it. And expose a manual retry in the UI for the cases you deliberately don't retry automatically.", added: true },
+    { id: "9.6", q: "What does an interviewer expect you to say about caching at the network layer?",
+      a: "Distinguish three questions: <em>correctness</em> (may this be stale, and for how long), <em>security</em> (may this touch disk at all — tokens and PII usually may not), and <em>memory</em>. Then pick per endpoint rather than globally: HTTP cache headers where the backend cooperates, an in-memory TTL for session-scoped things like KYC status, and a persisted cache only for data you're willing to render before a network call returns. Always scope cache keys to the authenticated user and clear on logout.", added: true }
+  ]
+},
+{
+  n: 10, id: "offline", title: "Offline-First & Synchronisation",
+  kicker: "Read path, write path, and the conflict rules you must decide before shipping.",
+  items: [
+    { id: "10.1", q: "Describe the offline-first read path.",
+      code: "Open screen\n    ↓\nRead local cache\n    ↓\nRender immediately\n    ↓\nFetch fresh server data\n    ↓\nUpdate local DB\n    ↓\nUI observes the update",
+      a: "The local database is what the UI watches; the network is a background process that updates it. That inversion is the whole idea — the screen never waits on a socket, and there is exactly one source the UI reads from, which removes a whole class of 'which value wins' bugs." },
+    { id: "10.2", q: "Describe the offline-first write path and what must be durable.",
+      code: "User action\n    ↓\nPersist locally  →  PENDING\n    ↓\nSync queue\n    ↓\nServer\n    ↓\nSYNCED / FAILED",
+      a: "Write locally first with a <code>PENDING</code> status and show it immediately, then enqueue it. What must be durable: the pending operations themselves (memory-only queues die with the process), a unique operation id so a replay after a lost response doesn't double-apply, a defined retry and backoff policy, defined behaviour for permanent failure (surface it and let the user act — don't retry forever silently), and conflict rules for multi-device editing." },
+    { id: "10.3", q: "Compare the conflict-resolution strategies.",
+      a: "<table><tr><th>Strategy</th><th>Good fit</th><th>Risk</th></tr><tr><td>Last-write-wins</td><td>Low-risk data</td><td>Silent overwrite</td></tr><tr><td>Server-wins</td><td>Central authority</td><td>Client's change disappears</td></tr><tr><td>Client-wins</td><td>Strong client ownership</td><td>Overwrites newer server state</td></tr><tr><td>Version check</td><td>Critical records</td><td>Needs real conflict handling</td></tr><tr><td>Explicit merge</td><td>Collaborative data</td><td>Most complexity</td></tr></table><p>The senior move is to pick per entity from business semantics, not one policy for the whole app: a draft note can be last-write-wins while a ledger entry needs version-based optimistic concurrency.</p>" },
+    { id: "10.4", q: "How do you keep the sync queue correct when operations depend on each other?",
+      a: "Order matters: 'create expense' then 'attach receipt to expense' cannot be replayed out of order, and the second references an id the server hasn't issued yet. Two workable answers — generate client-side ids (UUIDs) that the server accepts, so references are valid before sync; or make the queue a serial, ordered log per aggregate, where a failed operation blocks its own chain but not others. Say which you'd choose and why; the naive parallel-drain queue is the trap here.", added: true },
+    { id: "10.5", q: "What's the biggest offline-first mistake teams make?",
+      a: "Shipping the optimistic UI without the durable pending queue, the idempotency keys, and the conflict and reconciliation rules. The demo looks perfect — writes appear instantly — and the failure only shows up in production as silently lost user data, which is the hardest class of bug to even detect." }
+  ]
+},
+{
+  n: 11, id: "payments", title: "Payments & FinTech Reliability",
+  kicker: "Where 'it failed' and 'I don't know' are two different answers.",
+  items: [
+    { id: "11.1", q: "Draw the payment state machine and explain the unusual state.",
+      code: "INITIATED\n    ↓\nPROCESSING\n    ├──→ SUCCESS\n    ├──→ FAILED\n    └──→ UNKNOWN\n             ↓\n        STATUS CHECK",
+      a: "<code>UNKNOWN</code> is the state most implementations are missing, and it's the one interviewers probe. A transport failure is not a business failure: a timeout means the client does not know whether money moved. Representing that honestly — rather than collapsing it to FAILED — is what makes reconciliation possible instead of double-charging." },
+    { id: "11.2", q: "The user double-taps Pay. Is disabling the button enough?",
+      a: "No. Disabling the button is a UX safeguard only — it does nothing about a retry after a timeout, a second device, a replayed request, or a lost response. Correctness comes from the server: give the operation a durable identity (an idempotency key generated by the client and persisted before the request goes out), have the server return the original result for a repeated key, and make transaction status queryable so the client can reconcile." },
+    { id: "11.3", q: "The payment request times out. What does the app do next?",
+      a: "Move to <code>UNKNOWN</code>/<code>PROCESSING</code>, not <code>FAILED</code>. Persist the transaction identity so it survives an app kill. Query the status endpoint with backoff, and reconcile before permitting any second side-effecting operation. Tell the user the truth — 'we're confirming this payment' — rather than a wrong certainty in either direction." },
+    { id: "11.4", q: "Run the payment failure checklist.",
+      a: "Double tap · retry after timeout · app killed mid-payment · network switch (Wi-Fi to cellular) · token expiry during the flow · backend succeeded but the response was lost · delayed provider callback · a second device acting on the same account · duplicate webhook · reconciliation after restart. Being able to list these quickly is itself the signal — it shows you've operated a payment flow rather than only built one." },
+    { id: "11.5", q: "What's the client's responsibility vs the server's in payment correctness?",
+      a: "The client owns: generating and persisting a durable operation identity before any network call, surviving process death with that identity, honest state representation, and reconciliation on resume. The server owns: idempotency enforcement, being the single authority on outcome, and a queryable status endpoint. Anything you can only enforce on the client is a UX improvement, not a correctness guarantee — say that sentence in the interview.", added: true }
+  ]
+},
+{
+  n: 12, id: "performance", title: "Performance & Debugging",
+  kicker: "Profile, quantify, change one variable, re-measure.",
+  items: [
+    { id: "12.1", q: "What is your investigation workflow for a performance complaint?",
+      a: "Reproduce under realistic data and on a realistic (i.e. low-end, profile-mode) device. Define the symptom precisely: startup, scrolling, animation, memory, network or battery — they have different causes. Profile with DevTools. Identify and <em>quantify</em> the bottleneck. Change one major variable at a time. Re-profile and compare. Add regression monitoring or a benchmark test where practical. The discipline matters more than any single trick." },
+    { id: "12.2", q: "List the common causes of jank.",
+      a: "Heavy work inside <code>build()</code> · unnecessary rebuilds · large synchronous JSON parsing · expensive layout · large image decoding · heavy CPU computation · excessive raster work · rendering too much data at once. Note they split into two buckets — UI-thread (Dart) cost and raster-thread cost — and DevTools tells you which, so the first diagnostic question is always 'which thread is over budget?'" },
+    { id: "12.3", q: "A 2,000-item list is janky. Walk through it.",
+      a: "Profile first, and resist the urge to name a fix. Then in order of likelihood: is it a non-lazy list (<code>Column</code> in a <code>SingleChildScrollView</code> rather than <code>ListView.builder</code>)? Is build doing work that should be precomputed — formatting, sorting, filtering per item per frame? Are images being decoded at full resolution (<code>cacheWidth</code>/<code>cacheHeight</code>, resized thumbnails)? Is layout expensive because item heights are unconstrained? Then apply lazy building, pagination, targeted rebuilds via selectors, const subtrees, <code>RepaintBoundary</code> where the rainbow overlay justifies it, and image/data optimisation." },
+    { id: "12.4", q: "A 20 MB JSON response freezes the UI. What's the answer?",
+      a: "Reduce the payload before you reach for concurrency — pagination, filtering, field selection, or asking the backend for a leaner shape. That is usually the real fix and it also helps battery, data and latency. If parsing genuinely must handle a large body, move it to an isolate (<code>Isolate.run</code>/<code>compute</code>), and be aware the result copy back across the port has its own cost, so return a compact structure rather than a giant object graph." },
+    { id: "12.5", q: "Memory grows after navigating back and forth. How do you find it?",
+      a: "Profile heap and allocations in DevTools — take a snapshot, navigate the cycle several times, snapshot again, and look at what class counts grew and what's retaining them. Then inspect the usual suspects: uncancelled stream subscriptions, undisposed controllers (Animation, Text, Scroll, Page), running timers, listeners added without removal, caches with no eviction, static references, closures capturing a State, and native resources like camera or BLE handles. Almost every Flutter leak is a missing <code>dispose</code>." },
+    { id: "12.6", q: "The backend API takes 5 seconds. What's your move?",
+      a: "Separate actual latency from perceived latency, and act on both. On the client: cache and render stale-while-revalidate where correctness allows, paginate, and use progressive or skeleton UI so the screen is useful before the data lands. Off the client: bring the measurement to the backend team — p50/p95 traces, which endpoint, which payload — and treat it as a shared ownership problem rather than something to paper over forever." },
+    { id: "12.7", q: "What performance numbers should you actually be measuring in production?",
+      a: "Frame build and raster times against the device's frame budget (p95, not average — averages hide jank), app startup to first useful frame, time-to-interactive on key screens, API latency from the client's perspective, crash-free session rate, and ANR/hang rate. The senior point: without production telemetry you're optimising a device in your hand, which is typically the fastest device your users don't have.", added: true },
+    { id: "12.8", q: "What's the difference between debug, profile and release mode for performance work?",
+      a: "Debug builds are JIT-compiled with assertions and service extensions enabled and can be several times slower — any performance number from a debug build is meaningless. Profile mode is AOT-compiled like release but keeps enough instrumentation for DevTools, and is the only correct mode for measuring. Release strips that instrumentation. Mentioning this unprompted is a quick credibility win.", added: true }
+  ]
+},
+{
+  n: 13, id: "native", title: "Native Integration, BLE & FFI",
+  kicker: "Choosing the boundary, then making the connection resilient.",
+  items: [
+    { id: "13.1", q: "Match the need to the integration boundary.",
+      a: "<table><tr><th>Need</th><th>Boundary</th></tr><tr><td>Invoke a native platform API</td><td>MethodChannel</td></tr><tr><td>Continuous native events</td><td>EventChannel / stream</td></tr><tr><td>Native C/C++ library interop</td><td>FFI</td></tr><tr><td>Mature package already exists</td><td>Use the package unless requirements demand custom native work</td></tr></table><p>The judgement call to voice: evaluate existing packages first, and weigh the maintenance cost of owning platform code on two OSes against what the package doesn't do.</p>" },
+    { id: "13.2", q: "MethodChannel vs EventChannel vs FFI — what actually differs?",
+      a: "MethodChannel is request/response, asynchronous, with messages serialised across the platform boundary — good for commands. EventChannel is a one-way native→Dart stream — good for sensor data, BLE notifications, location updates. FFI calls into a native library directly with no channel and no serialisation, which makes it far faster for high-frequency or large-data calls, but it's synchronous by default (so long calls block the isolate — use <code>Isolate.run</code> or an async FFI approach) and gives you no platform-lifecycle integration.", added: true },
+    { id: "13.3", q: "BLE disconnects randomly. Design the fix.",
+      code: "DISCONNECTED\n     ↓\n SCANNING\n     ↓\nCONNECTING\n     ↓\nCONNECTED  ⇄  RECONNECTING",
+      a: "Model it as an explicit state machine rather than a set of booleans. Then handle each real-world cause: permissions and adapter state (Bluetooth off, location permission), OS background restrictions and app lifecycle, service rediscovery after reconnect, characteristic resubscription (subscriptions do not survive a disconnect), bounded exponential backoff so you don't spin the radio flat, and structured logging of every state transition because this is a class of bug you cannot reproduce on demand." },
+    { id: "13.4", q: "What's the threading model of a platform channel, and why does it matter?",
+      a: "Channel messages are handled on the platform's main/UI thread by default, so doing heavy native work inside a method-call handler blocks that thread and janks the app — dispatch it to a background queue natively and reply when done. The Dart side is always async. Also worth knowing: channel messages are serialised with a standard codec, so passing large payloads repeatedly is expensive; batch, or use FFI or shared memory for high-volume data.", added: true }
+  ]
+},
+{
+  n: 14, id: "testing", title: "Testing & Quality Engineering",
+  kicker: "What to test at each layer, and the ten tests that prove you understand the system.",
+  items: [
+    { id: "14.1", q: "What's high-value at each test layer?",
+      a: "<table><tr><th>Layer</th><th>High-value tests</th></tr><tr><td>Domain</td><td>Business rules, state transitions, edge cases</td></tr><tr><td>Repository</td><td>Caching, mapping, local/remote failure paths</td></tr><tr><td>Cubit / BLoC</td><td>Action → state sequences, concurrency, errors</td></tr><tr><td>Widget</td><td>Important UI behaviour, not pixel arrangement</td></tr><tr><td>Integration</td><td>Critical journeys and platform interactions</td></tr></table>" },
+    { id: "14.2", q: "Which ten tests demonstrate you understand this system?",
+      a: "Concurrent token refresh · stale search response · payment timeout → UNKNOWN · duplicate payment · offline write → sync · sync retry · conflict detection · pagination edge cases · BLE reconnect · logout during in-flight async work. Note they are all concurrency, failure and lifecycle tests — none of them assert on a widget's colour, which is the point." },
+    { id: "14.3", q: "Mocks or fakes?",
+      a: "Prefer fakes — a real, simple in-memory implementation of the contract — for repositories and data sources. They test behaviour rather than call sequences, so they don't break when you refactor an internal call, and a fake in-memory database catches bugs a mock never will. Reach for a mock when you specifically need to assert an interaction (the idempotency key was sent) or simulate a failure mode that's awkward to build into a fake.", added: true },
+    { id: "14.4", q: "How do you test time-dependent logic — debounce, backoff, TTL?",
+      a: "Inject the clock and the delay rather than calling <code>DateTime.now()</code> and <code>Future.delayed</code> directly, then in tests use <code>fakeAsync</code>/<code>FakeAsync</code> or a controllable clock to advance time instantly. Real <code>await Future.delayed</code> in tests makes the suite slow and flaky. This also quietly proves the design point that time is a dependency.", added: true },
+    { id: "14.5", q: "Where do golden tests earn their keep, and where do they cost you?",
+      a: "They're valuable for a design system — components, themes, dark mode, text scaling — where an unintended visual change is a real regression. They're a liability applied broadly to feature screens: they break on every copy change, font update and platform rendering difference, and teams learn to regenerate goldens without reading the diff, which is worse than having none.", added: true }
+  ]
+},
+{
+  n: 15, id: "coding", title: "Live-Coding Patterns",
+  kicker: "Three problems that come up constantly, with the edge cases that get probed.",
+  items: [
+    { id: "15.1", q: "Implement debounced search correctly.",
+      code: "Input\n  ↓\nDebounce (e.g. 300ms)\n  ↓\nRequest ID / cancellation\n  ↓\nRepository.search()\n  ↓\nOnly the latest response updates state",
+      a: "Debounce cuts the number of requests; it does <strong>not</strong> guarantee response ordering, because a slow earlier request can still land after a fast later one. You need both: a timer to reduce volume, and either transport-level cancellation or a request token checked before emitting. Also handle the empty query (cancel and clear, don't search for ''), and cancel the timer in <code>close()</code>/<code>dispose()</code>." },
+    { id: "15.2", q: "Implement load-more pagination, and name the edge cases.",
+      code: "if (isLoading || !hasMore) return;\nisLoading = true;\nfinal nextPage = page + 1;\n\nfinal result = await repository.fetchPage(nextPage);\n\nappendDeduplicated(result.items);\npage      = nextPage;\nhasMore   = result.hasMore;\nisLoading = false;",
+      a: "The guard at the top prevents concurrent page loads — a fast scroller will otherwise fire three fetches for page 2. Edge cases interviewers probe: deduplicate overlapping pages (offset pagination shifts when rows are inserted server-side — cursor pagination avoids this); keep refresh and load-more as separate operations with separate state; on failure don't discard the pages you already have — show an inline retry at the bottom; and set <code>isLoading = false</code> in a <code>finally</code> or a thrown error wedges the list permanently." },
+    { id: "15.3", q: "Design an LRU + TTL cache and say what drives the parameters.",
+      a: "LRU evicts the least recently used entry when capacity is exceeded — bounded memory. TTL invalidates an entry after a configured age — bounded staleness. Implement LRU with a <code>LinkedHashMap</code>: on read, remove and reinsert to move the key to the most-recent end; on write, insert and evict from the front while over capacity. Store an expiry timestamp per entry and treat an expired read as a miss. What drives the numbers is correctness, memory, freshness and security — and cache keys must be scoped to the authenticated user so data doesn't survive a logout.",
+      code: "class LruTtlCache<K, V> {\n  LruTtlCache({required this.capacity, required this.ttl});\n  final int capacity;\n  final Duration ttl;\n  final _map = <K, (DateTime, V)>{};\n\n  V? get(K k) {\n    final e = _map.remove(k);\n    if (e == null) return null;\n    if (DateTime.now().difference(e.$1) > ttl) return null; // expired\n    _map[k] = e;               // reinsert = most recently used\n    return e.$2;\n  }\n\n  void put(K k, V v) {\n    _map.remove(k);\n    _map[k] = (DateTime.now(), v);\n    while (_map.length > capacity) _map.remove(_map.keys.first);\n  }\n}" },
+    { id: "15.4", q: "Deduplicate concurrent identical requests — the in-flight map.",
+      a: "Five widgets ask for the KYC status at the same moment; one network call should serve all five. Keep a map from request key to in-flight Future; callers either start the call or await the existing one, and the entry is removed on completion. This is the same shape as single-flight token refresh, generalised — being able to point that out is a nice moment in an interview.",
+      code: "final _inFlight = <String, Future<Kyc>>{};\n\nFuture<Kyc> kyc(String userId) {\n  return _inFlight.putIfAbsent(\n    userId,\n    () => _api.fetchKyc(userId).whenComplete(() => _inFlight.remove(userId)),\n  );\n}", added: true }
+  ]
+}
+];
+
+const CHAPTERS_C = [
+{
+  n: 16, id: "scenarios", title: "Real-World Scenario Bank",
+  kicker: "Eighteen scenarios. Answer each aloud in 30–90 seconds; expand only when probed.",
+  items: [
+    { id: "16.1", q: "Screen 3 needs to update Screen 1.",
+      a: "First determine whether this is a one-time navigation result or shared business state. Use a result for the former; use a properly scoped shared state owner for the latter. Avoid direct screen-to-screen calls. <em>Key concepts: navigation result, shared state, lifecycle.</em>" },
+    { id: "16.2", q: "KYC status is needed across five features.",
+      a: "Use <code>KycRepository</code> as the data boundary and a <code>KycCubit</code>/BLoC if reactive state is needed. Scope it to the authenticated application lifecycle. Don't put <code>fetchKyc()</code> in a BaseController. <em>Key concepts: composition, DI, scoped state, caching.</em>" },
+    { id: "16.3", q: "A user is charged twice.",
+      a: "Disable the button for UX, but enforce idempotency at the server/payment boundary. Give the operation a unique durable identity and make transaction status queryable. <em>Key concepts: idempotency, distributed systems.</em>" },
+    { id: "16.4", q: "The payment request times out.",
+      a: "Represent the result as UNKNOWN/PROCESSING, not FAILED. Persist the transaction identity and reconcile through a status endpoint before retrying. <em>Key concepts: failure semantics, reconciliation.</em>" },
+    { id: "16.5", q: "Search shows results for a query the user already changed.",
+      a: "Debounce reduces request volume but does not guarantee response ordering. Use cancellation or a request/version token so only the latest response updates state. <em>Key concepts: concurrency, stale responses.</em>" },
+    { id: "16.6", q: "Ten requests get 401 simultaneously.",
+      a: "Single-flight refresh: one refresh operation, other requests wait, then retry safely. Bound retries and handle refresh failure centrally as a session transition. <em>Key concepts: concurrency, authentication.</em>" },
+    { id: "16.7", q: "A 2,000-item list is janky.",
+      a: "Profile first. Identify whether it's UI/Dart, layout, raster, images, memory or parsing. Then apply lazy lists, pagination, targeted rebuilds and data/image optimisation. <em>Key concepts: DevTools, frame performance.</em>" },
+    { id: "16.8", q: "A 20 MB JSON payload freezes the UI.",
+      a: "Reduce the payload first through pagination, filtering or field selection. If parsing remains CPU-heavy, move it to an isolate. <em>Key concepts: CPU vs I/O, isolates.</em>" },
+    { id: "16.9", q: "Users need to create expenses offline.",
+      a: "Persist locally with PENDING status and an operation ID, show it immediately, enqueue for sync, retry with backoff and reconcile with the server. <em>Key concepts: offline-first, sync, idempotency.</em>" },
+    { id: "16.10", q: "Two devices edit the same record.",
+      a: "Use business semantics to choose the conflict strategy. For critical records, version-based optimistic concurrency is safer than blind last-write-wins. <em>Key concepts: concurrency control, domain rules.</em>" },
+    { id: "16.11", q: "You need a BLE capability no package provides.",
+      a: "Evaluate existing packages first. If native APIs are required, use platform channels — MethodChannel for commands, EventChannel for continuous updates — and consider FFI for direct native-library interop. <em>Key concepts: MethodChannel, EventChannel, FFI.</em>" },
+    { id: "16.12", q: "The BLE device disconnects randomly.",
+      a: "Model explicit states, reconnect with bounded exponential backoff, rediscover services, resubscribe to characteristics, handle permissions and app lifecycle, and log every transition. <em>Key concepts: state machine, resilience.</em>" },
+    { id: "16.13", q: "You inherit a 3,000-line BLoC.",
+      a: "Don't rewrite immediately. Identify the distinct responsibilities, extract boundaries behind them, then split state ownership incrementally while product delivery continues. <em>Key concepts: refactoring, migration.</em>" },
+    { id: "16.14", q: "A backend API takes five seconds.",
+      a: "Separate actual latency from perceived latency. Use caching, pagination and progressive UI where correctness allows, while taking measurements to the backend team to address the real latency. <em>Key concepts: performance, cross-team ownership.</em>" },
+    { id: "16.15", q: "Memory grows every time the user navigates.",
+      a: "Profile heap and allocation behaviour, then inspect subscriptions, controllers, timers, listeners, caches, static references, closures and native resources. <em>Key concepts: memory, lifecycle.</em>" },
+    { id: "16.16", q: "Leadership wants to rewrite the native app in Flutter.",
+      a: "Compare business value, integration requirements, team capability, migration risk and incremental alternatives. Consider add-to-app rather than a big-bang rewrite. <em>Key concepts: migration, trade-offs.</em>" },
+    { id: "16.17", q: "The global AppCubit has become huge.",
+      a: "Split by business ownership and lifecycle. Don't recreate a God object that behaves like a BaseController with a different name. <em>Key concepts: state boundaries.</em>" },
+    { id: "16.18", q: "An architecture decision you made is now failing.",
+      a: "Measure the impact, communicate it transparently, compare alternatives and migrate incrementally when justified. Optimise for system outcomes, not ego. <em>Key concepts: technical leadership.</em>" }
+  ]
+},
+{
+  n: 17, id: "leadership", title: "Staff-Level Leadership Scenarios",
+  kicker: "Decisions about people and process, defended with criteria rather than preference.",
+  items: [
+    { id: "17.1", q: "Two senior engineers disagree: BLoC vs Riverpod.",
+      a: "Don't arbitrate on taste — define the decision criteria first and make the choice fall out of them: the existing codebase and migration cost, team expertise, testing story, onboarding curve, ecosystem maturity and long-term maintainability. Then decide from evidence and write the decision down (an ADR) with the reasoning, so the next person inherits the argument rather than repeating it. Also legitimate: decide that consistency matters more than the marginal difference, and keep what's already there." },
+    { id: "17.2", q: "Product asks for a risky shortcut to hit a date.",
+      a: "Separate immediate mitigation from durable correctness, and make the residual risk explicit and owned. 'We can ship the shortcut for launch; it means X can fail in way Y, we'll detect it via Z, and the durable fix is two weeks after' is a senior answer. Silently absorbing the risk, or refusing on principle, are both junior responses." },
+    { id: "17.3", q: "Someone proposes a full rewrite.",
+      a: "Quantify the actual problem in numbers, quantify the opportunity cost (what doesn't ship during the rewrite), and quantify migration risk. Then compare against incremental alternatives — strangler-fig module extraction, add-to-app, a new-code-only standard. Rewrites are occasionally right; they're rarely right at the moment they feel most attractive, which is when the team is frustrated rather than when the data supports it." },
+    { id: "17.4", q: "How do you run a production incident?",
+      code: "Detect\n  ↓\nAssess severity / scope\n  ↓\nMitigate          ← stop the bleeding first\n  ↓\nDiagnose\n  ↓\nFix\n  ↓\nTest\n  ↓\nStaged rollout\n  ↓\nMonitor\n  ↓\nPost-incident learning",
+      a: "The ordering is the answer: mitigate before you diagnose. Roll back, feature-flag off, or force-upgrade first; understanding the root cause is not a prerequisite for stopping user harm. Afterwards, a blameless post-incident review that produces a concrete action — a test, an alert, a guardrail — rather than a document." },
+    { id: "17.5", q: "The codebase has three inconsistent patterns for the same thing.",
+      a: "Set a documented default for all new work, then migrate high-value areas opportunistically — when you're already touching a file, or when a module has enough churn to justify it. Forcing a big-bang consistency sweep spends weeks of delivery on something users never see, and usually stalls half-finished, leaving four patterns instead of three." },
+    { id: "17.6", q: "How do you raise the bar on a team without becoming the bottleneck?",
+      a: "Encode standards in things that run without you: lint rules and analyzer options, CI checks, a template module, a code-review checklist, an ADR habit. Pair and review to transfer judgement rather than to correct output. The measure of a staff engineer isn't the code they wrote — it's whether the team makes better decisions when they're on holiday.", added: true }
+  ]
+},
+{
+  n: 18, id: "rapidfire", title: "Rapid-Fire Questions",
+  kicker: "One or two sentences each. Drill these until they're reflexive.",
+  items: [
+    { id: "18.1", q: "Why isn't debounce enough for search?",
+      a: "It controls request timing, not response ordering. Add cancellation or stale-response protection." },
+    { id: "18.2", q: "When should you use an isolate?",
+      a: "For CPU-heavy Dart work that would otherwise block the UI isolate." },
+    { id: "18.3", q: "Why is disabling a payment button insufficient?",
+      a: "It's only a UX safeguard; retries and distributed behaviour still require server-side idempotency." },
+    { id: "18.4", q: "What is idempotency?",
+      a: "Repeating an operation with the same identity produces no unintended additional side effects." },
+    { id: "18.5", q: "Should every screen have its own BLoC?",
+      a: "No. State ownership should follow business responsibility, not screen count." },
+    { id: "18.6", q: "Why not put KYC in BaseController?",
+      a: "KYC is a domain capability; a BaseController hides dependencies and couples unrelated features." },
+    { id: "18.7", q: "When is an EventBus reasonable?",
+      a: "For transient events where decoupled publication is genuinely useful — never as the source of truth for state." },
+    { id: "18.8", q: "How do you prevent refresh storms?",
+      a: "Single-flight refresh with waiting requests and bounded retries." },
+    { id: "18.9", q: "What does a payment timeout mean?",
+      a: "The client doesn't know the outcome. Reconcile rather than assuming failure." },
+    { id: "18.10", q: "Biggest offline-first mistake?",
+      a: "Shipping without durable pending operations, idempotency and conflict/reconciliation rules." },
+    { id: "18.11", q: "First step in performance work?",
+      a: "Profile and identify the bottleneck. Never optimise from a guess." },
+    { id: "18.12", q: "How do you split a huge BLoC?",
+      a: "By business responsibility and state ownership, incrementally." },
+    { id: "18.13", q: "Flutter rewrite or native migration?",
+      a: "Compare business value, platform needs, team capability, risk and incremental alternatives." },
+    { id: "18.14", q: "Does setState rebuild the whole screen?",
+      a: "No. It marks one Element dirty and rebuilds that subtree; Flutter reconciles and repaints only what changed.", added: true },
+    { id: "18.15", q: "Hot reload vs hot restart — what's the difference?",
+      a: "Hot reload injects new source into the running VM and rebuilds the tree, preserving state; hot restart discards state and restarts the app. Hot reload won't pick up changes to <code>main()</code>, global/static initialisers, enum-to-class changes or native code.", added: true },
+    { id: "18.16", q: "Why does Flutter use Skia/Impeller rather than native widgets?",
+      a: "Because it renders its own widgets to a canvas, Flutter controls the whole pipeline — consistent behaviour across platforms and versions, and no bridge per UI operation. The trade-off is that platform look-and-feel and new OS widgets must be reimplemented rather than inherited.", added: true },
+    { id: "18.17", q: "final vs const in Dart?",
+      a: "<code>final</code> is set once at runtime; <code>const</code> is a compile-time constant and is canonicalised, so identical const values share one instance.", added: true },
+    { id: "18.18", q: "What does late actually do, and when is it a smell?",
+      a: "It defers initialisation of a non-nullable variable and throws if read before assignment. It's fine for a value initialised in <code>initState</code>; it's a smell when used to dodge making a field nullable that genuinely can be absent — you've moved a compile-time check to a runtime crash.", added: true },
+    { id: "18.19", q: "Why is StatelessWidget not automatically 'faster' than StatefulWidget?",
+      a: "Both are cheap immutable configuration. The cost is in what build does and what the Element subtree has to re-layout and repaint, not in which class you extended.", added: true },
+    { id: "18.20", q: "What does Flutter's 'everything is a widget' actually mean for layout?",
+      a: "That layout concerns are expressed compositionally — padding, alignment and constraints are widgets rather than properties. Practically it means constraints flow down, sizes flow up, and the parent positions the child; most layout bugs are a misunderstanding of that one sentence.", added: true }
+  ]
+},
+{
+  n: 19, id: "dart-lang", title: "Dart Language & Compilation",
+  kicker: "Extended coverage — the language questions that sit beside the framework ones.",
+  items: [
+    { id: "19.1", q: "Does Dart run on a JVM? Explain JIT vs AOT.",
+      a: "No. Dart's compilation strategy depends on target and build mode. In development, Flutter runs Dart on the Dart VM with JIT compilation, which is what makes hot reload possible. For production mobile and desktop builds, Dart is compiled ahead of time to native machine code for the target architecture — no VM interpretation of your business logic, and a faster startup with no warm-up. For web, Dart compiles to web targets such as JavaScript or WebAssembly depending on build configuration." },
+    { id: "19.2", q: "Give the one-paragraph interview answer on compilation.",
+      a: "\"Dart uses both JIT and AOT depending on the target and build mode. During development it runs on the Dart VM with JIT, which enables hot reload. For production mobile and desktop it's compiled AOT to native machine code, so it doesn't run on a JVM. For Flutter Web it targets web technologies such as JavaScript or WebAssembly.\"" },
+    { id: "19.3", q: "What is sound null safety and what does 'sound' buy you?",
+      a: "Nullability is part of the type: <code>String</code> can never be null, <code>String?</code> might be. Soundness means the compiler can <em>rely</em> on that — it doesn't need null checks in generated code for non-nullable types, so you get smaller and faster output as well as the correctness win. The practical consequences are flow analysis (promotion after a null check), the <code>!</code> operator as an explicit assertion you own, and <code>late</code> for deferred initialisation.", added: true },
+    { id: "19.4", q: "Which Dart 3 features actually change how you write app code?",
+      a: "<strong>Sealed classes</strong> plus <strong>exhaustive switch</strong> — model UI state and domain results as closed unions and let the compiler find the branch you forgot. <strong>Patterns and destructuring</strong> — readable extraction in switch expressions. <strong>Records</strong> — return two values without a throwaway class, and a clean carrier for small tuples. Together they largely remove the reason to hand-write or generate a union type for simple cases.",
+      code: "// records + patterns\n(int, String) parse(String s) => (s.length, s.toUpperCase());\nfinal (len, upper) = parse('abc');\n\n// exhaustive switch over a sealed result\nfinal msg = switch (result) {\n  Ok(:final value)   => 'Got $value',\n  Failure(:final e)  => 'Failed: ${e.message}',\n};", added: true },
+    { id: "19.5", q: "What's the difference between an Exception and an Error in Dart?",
+      a: "By convention, <code>Exception</code> represents a condition a caller might reasonably recover from (network failure, bad input); <code>Error</code> represents a programming mistake (<code>StateError</code>, <code>ArgumentError</code>, a failed assertion) that should be fixed, not caught. Catching bare <code>Exception</code> in a repository boundary is reasonable; catching <code>Error</code> broadly usually hides a bug.", added: true },
+    { id: "19.6", q: "Why does Equatable / freezed exist, and what problem does it solve?",
+      a: "Dart's default <code>==</code> is identity, so two structurally identical state objects are unequal. That breaks BLoC's emit-deduplication and causes rebuilds. Equatable supplies value equality from a props list; freezed generates immutable classes with <code>copyWith</code>, value equality, unions and pattern-matching helpers. With Dart 3's sealed classes and patterns you can hand-write much of this — the trade-off is code generation build time versus boilerplate.", added: true },
+    { id: "19.7", q: "What is a Dart extension, and when is it the right tool?",
+      a: "It adds methods to an existing type without subclassing — <code>extension on BuildContext { ThemeData get theme => Theme.of(this); }</code>. Good for ergonomics on types you don't own. Watch out: extension methods are resolved statically, so they do not dispatch polymorphically, and two visible extensions defining the same member is an ambiguity error you resolve by hiding one at import.", added: true }
+  ]
+},
+{
+  n: 20, id: "production", title: "Production Engineering — Release, Security & Observability",
+  kicker: "Extended coverage — the part of 'senior' that happens after merge.",
+  items: [
+    { id: "20.1", q: "How do you ship safely when you can't hotfix a mobile app instantly?",
+      a: "Three layers. <strong>Feature flags / remote config</strong> so risky code can be disabled without a release — this is the real hotfix mechanism on mobile. <strong>Staged rollout</strong> through the store (1% → 10% → 50% → 100%) with crash-free rate and key funnel metrics as gates. <strong>A forced-upgrade mechanism</strong> and a minimum-supported-version check on the server for the cases where the client genuinely must be replaced. Mention that server-side kill switches are safer than any client-side cleverness.", added: true },
+    { id: "20.2", q: "What observability does a Flutter app actually need?",
+      a: "Crash and non-fatal error reporting wired to all three handlers (<code>FlutterError.onError</code>, <code>PlatformDispatcher.instance.onError</code>, <code>runZonedGuarded</code>); structured breadcrumb logging around key flows; performance traces for startup and critical screens; a correlation/request id shared with backend logs so one user report is traceable end-to-end; and analytics on the funnel steps that matter commercially. The senior framing: you should be able to answer 'is it broken for users right now?' without opening the app.", added: true },
+    { id: "20.3", q: "What are the mobile security basics you'd be expected to name?",
+      a: "Tokens in platform secure storage (Keychain / Keystore) rather than SharedPreferences; no secrets in the binary or in Dart source, because an AOT binary can be inspected; HTTPS everywhere with certificate pinning where the threat model warrants it (and a plan for rotating the pin); obfuscation and symbol upload for release builds; root/jailbreak and tamper detection as a signal rather than a guarantee; and the general principle that <em>the client is untrusted</em> — every authorisation decision must also exist on the server.", added: true },
+    { id: "20.4", q: "How do you handle flavors and environments?",
+      a: "Separate build flavors for dev/staging/prod with distinct application ids so they install side by side, distinct API base URLs, distinct analytics and crash projects, and compile-time configuration via <code>--dart-define</code> rather than a committed config file that can ship to the wrong environment. The failure this prevents is the classic one: a production release pointing at staging, or staging traffic polluting production analytics.", added: true },
+    { id: "20.5", q: "What does a good Flutter CI pipeline run?",
+      a: "Format check, <code>dart analyze</code> with a strict analysis_options, unit and widget tests with a coverage floor, build for both platforms, and golden tests for the design system. Beyond that: dependency and licence checks, app-size tracking (regressions here are invisible otherwise), and automated upload to internal distribution for every merge so QA always has today's build.", added: true },
+    { id: "20.6", q: "How do you keep a Flutter app accessible, and why does it come up at senior level?",
+      a: "Semantic labels on non-text controls, sufficient contrast, tap targets at the platform minimum, support for large text scale factors (test at 200% — fixed-height rows are where layouts break), focus order that makes sense, and screen-reader passes on critical journeys. It comes up at senior level because it's a requirement in many markets and it's far cheaper as a design-system property than as a retrofit.", added: true },
+    { id: "20.7", q: "What drives Flutter app size, and what can you actually do about it?",
+      a: "The engine is a fixed floor; beyond that it's assets (uncompressed images and fonts are usually the biggest avoidable chunk), bundled font families, native dependencies, and per-ABI code. Practical levers: split per ABI or ship an App Bundle, subset fonts, use appropriately-sized and compressed images with a remote-asset strategy for the large ones, prune unused packages, and track size in CI so a 15 MB regression is caught at review rather than at release.", added: true }
+  ]
+},
+{
+  n: 21, id: "cheatsheet", title: "One-Page Cheat Sheet",
+  kicker: "If asked about X, lead with Y. Read this on the way to the interview.",
+  items: [
+    { id: "21.1", q: "Screen communication",
+      a: "Navigation result for a one-off outcome; shared scoped state for reactive data." },
+    { id: "21.2", q: "Common KYC / user data",
+      a: "Repository + scoped state + DI. Avoid BaseController." },
+    { id: "21.3", q: "Global state",
+      a: "Lead with ownership and lifecycle. Avoid God objects." },
+    { id: "21.4", q: "API calls",
+      a: "Repository boundary, caching, deduplication, bounded retries." },
+    { id: "21.5", q: "401 / token refresh",
+      a: "Single-flight refresh." },
+    { id: "21.6", q: "Payments",
+      a: "Idempotency + server authority + an honest UNKNOWN state." },
+    { id: "21.7", q: "Offline",
+      a: "Local persistence + pending queue + sync + conflict rules." },
+    { id: "21.8", q: "Performance",
+      a: "Profile → identify bottleneck → optimise → measure." },
+    { id: "21.9", q: "Large JSON",
+      a: "Reduce the payload first; isolate the parsing only if it's still CPU-heavy." },
+    { id: "21.10", q: "BLE",
+      a: "State machine + lifecycle + bounded reconnection + observability." },
+    { id: "21.11", q: "Native integration",
+      a: "MethodChannel / EventChannel vs FFI, chosen by the shape of the API." },
+    { id: "21.12", q: "Architecture migration",
+      a: "Incremental, measurable, low-risk." },
+    { id: "21.13", q: "Technical disagreement",
+      a: "Decision criteria + trade-offs + evidence." },
+    { id: "21.14", q: "Staff leadership",
+      a: "Business impact + risk + ownership + measurement." },
+    { id: "21.15", q: "The final mindset",
+      a: "A senior engineer can implement the feature. A staff engineer can explain what should be built, why, how it fails, how it will be operated, and how the team can evolve it safely." }
+  ]
+},
+{
+  n: 22, id: "ask", title: "Questions to Ask the Interviewer",
+  kicker: "These are also answers — each one signals what you pay attention to.",
+  items: [
+    { id: "22.1", q: "How is the Flutter codebase structured today, and where are its biggest architectural pain points?",
+      a: "Signals that you expect to inherit a real codebase rather than a greenfield, and that you'd start by understanding it. Listen for whether they can name the pain points — a team that can't is a team without technical leadership." },
+    { id: "22.2", q: "How much of the mobile work involves native platform integration?",
+      a: "Signals you're not a Dart-only engineer. Also tells you how much of your time will be spent in Kotlin and Swift, which is a real factor in whether you'd enjoy the role." },
+    { id: "22.3", q: "How is shared state handled across features and authenticated sessions?",
+      a: "This is the BaseController question aimed back at them. The answer tells you how much of your first six months is refactoring." },
+    { id: "22.4", q: "What does success for a senior/staff engineer look like in the first six months?",
+      a: "Signals you think in outcomes. A vague answer here usually means the level was posted without a defined scope, which is worth knowing before you accept." },
+    { id: "22.5", q: "How are production incidents, performance regressions and technical debt handled?",
+      a: "Signals you care about operations, not just delivery. Listen for whether there's a process or just heroics." },
+    { id: "22.6", q: "How much ownership does the mobile team have from requirements through release and monitoring?",
+      a: "Signals you want end-to-end ownership. This is often the single biggest predictor of whether a senior role is actually senior." }
+  ]
+}
+];
+
+const CHECKLIST = [
+  "Explain the Dart event loop, microtasks, Futures and isolates.",
+  "Explain Widget / Element / RenderObject and what Keys are for.",
+  "Explain the StatefulWidget lifecycle and resource cleanup.",
+  "Explain local, feature-scoped and application-scoped state.",
+  "Explain Screen 1 → Screen 2 → Screen 3 update patterns.",
+  "Explain modern alternatives to BaseController / BaseViewModel.",
+  "Explain repository, use case, service and DI responsibilities.",
+  "Explain DIP vs DI, and each SOLID letter through a production example.",
+  "Explain single-flight token refresh concurrency.",
+  "Explain payment idempotency and the UNKNOWN outcome.",
+  "Explain offline-first writes, sync queues and conflict strategies.",
+  "Explain Flutter performance profiling and memory investigation.",
+  "Explain MethodChannel, EventChannel and FFI.",
+  "Explain BLE reconnection as a state machine.",
+  "Solve debounce/stale-response, pagination and LRU+TTL cache problems.",
+  "Discuss incremental migration of a large codebase.",
+  "Handle a production incident scenario end to end.",
+  "Defend an architecture with trade-offs rather than preferences.",
+  "Give concise answers first; expand only when probed."
+];
+
+
+const CHAPTERS = [...CHAPTERS_A, ...CHAPTERS_B, ...CHAPTERS_C];
+const BY_ID = Object.fromEntries(CHAPTERS.map(c => [c.id, c]));
+const ALL = CHAPTERS.flatMap(c => c.items.map(i => ({ ...i, ch: c })));
+/* ================= progress store (v3) ================= */
+const KEY = 'flutter-interview-guide.v3';
+const DAY = 86400000;
+let store = { conf:{}, flag:{}, check:{}, theme:null, target:null, sessions:{} };
+
+function dkey(d){ const x = d instanceof Date ? d : new Date(d);
+  return x.getFullYear() + '-' + String(x.getMonth()+1).padStart(2,'0') + '-' + String(x.getDate()).padStart(2,'0'); }
+const today = () => dkey(new Date());
+function parseKey(k){ const p = k.split('-').map(Number); return new Date(p[0], p[1]-1, p[2]); }
+const daysBetween = (a,b) => Math.round((parseKey(b) - parseKey(a)) / DAY);
+function shiftKey(k, n){ const d = parseKey(k); d.setDate(d.getDate() + n); return dkey(d); }
+
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+
+try { const r = localStorage.getItem(KEY); if (r) store = Object.assign(store, JSON.parse(r)); } catch(e){}
+/* one-time migration from the old binary known/flagged model */
+try {
+  if (!Object.keys(store.conf).length){
+    const raw = localStorage.getItem('flutter-interview-guide.v2') || localStorage.getItem('flutter-interview-guide.v1');
+    const old = raw ? JSON.parse(raw) : null;
+    if (old && old.status){
+      const t = today();
+      for (const id in old.status){
+        if (old.status[id] === 'know') store.conf[id] = { v:3, t };
+        else if (old.status[id] === 'review') store.flag[id] = 1;
+      }
+      if (old.check) store.check = Object.assign({}, old.check, store.check);
+      if (old.theme && !store.theme) store.theme = old.theme;
+      save();
+    }
+  }
+} catch(e){}
+if (store.theme) document.documentElement.setAttribute('data-theme', store.theme);
+
+/* ---- confidence levels, and how fast each one goes stale ---- */
+const LEVELS = {
+  1: { k:'shaky',   label:'Shaky',         w:0.15, stale:3  },
+  2: { k:'getting', label:'Getting there', w:0.55, stale:7  },
+  3: { k:'solid',   label:'Solid',         w:1,    stale:14 }
+};
+const STALE_MULT = 0.5;
+
+const cv     = id => (store.conf[id] && store.conf[id].v) || 0;
+const ageOf  = id => store.conf[id] ? daysBetween(store.conf[id].t, today()) : Infinity;
+const stale  = id => { const v = cv(id); return v > 0 && ageOf(id) > LEVELS[v].stale; };
+const weight = id => { const v = cv(id); return v ? LEVELS[v].w * (stale(id) ? STALE_MULT : 1) : 0; };
+
+const ready       = items => items.length ? Math.round(items.reduce((s,i) => s + weight(i.id), 0) / items.length * 100) : 0;
+const countAt     = (items, v) => items.filter(i => cv(i.id) === v).length;
+const staleItems  = items => items.filter(i => stale(i.id));
+const flagItems   = items => items.filter(i => store.flag[i.id]);
+const needsWork   = items => items.filter(i => weight(i.id) < 1);
+
+function setConf(id, v){
+  if (cv(id) === v) delete store.conf[id];
+  else { store.conf[id] = { v:v, t:today() }; bumpQ(); }
+  save();
+}
+function toggleFlag(id){
+  if (store.flag[id]) delete store.flag[id]; else store.flag[id] = 1;
+  save();
+}
+
+/* ---- study sessions: one bucket per calendar day ---- */
+function sessToday(){ const d = today(); return store.sessions[d] || (store.sessions[d] = { q:0, s:0 }); }
+function bumpQ(){ sessToday().q++; }
+
+let lastAct = Date.now();
+['click','keydown','scroll','touchstart'].forEach(ev =>
+  addEventListener(ev, () => { lastAct = Date.now(); }, { passive:true }));
+setInterval(() => {
+  if (document.hidden || Date.now() - lastAct > 90000) return;
+  sessToday().s += 15; save();
+}, 15000);
+
+function streakDays(){
+  let k = today(), n = 0;
+  if (!(store.sessions[k] && store.sessions[k].q)) k = shiftKey(k, -1);
+  while (store.sessions[k] && store.sessions[k].q){ n++; k = shiftKey(k, -1); }
+  return n;
+}
+const totalSecs = () => Object.keys(store.sessions).reduce((s,k) => s + (store.sessions[k].s || 0), 0);
+const totalQ    = () => Object.keys(store.sessions).reduce((s,k) => s + (store.sessions[k].q || 0), 0);
+const fmtDur = s => s < 60 ? s + 's'
+  : s < 3600 ? Math.round(s/60) + 'm'
+  : Math.floor(s/3600) + 'h ' + String(Math.round(s % 3600 / 60)).padStart(2,'0') + 'm';
+
+/* ---- interview-date plan ---- */
+function plan(){
+  if (!store.target) return null;
+  const left = daysBetween(today(), store.target);
+  const pool = needsWork(ALL);
+  const days = Math.max(1, left);
+  const quota = left < 0 ? 0 : Math.ceil(pool.length / days);
+  const chs = CHAPTERS
+    .map(c => ({ c:c, n:needsWork(c.items).length, un:countAt(c.items, 0) }))
+    .filter(x => x.n)
+    .sort((a,b) => b.un - a.un || b.n - a.n)
+    .slice(0, 3);
+  return { left:left, pool:pool, quota:quota, chs:chs, done:sessToday().q };
+}
+
+/* ================= helpers ================= */
+const app = document.getElementById('app');
+const esc = s => String(s).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+const svg = (n, cls) => `<svg class="ic ${cls||''}" viewBox="0 0 24 24">${ICONS[n] || ICONS.roadmap}</svg>`;
+const chIcon = c => svg(CH_ICON[c.id] || 'roadmap');
+const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+
+function answerHTML(it){
+  let h = '';
+  const fig = DIAGRAMS[it.id];
+  if (fig) h += fig;
+  if (it.code && !(fig && DIAGRAM_REPLACES_CODE.has(it.id))) h += '<pre>' + esc(it.code) + '</pre>';
+  let body = it.a.trim().startsWith('<') ? it.a : '<p>' + it.a + '</p>';
+  body = body.replace(/<table>/g, '<div class="tablewrap"><table>').replace(/<\/table>/g, '</table></div>');
+  return '<div class="ans">' + h + body + '</div>';
+}
+function ring(pct, size){
+  const r = size/2 - 6, c = 2 * Math.PI * r;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--rule-soft)" stroke-width="7"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--teal)" stroke-width="7"
+      stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - pct/100)}"/></svg>`;
+}
+function segBar(items){
+  const n = items.length || 1;
+  const w = v => (countAt(items, v) / n * 100).toFixed(2) + '%';
+  return `<span class="cc-bar">
+    <i class="s3" style="width:${w(3)}"></i><i class="s2" style="width:${w(2)}"></i><i class="s1" style="width:${w(1)}"></i></span>`;
+}
+function ratePills(id){
+  const v = cv(id), out = [];
+  if (v) out.push(`<span class="pill ${LEVELS[v].k}">${LEVELS[v].label.toLowerCase()}</span>`);
+  if (stale(id)) out.push(`<span class="pill stale">needs refresh</span>`);
+  if (store.flag[id]) out.push(`<span class="pill flagged">flagged</span>`);
+  return out.join('');
+}
+function rateRow(id, compact){
+  return `<div class="rate${compact ? ' compact' : ''}">
+    ${compact ? '' : '<span class="rate-l">How solid is this?</span>'}
+    ${[1,2,3].map(v => `<button class="cf c${v}" data-conf="${v}" data-id="${id}"
+        aria-pressed="${cv(id) === v}">${LEVELS[v].label}</button>`).join('')}
+    <button class="flagb" data-flag data-id="${id}" aria-pressed="${!!store.flag[id]}"
+      title="Flag to come back to">${svg('flask')}Flag</button>
+  </div>`;
+}
+
+/* ================= views ================= */
+let view = { name:'map' }, idx = 0, shown = false;
+
+function render(){
+  if (view.name === 'map') return renderMap();
+  if (view.name === 'chapter') return renderChapter();
+  if (view.name === 'search') return renderSearch();
+  if (view.name === 'checklist') return renderChecklist();
+  if (view.name === 'stats') return renderStats();
+}
+
+function renderMap(){
+  const tot = ALL.length;
+  const pct = ready(ALL);
+  const s3 = countAt(ALL,3), s2 = countAt(ALL,2), s1 = countAt(ALL,1), s0 = countAt(ALL,0);
+  const st = staleItems(ALL).length, fl = flagItems(ALL).length;
+  const resume = CHAPTERS.find(c => needsWork(c.items).length);
+  const strk = streakDays(), sec = sessToday().s, p = plan();
+
+  const rows = [
+    { k:'s3', label:'Solid',         n:s3 }, { k:'s2', label:'Getting there', n:s2 },
+    { k:'s1', label:'Shaky',         n:s1 }, { k:'s0', label:'Untouched',     n:s0 }
+  ].map(r => `<div class="cr">
+      <span class="cr-l"><i class="sw ${r.k}"></i>${r.label}</span>
+      <span class="cr-bar"><i class="${r.k}" style="width:${(r.n/tot*100).toFixed(2)}%"></i></span>
+      <span class="cr-n">${r.n}</span></div>`).join('');
+
+  app.innerHTML = `
+  <section class="hero">
+    <div>
+      <h1>Work through it, don't read it.</h1>
+      <p>Rate every answer by how solid it actually felt. Ratings fade as they age, so the score below is what you could defend today — not what you once clicked through.</p>
+      <div class="cta">
+        ${resume ? `<button class="tbtn solid" data-open="${resume.id}">${svg('bolt')}<span class="trunc">Continue &middot; ${String(resume.n).padStart(2,'0')} ${esc(resume.title.split('—')[0].trim())}</span></button>` : ''}
+        ${st ? `<button class="tbtn warn" id="drill-stale">${svg('clock')}Refresh ${st} stale</button>` : ''}
+        ${s1 ? `<button class="tbtn" id="drill-shaky">${svg('flask')}Drill ${s1} shaky</button>` : ''}
+        ${fl ? `<button class="tbtn" id="drill-flag">${svg('flask')}Drill ${fl} flagged</button>` : ''}
+      </div>
+    </div>
+    <div class="ring">${ring(pct, 132)}<div class="rv">
+      <div class="rp">${pct}%</div><div class="rl">readiness</div></div></div>
+  </section>
+
+  <section class="pboard">
+    <div class="pb-col">
+      <div class="pb-head"><h2>Where you stand</h2>
+        <p>${plural(s3 + s2 + s1, 'answer')} rated of ${tot}${st ? ` · ${st} gone stale` : ''}</p></div>
+      <div class="conf-rows">${rows}</div>
+      ${st ? `<button class="pb-note" id="drill-stale-2">${svg('clock')}
+        <span><strong>${plural(st, 'rating')} ${st === 1 ? 'has' : 'have'} gone stale.</strong>
+        Solid fades after 14 days, getting-there after 7, shaky after 3.</span>
+        <span class="go">Refresh${svg('fwd')}</span></button>` : ''}
+    </div>
+
+    <div class="pb-col side">
+      <div class="pb-head"><h2>Habit</h2><p>Kept in this browser.</p></div>
+      <div class="chips">
+        <span class="chip ${strk ? 'on' : ''}">${svg('bolt')}${strk
+          ? `<b>${strk}</b> day${strk === 1 ? '' : 's'} in a row`
+          : 'no streak yet'}</span>
+        <span class="chip">${svg('clock')}<b>${fmtDur(sec)}</b> today</span>
+        <span class="chip">${svg('check')}<b>${sessToday().q}</b> rated today</span>
+      </div>
+      <button class="pb-link" data-stats>${svg('chart')}See full history${svg('fwd')}</button>
+
+      <div class="pb-head tight"><h2>Interview date</h2></div>
+      ${p ? `<div class="cdown ${p.left < 0 ? 'past' : p.left <= 3 ? 'soon' : ''}">
+          <div class="cd-n">${p.left < 0 ? 'Done' : p.left === 0 ? 'Today' : p.left}</div>
+          <div class="cd-l">${p.left < 0 ? 'that date has passed' : p.left === 0 ? 'good luck' : p.left === 1 ? 'day to go' : 'days to go'}
+            <span>${esc(store.target)}</span></div>
+          <button class="cd-x" data-cleartarget title="Clear date">&times;</button>
+        </div>
+        ${p.left >= 0 && p.pool.length ? `<div class="planbox">
+          <div class="plan-top"><span>Today's plan</span>
+            <b>${Math.min(p.done, p.quota)} / ${p.quota}</b></div>
+          <span class="plan-bar"><i style="width:${p.quota ? Math.min(100, p.done / p.quota * 100) : 100}%"></i></span>
+          <p class="plan-k">${plural(p.pool.length, 'question')} still below solid${p.left > 0 ? ` · ${p.quota} a day clears it` : ''}.</p>
+          <div class="plan-ch">${p.chs.map(x => `<button data-open="${x.c.id}">
+            <span class="pn">${String(x.c.n).padStart(2,'0')}</span>
+            <span class="pt">${esc(x.c.title.split('—')[0].trim())}</span>
+            <span class="pl">${x.n} left</span></button>`).join('')}</div>
+        </div>` : p.left >= 0 ? `<p class="plan-k done">Every question is solid and fresh. Skim the checklist and sleep.</p>` : ''}`
+      : `<p class="plan-k">Set the date and this turns into a per-day quota over whatever is still below solid.</p>
+         <label class="setdate">${svg('clock')}<input type="date" id="target" min="${today()}" aria-label="Interview date"></label>`}
+    </div>
+  </section>
+
+  ${GROUPS.map(g => `
+    <section class="group">
+      <div class="ghead"><h2>${g.label}</h2><p>${g.note}</p></div>
+      <div class="cards">${g.chapters.map(id => card(BY_ID[id])).join('')}</div>
+    </section>`).join('')}
+
+  <section class="group">
+    <div class="ghead"><h2>Before you go in</h2><p>The night-before pass.</p></div>
+    <div class="cards">
+      <button class="cc" data-checklist>
+        <span class="cc-top"><span class="cc-ico">${svg('check')}</span><span class="cc-n">23</span></span>
+        <h3>Final preparation checklist</h3>
+        <span class="cc-k">Nineteen things you should be able to explain aloud. Tick them off the night before.</span>
+        <span class="cc-foot"><span class="cc-bar"><i class="s3" style="width:${Math.round(CHECKLIST.filter((_,i)=>store.check[i]).length/CHECKLIST.length*100)}%"></i></span>
+        <span class="cc-m">${CHECKLIST.filter((_,i)=>store.check[i]).length} / ${CHECKLIST.length}</span></span>
+      </button>
+    </div>
+  </section>
+
+  <div class="foot"><span>Progress is saved in this browser only.</span>
+    <button data-stats>History</button><button id="reset">Reset progress</button></div>`;
+}
+
+function card(c){
+  const n = c.items.length, pct = ready(c.items);
+  const st = staleItems(c.items).length, fl = flagItems(c.items).length;
+  return `<button class="cc ${pct === 100 ? 'full' : ''} ${st ? 'stale' : ''}" data-open="${c.id}">
+    <span class="cc-top"><span class="cc-ico">${chIcon(c)}</span>
+      ${st ? `<span class="dot st" title="${plural(st,'rating')} gone stale"></span>` : ''}
+      ${fl ? `<span class="dot" title="${plural(fl,'question')} flagged"></span>` : ''}
+      <span class="cc-n">${String(c.n).padStart(2,'0')}</span></span>
+    <h3>${esc(c.title)}</h3>
+    <span class="cc-k">${esc(c.kicker)}</span>
+    <span class="cc-foot">${segBar(c.items)}<span class="cc-m">${pct}%</span></span>
+  </button>`;
+}
+
+function renderChapter(){
+  const c = view.ch, n = c.items.length;
+  const st = staleItems(c.items).length, fl = flagItems(c.items).length;
+  const head = `
+    <div class="crumb">
+      <button data-home>${svg('bank')}All chapters</button>
+      <span class="sp"></span>
+      <button data-mode="${view.list ? 'card' : 'list'}">${view.list ? 'Guided cards' : 'Browse all'}</button>
+    </div>
+    <div class="chead">
+      <span class="big">${chIcon(c)}</span>
+      <div><div class="lbl">Chapter ${String(c.n).padStart(2,'0')} · ${n} questions · ${ready(c.items)}% ready${st ? ` · ${st} stale` : ''}</div>
+        <h2>${esc(c.title)}</h2><p>${esc(c.kicker)}</p></div>
+    </div>`;
+
+  if (view.list){
+    app.innerHTML = `<div class="chv">${head}<div class="list">${c.items.map((it,i) => `
+      <div class="li" data-c="${cv(it.id)}" data-stale="${stale(it.id) ? 1 : 0}" data-flag="${store.flag[it.id] ? 1 : 0}">
+        <button data-card="${i}"><span class="n">${it.id}</span><span>${esc(it.q)}</span>
+          <span class="li-tag">${ratePills(it.id)}</span></button>
+      </div>`).join('')}</div></div>`;
+    return;
+  }
+
+  if (idx >= n){
+    const pct = ready(c.items), next = CHAPTERS[CHAPTERS.indexOf(c) + 1];
+    app.innerHTML = `<div class="chv">${head}
+      <div class="done"><div class="big">${svg('check')}</div>
+        <h3>End of the chapter</h3>
+        <p>${pct}% ready — ${countAt(c.items,3)} solid, ${countAt(c.items,2)} getting there, ${countAt(c.items,1)} shaky, ${countAt(c.items,0)} unrated${fl ? `, ${fl} flagged` : ''}.</p>
+        <div class="cta">
+          ${needsWork(c.items).length ? `<button class="tbtn" data-drill-weak="${c.id}">Drill the ${needsWork(c.items).length} weak ones</button>` : ''}
+          ${fl ? `<button class="tbtn" data-drill-ch="${c.id}">Drill the flagged</button>` : ''}
+          <button class="tbtn" data-card="0">Start over</button>
+          ${next ? `<button class="tbtn solid" data-open="${next.id}">Next: ${esc(next.title.split('—')[0].trim())}</button>` : `<button class="tbtn solid" data-home>Back to chapters</button>`}
+        </div></div></div>`;
+    return;
+  }
+
+  const it = c.items[idx];
+  app.innerHTML = `<div class="chv">${head}
+    <div class="track">${c.items.map((x,i) =>
+      `<button data-card="${i}" class="${i===idx?'now':''}${DIAGRAMS[x.id]?' hasfig':''}" data-c="${cv(x.id)}" data-stale="${stale(x.id)?1:0}" aria-label="Question ${i+1}${DIAGRAMS[x.id]?' (has a diagram)':''}"></button>`).join('')}</div>
+    <article class="card">
+      <span class="wm">${chIcon(c)}</span>
+      <div class="card-top">
+        <span class="step">${it.id} · question ${idx+1} of ${n}</span>
+        ${DIAGRAMS[it.id] ? '<span class="pill fig">diagram</span>' : ''}
+        ${it.added ? '<span class="pill new">new</span>' : ''}
+        ${ratePills(it.id)}
+        ${cv(it.id) ? `<span class="agetag">rated ${ageOf(it.id) === 0 ? 'today' : plural(ageOf(it.id),'day') + ' ago'}</span>` : ''}
+      </div>
+      <h3 class="cq">${esc(it.q)}</h3>
+      ${shown ? answerHTML(it)
+              : `<button class="showbtn" id="show">${svg('ask')}Show answer</button>`}
+      ${rateRow(it.id)}
+      <div class="acts">
+        <button class="pv" data-card="${idx-1}" ${idx===0?'disabled style="opacity:.4"':''}>${svg('back')}Back</button>
+        <span class="sp"></span>
+        <button class="nx" data-card="${idx+1}">${idx+1===n?'Finish':'Next'}${svg('fwd')}</button>
+      </div>
+    </article>
+    <div class="kbd">space reveal · → next · ← back · 1 shaky · 2 getting there · 3 solid · f flag</div>
+  </div>`;
+}
+
+function renderSearch(){
+  const t = view.term.toLowerCase();
+  const hits = ALL.filter(i => (i.q + ' ' + i.a + ' ' + (i.code||'') + ' ' + i.ch.title).toLowerCase().includes(t)).slice(0, 60);
+  app.innerHTML = `<div class="sres">
+    <h2>${hits.length} result${hits.length===1?'':'s'}</h2>
+    <p class="meta">Searching questions, answers, code and chapter titles for “${esc(view.term)}”.</p>
+    ${hits.length ? hits.map(i => `<button class="sr" data-goto="${i.id}">
+        <span class="top">${chIcon(i.ch)} ${String(i.ch.n).padStart(2,'0')} · ${esc(i.ch.title)} · ${i.id}
+          ${ratePills(i.id)}</span>
+        <span class="q">${esc(i.q)}</span></button>`).join('')
+      : `<div class="none">Nothing matched. Try a shorter term — “idempotency”, “isolate”, “keys”.</div>`}
+  </div>`;
+}
+
+function renderChecklist(){
+  app.innerHTML = `<div class="chv">
+    <div class="crumb"><button data-home>${svg('bank')}All chapters</button></div>
+    <div class="chead"><span class="big">${svg('check')}</span>
+      <div><div class="lbl">Chapter 23 · ${CHECKLIST.filter((_,i)=>store.check[i]).length} of ${CHECKLIST.length} ticked</div>
+      <h2>Final preparation checklist</h2><p>If you can't explain one of these aloud, go back to its chapter.</p></div></div>
+    <div class="ckl">${CHECKLIST.map((t,i) =>
+      `<label><input type="checkbox" data-check="${i}" ${store.check[i]?'checked':''}><span>${esc(t)}</span></label>`).join('')}</div>
+  </div>`;
+}
+
+function renderStats(){
+  const days = 84;
+  let cells = '', best = 0;
+  for (let i = days - 1; i >= 0; i--){
+    const k = shiftKey(today(), -i), q = (store.sessions[k] || {}).q || 0;
+    best = Math.max(best, q);
+    const lv = q === 0 ? 0 : q < 6 ? 1 : q < 16 ? 2 : q < 31 ? 3 : 4;
+    cells += `<i class="l${lv}" title="${k} · ${plural(q,'rating')}"></i>`;
+  }
+  const recent = Object.keys(store.sessions).filter(k => store.sessions[k].q || store.sessions[k].s)
+    .sort().reverse().slice(0, 8);
+  const chRows = CHAPTERS.map(c => ({ c:c, pct:ready(c.items) })).sort((a,b) => a.pct - b.pct);
+
+  app.innerHTML = `<div class="chv">
+    <div class="crumb"><button data-home>${svg('bank')}All chapters</button></div>
+    <div class="chead"><span class="big">${svg('chart')}</span>
+      <div><div class="lbl">Study history · this browser only</div>
+      <h2>How the prep is going</h2><p>Ratings, time on the page, and which chapters are still weakest.</p></div></div>
+
+    <div class="chips big">
+      <span class="chip ${streakDays() ? 'on' : ''}">${svg('bolt')}${streakDays()
+        ? `<b>${streakDays()}</b> day${streakDays() === 1 ? '' : 's'} in a row`
+        : 'no streak yet'}</span>
+      <span class="chip">${svg('clock')}<b>${fmtDur(totalSecs())}</b> total</span>
+      <span class="chip">${svg('check')}<b>${totalQ()}</b> ratings made</span>
+      <span class="chip">${svg('chart')}<b>${ready(ALL)}%</b> ready</span>
+    </div>
+
+    <div class="stat-sec"><h3>Last 12 weeks</h3>
+      <div class="heat">${cells}</div>
+      <div class="heat-l"><span>12 weeks ago</span><span class="sp"></span>
+        <i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i>
+        <span>${best ? 'up to ' + best + '/day' : 'nothing yet'}</span></div></div>
+
+    <div class="stat-two">
+      <div class="stat-sec"><h3>Recent sessions</h3>
+        ${recent.length ? `<div class="sess">${recent.map(k => `<div class="se">
+            <span class="sd">${k === today() ? 'Today' : k === shiftKey(today(),-1) ? 'Yesterday' : k}</span>
+            <span class="sq">${plural(store.sessions[k].q || 0,'rating')}</span>
+            <span class="ss">${fmtDur(store.sessions[k].s || 0)}</span></div>`).join('')}</div>`
+          : `<p class="plan-k">No sessions recorded yet — rate an answer and this fills in.</p>`}</div>
+
+      <div class="stat-sec"><h3>Weakest chapters first</h3>
+        <div class="chlist">${chRows.map(r => `<button data-open="${r.c.id}">
+          <span class="cn">${String(r.c.n).padStart(2,'0')}</span>
+          <span class="ct">${esc(r.c.title.split('—')[0].trim())}</span>
+          ${segBar(r.c.items)}<span class="cp">${r.pct}%</span></button>`).join('')}</div></div>
+    </div>
+
+    <div class="foot"><span>Nothing here leaves your browser.</span>
+      <button id="reset">Reset progress</button></div>
+  </div>`;
+}
+
+/* ================= navigation ================= */
+function openChapter(id, at){
+  const c = BY_ID[id]; if (!c) return;
+  view = { name:'chapter', ch:c, list:false };
+  if (at !== undefined) idx = at;
+  else { const f = c.items.findIndex(i => weight(i.id) < 1); idx = f < 0 ? 0 : f; }
+  shown = false; render(); scrollTo({ top:0, behavior:'instant' });
+}
+function goto(itemId){
+  const it = ALL.find(x => x.id === itemId); if (!it) return;
+  openChapter(it.ch.id, it.ch.items.findIndex(x => x.id === itemId));
+  shown = true; render();
+}
+function home(){ view = { name:'map' }; document.getElementById('q').value = ''; render(); scrollTo({top:0,behavior:'instant'}); }
+function stats(){ view = { name:'stats' }; render(); scrollTo({top:0,behavior:'instant'}); }
+
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('[data-home]') || t.closest('#home')) return home();
+  if (t.closest('[data-stats]') || t.closest('#btn-stats')) return stats();
+  const open = t.closest('[data-open]'); if (open) return openChapter(open.dataset.open);
+  if (t.closest('[data-checklist]')){ view = { name:'checklist' }; render(); scrollTo({top:0,behavior:'instant'}); return; }
+  const gt = t.closest('[data-goto]'); if (gt) return goto(gt.dataset.goto);
+  const md = t.closest('[data-mode]'); if (md){ view.list = md.dataset.mode === 'list'; shown = false; render(); return; }
+
+  const fg = t.closest('[data-flag]');
+  if (fg){
+    toggleFlag(fg.dataset.id);
+    if (view.name === 'chapter' && view.list){
+      const li = fg.closest('.li');
+      li.dataset.flag = store.flag[fg.dataset.id] ? 1 : 0;
+      fg.setAttribute('aria-pressed', String(!!store.flag[fg.dataset.id]));
+      li.querySelector('.li-tag').innerHTML = ratePills(fg.dataset.id);
+      return;
+    }
+    render(); return;
+  }
+
+  const cf = t.closest('[data-conf]');
+  if (cf){
+    const id = cf.dataset.id, v = +cf.dataset.conf, had = cv(id) === v;
+    setConf(id, v);
+    if (view.name === 'chapter' && view.list){
+      const li = cf.closest('.li');
+      li.dataset.c = cv(id); li.dataset.stale = stale(id) ? 1 : 0;
+      li.querySelectorAll('[data-conf]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.conf === cv(id))));
+      li.querySelector('.li-tag').innerHTML = ratePills(id);
+      return;
+    }
+    if (!had){ idx++; shown = false; }
+    render(); scrollTo({top:0,behavior:'smooth'}); return;
+  }
+
+  const cd = t.closest('[data-card]');
+  if (cd){
+    const i = +cd.dataset.card;
+    if (view.list){
+      const li = cd.closest('.li'), it = view.ch.items[i];
+      const open = li.querySelector('.body');
+      if (open){ open.remove(); return; }
+      const d = document.createElement('div'); d.className = 'body';
+      d.innerHTML = answerHTML(it) + rateRow(it.id, true);
+      li.appendChild(d); return;
+    }
+    if (i < 0) return;
+    idx = i; shown = false; render(); scrollTo({top:0,behavior:'smooth'}); return;
+  }
+
+  if (t.closest('#show')){ shown = true; render(); return; }
+  if (t.closest('[data-cleartarget]')){ store.target = null; save(); render(); return; }
+  if (t.closest('#reset')){
+    if (confirm('Clear every rating, session and checklist tick?')){
+      store.conf = {}; store.flag = {}; store.check = {}; store.sessions = {}; store.target = null;
+      save(); render();
+    } return;
+  }
+  if (t.closest('#drill-flag'))  return startDrill(flagItems(ALL), 'flagged');
+  if (t.closest('#drill-stale') || t.closest('#drill-stale-2')) return startDrill(staleItems(ALL), 'stale');
+  if (t.closest('#drill-shaky')) return startDrill(ALL.filter(i => cv(i.id) === 1), 'shaky');
+  const dc = t.closest('[data-drill-ch]');
+  if (dc) return startDrill(flagItems(BY_ID[dc.dataset.drillCh].items), 'flagged');
+  const dw = t.closest('[data-drill-weak]');
+  if (dw) return startDrill(needsWork(BY_ID[dw.dataset.drillWeak].items), 'weak');
+});
+
+document.addEventListener('change', e => {
+  const c = e.target.closest('[data-check]');
+  if (c){ store.check[c.dataset.check] = c.checked; save(); return; }
+  const tg = e.target.closest('#target');
+  if (tg && tg.value){ store.target = tg.value; save(); render(); }
+});
+
+let tmr;
+document.getElementById('q').addEventListener('input', e => {
+  const v = e.target.value.trim();
+  clearTimeout(tmr);
+  tmr = setTimeout(() => {
+    if (!v){ if (view.name === 'search') home(); return; }
+    view = { name:'search', term:v }; render();
+  }, 160);
+});
+
+document.getElementById('btn-theme').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : cur === 'light' ? 'dark'
+    : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', next); store.theme = next; save();
+});
+
+/* ================= drill ================= */
+const drill = document.getElementById('drill');
+const EMPTY = { flagged:'Nothing flagged yet.', stale:'Nothing has gone stale yet.',
+                shaky:'Nothing is rated shaky.', weak:'Every question here is solid and fresh.' };
+let deck = [], dpos = 0, drev = false;
+
+function startDrill(pool, what){
+  if (what && (!pool || !pool.length)) return alert(EMPTY[what] || 'Nothing to drill.');
+  deck = (pool && pool.length ? pool : ALL).slice().sort(() => Math.random() - .5);
+  dpos = 0; drill.hidden = false; document.body.style.overflow = 'hidden'; dcard();
+}
+function dcard(){
+  const it = deck[dpos]; drev = false;
+  document.getElementById('d-pos').textContent = (dpos+1) + ' / ' + deck.length;
+  document.getElementById('d-prog').style.width = (dpos / deck.length * 100) + '%';
+  document.getElementById('d-src').innerHTML = chIcon(it.ch) + ' ' + esc(it.ch.title) + ' · ' + it.id + ratePills(it.id);
+  document.getElementById('d-q').textContent = it.q;
+  const a = document.getElementById('d-a'); a.innerHTML = answerHTML(it); a.hidden = true;
+  document.getElementById('d-reveal').textContent = 'Show answer';
+  document.getElementById('d-flag').setAttribute('aria-pressed', String(!!store.flag[it.id]));
+  [1,2,3].forEach(v => document.getElementById('d-c'+v).setAttribute('aria-pressed', String(cv(it.id) === v)));
+  document.querySelector('.dbody').scrollTop = 0;
+}
+function dnext(){
+  if (dpos + 1 >= deck.length){ dclose(); alert('Deck finished — ' + plural(deck.length, 'card') + '.'); return; }
+  dpos++; dcard();
+}
+function dreveal(){ drev = true; document.getElementById('d-a').hidden = false; document.getElementById('d-reveal').textContent = 'Next card'; }
+function drate(v){ setConf(deck[dpos].id, v); dnext(); }
+function dflag(){ const it = deck[dpos]; toggleFlag(it.id);
+  document.getElementById('d-flag').setAttribute('aria-pressed', String(!!store.flag[it.id])); }
+function dclose(){ drill.hidden = true; document.body.style.overflow = ''; render(); }
+
+document.getElementById('btn-drill').addEventListener('click', () => startDrill(ALL));
+document.getElementById('d-reveal').addEventListener('click', () => drev ? dnext() : dreveal());
+[1,2,3].forEach(v => document.getElementById('d-c'+v).addEventListener('click', () => drate(v)));
+document.getElementById('d-flag').addEventListener('click', dflag);
+document.getElementById('d-skip').addEventListener('click', dnext);
+document.getElementById('d-close').addEventListener('click', dclose);
+
+addEventListener('keydown', e => {
+  if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+  if (!drill.hidden){
+    if (e.key === 'Escape') return dclose();
+    if (e.key === ' '){ e.preventDefault(); return drev ? dnext() : dreveal(); }
+    if (e.key === '1') return drate(1);
+    if (e.key === '2') return drate(2);
+    if (e.key === '3') return drate(3);
+    if (e.key === 'f' || e.key === 'F') return dflag();
+    return;
+  }
+  if (view.name !== 'chapter' || view.list) return;
+  const it = view.ch.items[idx];
+  if (e.key === ' '){ e.preventDefault(); if (!shown){ shown = true; render(); } return; }
+  if (e.key === 'ArrowRight'){ idx++; shown = false; render(); return; }
+  if (e.key === 'ArrowLeft' && idx > 0){ idx--; shown = false; render(); return; }
+  if (it && (e.key === 'f' || e.key === 'F')){ toggleFlag(it.id); render(); return; }
+  if (it && (e.key === '1' || e.key === '2' || e.key === '3')){
+    setConf(it.id, +e.key); idx++; shown = false; render(); return;
+  }
+});
+
+document.getElementById('q').placeholder = 'Search ' + ALL.length + ' questions…';
+render();
+</script>
+</body>
+</html>
