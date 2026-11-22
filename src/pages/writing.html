@@ -1,0 +1,23 @@
+<main id="main" class="container page page--writing">
+	<section class="page-intro">
+		<p class="eyebrow">Writing</p>
+		<h1 class="h1">Notes from building Android at scale</h1>
+		<p class="page-intro__lede">{{ post_count }} articles on Compose, Kotlin and cross‑platform.</p>
+	</section>
+
+	{{ featured }}
+
+	<section class="section" aria-labelledby="all-h">
+		<div class="list-head">
+			<h2 class="h3" id="all-h">All articles</h2>
+			<div class="chip-group" role="group" aria-label="Filter by topic" data-filter-for="article-list" hidden>
+				{{ filter_chips }}
+			</div>
+		</div>
+		<div class="article-list" id="article-list">
+			{{ rows }}
+		</div>
+	</section>
+
+	{{ youtube_strip }}
+</main>

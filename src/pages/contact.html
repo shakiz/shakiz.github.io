@@ -1,0 +1,62 @@
+<main id="main" class="container page page--contact">
+	<section class="contact-intro">
+		<p class="eyebrow">Contact</p>
+		<h1 class="contact-title">Let’s build something people rely on.</h1>
+		<p class="contact-intro__lede"><span class="dsk">Lead and staff mobile roles, or a product that needs taking from idea to the store. </span>I reply within two working days.</p>
+		<div class="contact-links">
+			<a href="mailto:{{ email }}"><span><span class="contact-links__label">EMAIL</span>{{ email }}</span><span class="contact-links__arrow" aria-hidden="true">↗</span></a>
+			<!-- TODO: booking link is the cal.com page from the old site; confirm it's still the one to use (TODO.md asks for Calendly) -->
+			<a href="{{ link_booking }}" target="_blank" rel="noopener"><span><span class="contact-links__label">CALL</span>Book a 20‑min intro</span><span class="contact-links__arrow" aria-hidden="true">↗</span></a>
+			<a href="{{ link_linkedin }}" target="_blank" rel="noopener"><span><span class="contact-links__label">LINKEDIN</span>Sakhawat Hossain</span><span class="contact-links__arrow" aria-hidden="true">↗</span></a>
+			<a class="dsk" href="{{ link_github }}" target="_blank" rel="noopener"><span><span class="contact-links__label">GITHUB</span>github.com/shakiz</span><span class="contact-links__arrow" aria-hidden="true">↗</span></a>
+		</div>
+		<p class="contact-note dsk">Bangladesh · UTC+6 · overlaps with Europe and Australia</p>
+	</section>
+
+	<section class="card contact-card" aria-label="Message form">
+		{{ form_todo }}
+		<form class="form" id="contact-form" action="{{ form_action }}" method="post"{{ form_enctype }}
+			data-endpoint="{{ form_endpoint }}" data-mailto="{{ email }}">
+			<fieldset>
+				<legend>What’s this about?</legend>
+				<div class="chip-group">
+					<label class="chip chip--radio"><input type="radio" name="topic" value="Full-time role" checked>Full‑time role</label>
+					<label class="chip chip--radio"><input type="radio" name="topic" value="Project">Project</label>
+					<label class="chip chip--radio"><input type="radio" name="topic" value="Talk / mentoring"><span class="dsk">Talk / mentoring</span><span class="mob">Talk</span></label>
+				</div>
+			</fieldset>
+			<div class="form__row">
+				<div class="field">
+					<label for="c-name">Name</label>
+					<input id="c-name" name="name" type="text" autocomplete="name" placeholder="Jane Doe" required>
+				</div>
+				<div class="field">
+					<label for="c-email">Email</label>
+					<input id="c-email" name="email" type="email" autocomplete="email" placeholder="jane@company.com" required>
+				</div>
+			</div>
+			<div class="field dsk">
+				<label for="c-company">Company <span class="field__optional">(optional)</span></label>
+				<input id="c-company" name="company" type="text" autocomplete="organization" placeholder="Company name">
+			</div>
+			<div class="field">
+				<label for="c-message">Message</label>
+				<textarea id="c-message" name="message" rows="5" placeholder="A few lines about the role or project" required></textarea>
+			</div>
+			<p class="form__status" role="alert" data-form-status></p>
+			<button type="submit" class="btn btn--primary form__submit">Send message</button>
+		</form>
+
+		<div class="sent" id="contact-sent" role="status" hidden>
+			<span class="sent__icon" aria-hidden="true">
+				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>
+			</span>
+			<h2 class="sent__title" tabindex="-1" data-sent-title>Thanks — message sent.</h2>
+			<p class="sent__text" data-sent-text>I’ll get back to you within two working days. Meanwhile, have a look at my work.</p>
+			<div class="sent__actions">
+				<a class="btn btn--primary" href="/work/">See my work</a>
+				<button type="button" class="btn btn--secondary" data-send-another>Send another</button>
+			</div>
+		</div>
+	</section>
+</main>
