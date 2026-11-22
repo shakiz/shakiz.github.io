@@ -1,0 +1,15 @@
+<main id="main" class="container page page--inner">
+	<section class="page-intro">
+		<p class="eyebrow">Work</p>
+		<h1 class="h1">Products I’ve led, owned and built</h1>
+	</section>
+
+	<div class="filterable">
+		<div class="chip-group" role="group" aria-label="Filter projects" data-filter-for="project-list" hidden>
+			{{ filter_chips }}
+		</div>
+		<div class="card-grid" id="project-list">
+			{{ project_cards }}
+		</div>
+	</div>
+</main>

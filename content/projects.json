@@ -1,0 +1,334 @@
+[
+  {
+    "slug": "beforepay",
+    "name": "Beforepay",
+    "category": "client",
+    "cardMeta": "FINTECH · AUSTRALIA · 2023 – NOW",
+    "summary": "Pay On Demand for working Australians — migrated from two native apps to Flutter.",
+    "role": "Lead mobile engineer",
+    "platform": "Flutter · native",
+    "image": "/images/work/beforepay.jpg",
+    "tag": "Fintech · Australia",
+    "client": "Beforepay via Cefalo",
+    "timeline": "Oct 2023 – present",
+    "platformDetail": "Android, iOS → Flutter",
+    "overview": "Beforepay’s Pay On Demand lets working Australians access part of their wages before payday for a fixed 5% fee. Two native codebases meant every feature was built twice — and the apps drifted.",
+    "owned": [
+      "Designed the native‑to‑Flutter migration strategy across iOS and Android",
+      "Wrote the Flutter vs Kotlin Multiplatform RFC that set the long‑term platform direction",
+      "Built Method Channel bridges so legacy modules kept running during migration"
+    ],
+    "keyDecision": "Migrate incrementally behind bridges instead of a rewrite — the app moves money, so releases could never stop.",
+    "impact": [
+      {
+        "value": "95%",
+        "label": "code reuse across platforms"
+      },
+      {
+        "value": "+40%",
+        "label": "feature velocity"
+      }
+    ],
+    "stack": [
+      "Flutter",
+      "Dart",
+      "Kotlin",
+      "Swift",
+      "Method Channels"
+    ],
+    "cta": {
+      "label": "Google Play",
+      "href": "https://play.google.com/store/apps/details?id=au.com.cheq"
+    }
+  },
+  {
+    "slug": "mybl",
+    "name": "My Banglalink",
+    "category": "client",
+    "cardMeta": "TELECOM · BANGLADESH · 2022 – 2023",
+    "summary": "Loyalty and payment journeys in one of Bangladesh’s leading telecom super‑apps.",
+    "role": "Feature owner",
+    "platform": "Android native",
+    "image": "/images/work/mybl.jpg",
+    "tag": "Telecom · Bangladesh",
+    "client": "Banglalink via Brain Station 23",
+    "timeline": "Apr 2022 – Oct 2023",
+    "platformDetail": "Android native",
+    "overview": "My Banglalink is one of Bangladesh’s leading telecom super‑apps — telco services, lifestyle, courses, games and health for millions of subscribers.",
+    "owned": [
+      "Owned the Loyalty Management System — rewards on recharge events and engagement milestones",
+      "Delivered Recharge, Product Purchase and Cashback journeys end to end",
+      "Ran sprint planning with product owners and acted as liaison to client stakeholders"
+    ],
+    "keyDecision": "[The hardest call you made — e.g. how you handled concurrent recharge and cashback events safely.]",
+    "impact": [
+      {
+        "value": "Millions",
+        "label": "active subscribers"
+      },
+      {
+        "value": "Quarterly",
+        "label": "Best Performance Award"
+      }
+    ],
+    "stack": [
+      "Kotlin",
+      "Android",
+      "MVVM",
+      "Payments"
+    ],
+    "cta": {
+      "label": "Google Play",
+      "href": "https://play.google.com/store/apps/details?id=com.arena.banglalinkmela.app"
+    }
+  },
+  {
+    "slug": "careye",
+    "name": "CarEye Detect",
+    "category": "client",
+    "cardMeta": "INSURTECH · NORWAY · CEFALO",
+    "summary": "Real‑time vehicle damage assessment for Wenn ASA’s insurance review pipeline.",
+    "role": "Senior Software Engineer",
+    "platform": "iOS · Android",
+    "image": "/images/work/careye.jpg",
+    "imageAlt": "Wenn illustration: a family with luggage next to a car in a parking garage",
+    "tag": "Insurtech · Norway",
+    "client": "Wenn ASA via Cefalo",
+    "timeline": "Jul 2025 – Nov 2025",
+    "platformDetail": "iOS · Android",
+    "overview": "CarEye Detect assesses vehicle damage in real time, feeding Wenn ASA’s insurance review pipeline so claims move faster with fewer manual checks.",
+    "owned": [
+      "Led the UI/UX of Wenn’s CarEye Detect mobile app, from first flows to the shipped design",
+      "Designed a guided capture flow so users photograph damage in a way the image‑processing step can assess",
+      "Built the app in Flutter with Bloc and delivered a full working first version in three months",
+      "Connected the app to the agentic workflow that turns captured photos into a damage assessment for Wenn’s review pipeline"
+    ],
+    "impact": [
+      {
+        "value": "3 months",
+        "label": "to a full working first version"
+      },
+      {
+        "value": "Led",
+        "label": "mobile app design and delivery"
+      }
+    ],
+    "stack": [
+      "Flutter",
+      "Dart",
+      "Bloc",
+      "Agentic Workflow",
+      "Image Processing"
+    ],
+    "cta": [
+      {
+        "label": "Google Play",
+        "href": "https://play.google.com/store/apps/details?id=com.wenn.careyedetect"
+      },
+      {
+        "label": "App Store",
+        "href": "https://apps.apple.com/fr/app/careye-detect/id6749610042"
+      }
+    ]
+  },
+  {
+    "slug": "ege",
+    "name": "EGE LMS",
+    "category": "client",
+    "cardMeta": "EDTECH · SAVE THE CHILDREN · 2020",
+    "summary": "Digital learning for Grade IV–V girls under Bangladesh’s Primary Education Development Plan.",
+    "role": "Mobile developer",
+    "platform": "Android native",
+    "image": "/images/work/ege.jpg",
+    "tag": "Edtech · NGO",
+    "client": "Save the Children Bangladesh",
+    "timeline": "2020",
+    "platformDetail": "Android native",
+    "overview": "Empowering Girls through Education (EGE) supports Bangladesh’s Primary Education Development Plan — child‑friendly Bengali, English and Maths content for Grades IV–V, easing girls’ move to secondary school.",
+    "owned": [
+      "Built the learning app with modular lessons, quizzes and assessments",
+      "Offline‑capable content and sync for low‑connectivity schools",
+      "Validated flows with teachers and field staff on site"
+    ],
+    "keyDecision": "Offline‑first by default, because classrooms couldn’t rely on a connection.",
+    "impact": [
+      {
+        "value": "Thousands",
+        "label": "of students learning on the app"
+      },
+      {
+        "value": "1 + 1",
+        "label": "LMS + MIS shipped at Save the Children"
+      }
+    ],
+    "stack": [
+      "Android",
+      "Java / Kotlin",
+      "Offline sync"
+    ],
+    "cta": {
+      "label": "Google Play",
+      "href": "https://play.google.com/store/apps/details?id=ege.lms.savethechildren.bangladesh"
+    }
+  },
+  {
+    "slug": "pinoy",
+    "name": "The Pinoy Parent",
+    "category": "client",
+    "cardMeta": "PARENTING · SAVE THE CHILDREN · PH",
+    "summary": "A publication app helping young Filipino parents support every stage of a child’s development.",
+    "role": "Software Engineer",
+    "platform": "Flutter",
+    "image": "/images/work/pinoy.jpg",
+    "tag": "Parenting · Philippines",
+    "client": "Save the Children advocacy",
+    "timeline": "Sep 2021 – Apr 2022",
+    "platformDetail": "Flutter",
+    "overview": "The Pinoy Parent is a publication app helping young Filipino parents support their children’s physical, intellectual, social, emotional and moral development.",
+    "owned": [
+      "Led and delivered the MVP of the mobile apps within three months",
+      "Built for iOS and Android from a single Flutter codebase",
+      "Mentored two junior engineers through the build, from code review to release"
+    ],
+    "impact": [
+      {
+        "value": "Thousands",
+        "label": "of readers and installs"
+      },
+      {
+        "value": "2",
+        "label": "platforms, one codebase"
+      }
+    ],
+    "stack": [
+      "Flutter",
+      "Dart"
+    ],
+    "cta": {
+      "label": "Google Play",
+      "href": "https://play.google.com/store/apps/details?id=com.savethechildren.pinoy_parent"
+    }
+  },
+  {
+    "slug": "magica",
+    "name": "Magica Maid",
+    "category": "client",
+    "cardMeta": "MARKETPLACE · GLOBAL",
+    "summary": "A cleaning marketplace connecting customers with independent and in‑house providers.",
+    "role": "Software Engineer",
+    "platform": "Android · iOS",
+    "image": "/images/work/magica.jpg",
+    "tag": "Marketplace · Global",
+    "client": "Magica Maids",
+    "timeline": "Feb 2022 – Aug 2022",
+    "platformDetail": "Android · iOS",
+    "overview": "Magica Maids is a cleaning marketplace connecting customers with independent providers for residential, commercial and industrial jobs, plus in‑house specialists.",
+    "owned": [
+      "Led and delivered the app single‑handedly, from first build to store release",
+      "Finalised the API design together with the backend team",
+      "Owned the full release cycle: builds, testing and Play Store releases"
+    ],
+    "keyDecision": "Ship through staged rollouts, so each release reached a small share of users before going out to everyone.",
+    "impact": [
+      {
+        "value": "2",
+        "label": "platforms, one codebase"
+      }
+    ],
+    "stack": [
+      "Flutter",
+      "Dart"
+    ],
+    "cta": {
+      "label": "Google Play",
+      "href": "https://play.google.com/store/apps/details?id=com.home.service.magica_maids.magica_maids"
+    }
+  },
+  {
+    "slug": "rent",
+    "name": "Rent Collector",
+    "category": "indie",
+    "cardMeta": "PROPTECH · BANGLADESH · INDIE",
+    "summary": "Helps landlords track tenants, rooms, meters and exactly who hasn’t paid for which month.",
+    "role": "Founder · solo build",
+    "platform": "Android · Web",
+    "image": "/images/work/rent.jpg",
+    "tag": "Proptech · Bangladesh",
+    "client": "My own product",
+    "timeline": "Apr 2021 – present",
+    "platformDetail": "Android · Web",
+    "overview": "Rent Collector (ভাড়া আদায়) helps Bangladeshi landlords manage rooms, tenants, meters and electricity bills — and see exactly who hasn’t paid, for which month.",
+    "owned": [
+      "Run the product end to end as founder: requirement and feature analysis through to finalised tickets",
+      "Build and ship both the Android app and the web app",
+      "Handle customer support myself, and feed what landlords ask for back into the roadmap"
+    ],
+    "keyDecision": "Bangla‑first UI and mobile‑number sign‑in, because that’s how landlords in Bangladesh actually work.",
+    "impact": [
+      {
+        "value": "20k+",
+        "label": "installs on Google Play"
+      },
+      {
+        "value": "4.6",
+        "label": "Play Store rating"
+      }
+    ],
+    "stack": [
+      "Kotlin",
+      "Android",
+      "Firebase",
+      "Jetpack Compose",
+      "Coroutines"
+    ],
+    "cta": [
+      {
+        "label": "Google Play",
+        "href": "https://play.google.com/store/apps/details?id=com.shakil.barivara"
+      },
+      {
+        "label": "Open web app",
+        "href": "https://webapp.rentcollector.xyz/"
+      }
+    ]
+  },
+  {
+    "slug": "gitlib",
+    "name": "Git Lib",
+    "category": "indie",
+    "cardMeta": "DEVELOPER TOOLS · OPEN SOURCE",
+    "summary": "Browse trending GitHub repositories, developers and topics by language and time range.",
+    "role": "Solo build",
+    "platform": "Android native",
+    "image": "/images/work/gitlib.jpg",
+    "tag": "Developer tools",
+    "client": "Open source",
+    "timeline": "Jan 2020 – Mar 2024",
+    "platformDetail": "Android native",
+    "overview": "Git Lib helps developers discover trending GitHub repositories, developers and topics, filtered by language and time range.",
+    "owned": [
+      "Designed and built the app solo",
+      "Integrated the GitHub data with filtering by language and period",
+      "Repository and developer detail views"
+    ],
+    "impact": [
+      {
+        "value": "1k+",
+        "label": "installs on Google Play"
+      },
+      {
+        "value": "Solo",
+        "label": "design to release"
+      }
+    ],
+    "stack": [
+      "Android",
+      "Java / Kotlin",
+      "REST"
+    ],
+    "cta": {
+      "label": "Google Play",
+      "href": "https://play.google.com/store/apps/details?id=app.com.gitlib"
+    }
+  }
+]

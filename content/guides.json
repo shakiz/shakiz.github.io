@@ -1,0 +1,83 @@
+[
+  {
+    "t": "agentic",
+    "title": "Claude Code: The Professional Guide",
+    "tags": "AI engineering · CLI",
+    "line": "Context management, agentic workflows and a Think → Implement → Verify loop.",
+    "big": "5",
+    "unit": "chapters",
+    "fmt": "Interactive guide",
+    "url": "/guides/claude-code-pro.html"
+  },
+  {
+    "t": "agentic",
+    "title": "Agentic AI for Modern Android Development",
+    "tags": "Android CLI · Agentic AI",
+    "line": "Claude Code workflows, the context wall and XML → Compose migration.",
+    "big": "5",
+    "unit": "chapters",
+    "fmt": "Interactive guide",
+    "url": "/guides/android-cli.html"
+  },
+  {
+    "t": "agentic",
+    "title": "CLAUDE.md Architecture",
+    "tags": "Context · CLAUDE.md",
+    "line": "Layered, hierarchical context loading that keeps project rules lean.",
+    "big": "1",
+    "unit": "explorer",
+    "fmt": "Interactive explorer",
+    "url": "/guides/claude-md-architecture.html"
+  },
+  {
+    "t": "agentic",
+    "title": "Claude Token Optimization Dashboard",
+    "tags": "Tokens · Context",
+    "line": "See the context snowball and the habits that cut token use.",
+    "big": "Pro",
+    "unit": "dashboard",
+    "fmt": "Interactive dashboard",
+    "url": "/guides/claude-token-optimization.html"
+  },
+  {
+    "t": "mobile",
+    "title": "Interactive Android Field Guide",
+    "tags": "Android · Kotlin DSL",
+    "line": "Coroutines, Compose, Navigation 2 / 3 and Gradle Kotlin DSL — with hands‑on labs.",
+    "big": "5",
+    "unit": "topics · 4 labs",
+    "fmt": "Interactive guide",
+    "url": "/guides/android-field-guide.html"
+  },
+  {
+    "t": "mobile",
+    "title": "Flutter for Next.js Developers",
+    "tags": "Flutter · Next.js",
+    "line": "React and Next.js concepts mapped to Flutter widgets, state and navigation.",
+    "big": "8",
+    "unit": "topics · 2 labs",
+    "fmt": "Interactive guide",
+    "url": "/guides/learn_flutter_nextjs_way.html"
+  },
+  {
+    "t": "mobile",
+    "title": "Flutter Senior & Staff Interview Guide",
+    "tags": "Flutter · Interviews",
+    "line": "Spaced drilling across Dart async, rendering, architecture and staff‑level judgment.",
+    "big": "182",
+    "unit": "questions · 22 chapters",
+    "fmt": "Practice guide",
+    "url": "/guides/flutter-interview-guide.html",
+    "featured": true,
+    "featuredStats": [
+      [
+        "182",
+        "questions"
+      ],
+      [
+        "22",
+        "chapters"
+      ]
+    ]
+  }
+]
