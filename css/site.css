@@ -1271,17 +1271,20 @@ html { scroll-padding-top: 88px; }
 
 	/* ----- Home ----- */
 	.hero { gap: 18px; }
+	/* Portrait on the left; the pill and role sit beside it as one block,
+	   vertically centred on the portrait (the 1fr rows above and below
+	   split the leftover height). The name spans the full width below. */
 	.hero__identity {
 		display: grid;
 		grid-template-columns: 76px minmax(0, 1fr);
-		align-items: center;
-		gap: 18px 16px;
+		grid-template-rows: 1fr auto auto 1fr auto;
+		gap: 0 16px; /* row spacing comes from margins below */
 	}
 	.hero__text { display: contents; }
-	.hero__portrait { grid-row: 1; width: 76px; height: 76px; }
-	.hero__identity .status-pill { grid-row: 1; grid-column: 2; align-self: start; font-size: 11px; }
-	.hero__name, .hero__role { grid-column: 1 / -1; }
-	.hero__role { font-size: 17px; }
+	.hero__portrait { grid-column: 1; grid-row: 1 / 5; align-self: center; width: 76px; height: 76px; }
+	.hero__identity .status-pill { grid-column: 2; grid-row: 2; justify-self: start; font-size: 11px; }
+	.hero__role { grid-column: 2; grid-row: 3; margin-top: 6px; font-size: 15px; line-height: 1.4; }
+	.hero__name { grid-column: 1 / -1; grid-row: 5; margin-top: 18px; }
 
 	.timeline { display: none; }
 	.vtimeline { display: block; }
