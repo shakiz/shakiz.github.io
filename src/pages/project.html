@@ -1,0 +1,65 @@
+<main id="main" class="container page page--detail">
+	<nav class="pager" aria-label="Projects">
+		<a class="back-link" href="/work/">← All work</a>
+		<div class="pager__controls">
+			<span class="pager__pos">{{ position }}</span>
+			<a class="icon-btn" href="{{ prev_href }}" aria-label="Previous project: {{ prev_name }}">←</a>
+			<a class="icon-btn" href="{{ next_href }}" aria-label="Next project: {{ next_name }}">→</a>
+		</div>
+	</nav>
+
+	<section class="detail-intro">
+		<p class="eyebrow">{{ tag }}</p>
+		<h1 class="display">{{ name }}</h1>
+		<p class="detail-intro__summary">{{ summary }}</p>
+	</section>
+
+	{{ media }}
+
+	<dl class="facts">
+		<div class="facts__item"><dt>My role</dt><dd>{{ role }}</dd></div>
+		<div class="facts__item"><dt>Client</dt><dd>{{ client }}</dd></div>
+		<div class="facts__item"><dt>Timeline</dt><dd>{{ timeline }}</dd></div>
+		<div class="facts__item"><dt>Platform</dt><dd>{{ platform }}</dd></div>
+	</dl>
+
+	<div class="detail-body">
+		<article class="detail-main">
+			<section class="prose-section">
+				<h2 class="h3">Overview</h2>
+				<p>{{ overview }}</p>
+			</section>
+			<section class="prose-section">
+				<h2 class="h3">What I owned</h2>
+				<ul class="arrow-list">
+					{{ owned }}
+				</ul>
+			</section>
+			{{ key_decision }}
+		</article>
+
+		<aside class="detail-aside" aria-label="Project summary">
+			<div class="card panel panel--impact">
+				<p class="panel__label">Impact</p>
+				{{ impact }}
+			</div>
+			<div class="card panel panel--tight panel--stack">
+				<p class="panel__label">Stack</p>
+				<div class="tag-list">
+					{{ stack }}
+				</div>
+			</div>
+			<div class="cta-stack">
+				{{ ctas }}
+			</div>
+		</aside>
+	</div>
+
+	<a class="next-card" href="{{ next_href }}">
+		<span class="next-card__text">
+			<span class="next-card__label">NEXT PROJECT</span>
+			<span class="next-card__name">{{ next_name }}</span>
+		</span>
+		<span class="next-card__arrow" aria-hidden="true">→</span>
+	</a>
+</main>
