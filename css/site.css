@@ -1201,6 +1201,18 @@ html { scroll-padding-top: 88px; }
 	.skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+/* ---------- Desktop ---------- */
+@media (min-width: 1024px) {
+	/* Home: tighter rhythm from the hero through the stat tiles. */
+	.page:has(> .hero) { padding-top: 56px; }
+	.hero { gap: 28px; }
+	.hero__identity { gap: 28px; }
+	.hero__text { gap: 8px; }
+	.facts--hero .facts__item { padding-block: 16px; }
+	.hero + .stats { margin-top: -40px; }
+	.stats + .section { margin-top: -24px; }
+}
+
 /* ---------- Mobile ---------- */
 @media (max-width: 639px) {
 	.dsk { display: none !important; }
