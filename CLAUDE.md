@@ -29,10 +29,9 @@ The redesigned portfolio (Home, Work, project details, Guides, Writing, Resume, 
 - **The Guides index** (`/guides/` → `guides/index.html`) is generated from `content/guides.json`, grouped into the tracks defined in `GUIDE_TRACKS` in `build.py`. It sits in the same `guides/` folder as the guide pages themselves.
 - **Guides** in `guides/` are self-contained long-form pages that don't use `site.css` or the shared layout. Each has its own `css/<guide_name>.css` (the Claude guides share `css/agentic_dev.css`; some also pull Tailwind or Chart.js from a CDN), uses relative paths (`../css/...`), and starts with a `back-bar` linking to `/guides/?track=<track>`.
 - Adding a guide means three things: the guide in `guides/`, its stylesheet in `css/`, and an entry in `content/guides.json` (then rebuild). The sitemap picks it up automatically.
-- **Legacy hubs:** `agentic_dev.html` and `mobile_dev.html` are generated redirect stubs pointing to `/guides/?track=agentic` and `/guides/?track=mobile`. Their old template CSS and jQuery files (`css/base.css`, `main.css`, `vendor.css`, `enhanced.css`, `js/`) are no longer used by any page.
+- **Legacy hubs:** `agentic_dev.html` and `mobile_dev.html` are generated redirect stubs pointing to `/guides/?track=agentic` and `/guides/?track=mobile`.
 - Interactive guides keep state in `localStorage` under versioned keys (e.g. `flutter-interview-guide.v2`, with a fallback read from `.v1`). If you change the stored shape, bump the version and keep the migration read.
 
 ## Other files
 
-- `extract_css.py`: a one-off helper that moves inline `<style>` blocks out of a guide into `css/<name>.css`. Its paths are hardcoded to `learn_flutter_nextjs_way`, so edit them before reusing it.
-- `inc/sendEmail.php`: the old template's contact-form handler. GitHub Pages can't run PHP, so it doesn't work on the live site.
+- `privacy_policy/`: standalone pages, not part of the build.
