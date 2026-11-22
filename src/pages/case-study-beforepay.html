@@ -1,0 +1,107 @@
+<main id="main" class="container case">
+	<a class="back-link" href="/work/">← All work</a>
+
+	<section class="case-intro">
+		<p class="eyebrow eyebrow--lg">Case study · Beforepay</p>
+		<h1 class="case-title">Moving a live fintech app to Flutter without freezing a single release</h1>
+		<p class="case-intro__lede">Beforepay lets Australians access their pay before payday. Two native apps meant every feature was built twice. Here's how we got to one codebase while customers kept cashing out.</p>
+	</section>
+
+	<dl class="facts facts--lg" aria-label="Project facts">
+		<div class="facts__item"><dt>Role</dt><dd>Lead mobile engineer</dd></div>
+		<div class="facts__item"><dt>Team</dt><dd>[N] mobile · [N] backend · PM · design<!-- TODO: replace placeholder [N] with the team sizes --></dd></div>
+		<div class="facts__item"><dt>Timeline</dt><dd>Oct 2023 – present</dd></div>
+		<div class="facts__item"><dt>Stack</dt><dd>Flutter · Kotlin · Swift</dd></div>
+	</dl>
+
+	<!-- TODO: replace the three placeholders with real screenshots (TODO.md) -->
+	<section class="card screens" aria-label="Product screens">
+		<div class="screen-placeholder">[Real screen: cash‑out]</div>
+		<div class="screen-placeholder">[Real screen: limit / home]</div>
+		<div class="screen-placeholder">[Real screen: a migrated flow]</div>
+	</section>
+
+	<section class="tldr" aria-labelledby="tldr-h">
+		<h2 class="callout__label" id="tldr-h">TL;DR</h2>
+		<ul>
+			<li>Wrote the RFC comparing Flutter and Kotlin Multiplatform; the team adopted Flutter as its long‑term platform.</li>
+			<li>Migrated screen by screen behind Method Channel bridges, so legacy native modules kept working.</li>
+			<li>Reached <strong>95% shared code</strong> and <strong>40% faster feature delivery</strong>.</li>
+		</ul>
+	</section>
+
+	<article class="case-body">
+		<section class="case-section">
+			<h2 class="h2--case">The problem</h2>
+			<p>Every feature shipped twice — once in Swift, once in Kotlin — and the two apps drifted. [Describe the cost: e.g. a parity bug, a delayed launch, review time.]<!-- TODO: replace placeholder with the concrete cost of two codebases --></p>
+			<p>A rewrite was off the table: this is a money‑moving app with live users and regulatory expectations, so any plan had to keep releasing on schedule.</p>
+		</section>
+
+		<section class="case-section">
+			<h2 class="h2--case">Options I weighed</h2>
+			<div class="table-wrap">
+				<table class="compare">
+					<thead>
+						<tr>
+							<th scope="col">Criterion</th>
+							<th scope="col">Flutter</th>
+							<th scope="col">Kotlin Multiplatform</th>
+							<th scope="col">Stay native</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><th scope="row">Shared UI</th><td>Yes</td><td>Logic first, UI optional</td><td>No</td></tr>
+						<tr><th scope="row">Incremental adoption</th><td>Add‑to‑app + channels</td><td>Module by module</td><td>—</td></tr>
+						<!-- TODO: replace the [your notes] placeholders with the team-skills comparison -->
+						<tr><th scope="row">Team skills</th><td>[your notes]</td><td>[your notes]</td><td>[your notes]</td></tr>
+						<tr><th scope="row">Decision</th><td class="is-chosen">Chosen</td><td>Kept for shared logic later</td><td>Rejected</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<p class="case-note">Why Flutter won: [one honest paragraph — the trade‑off you accepted and why].<!-- TODO: replace placeholder with why Flutter won --></p>
+		</section>
+
+		<section class="case-section">
+			<h2 class="h2--case">The approach</h2>
+			<ol class="phases">
+				<li>
+					<span class="phases__num">Phase 1</span>
+					<div><p class="phases__title">Bridge</p><p class="phases__desc">Embedded a Flutter shell and exposed legacy native modules through Method Channels.</p></div>
+				</li>
+				<li>
+					<span class="phases__num">Phase 2</span>
+					<div><p class="phases__title">Migrate screen by screen</p><p class="phases__desc">Moved flows in priority order, each behind [feature flags / staged rollout]<!-- TODO: replace placeholder with the rollout mechanism actually used -->, so live journeys were never interrupted.</p></div>
+				</li>
+				<li>
+					<span class="phases__num">Phase 3</span>
+					<div><p class="phases__title">Retire native</p><p class="phases__desc">Removed duplicated native code once each Flutter path was proven in production.</p></div>
+				</li>
+			</ol>
+		</section>
+
+		<section class="case-section">
+			<h2 class="h2--case">Results</h2>
+			<div class="stats stats--lg">
+				<div class="card stat"><p class="stat__value">95%</p><p class="stat__label">code shared across iOS and Android</p></div>
+				<div class="card stat"><p class="stat__value">+40%</p><p class="stat__label">feature velocity after migration</p></div>
+				<div class="card stat"><p class="stat__value">[x.x%]</p><!-- TODO: replace placeholder [x.x%] with crash-free sessions before → after --><p class="stat__label">crash‑free sessions, before → after</p></div>
+			</div>
+		</section>
+
+		<section class="case-section">
+			<h2 class="h2--case">What I'd do differently</h2>
+			<p>[One or two honest lessons. Senior reviewers read this section first — it shows judgment, not just output.]<!-- TODO: replace placeholder with lessons learned --></p>
+		</section>
+	</article>
+
+	<nav class="case-nav" aria-label="More case studies">
+		<a class="nav-card" href="/work/">
+			<span class="nav-card__label">← BACK</span>
+			<span class="nav-card__title">All work</span>
+		</a>
+		<a class="nav-card nav-card--next" href="/work/mybl/">
+			<span class="nav-card__label">NEXT CASE →</span>
+			<span class="nav-card__title">A loyalty engine for My Banglalink</span>
+		</a>
+	</nav>
+</main>
