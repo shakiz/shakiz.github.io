@@ -2,7 +2,7 @@
 // filter chips start hidden and all items are shown until this script runs, and on
 // phones the plain nav links stay visible unless the <html class="js"> flag is set.
 
-// Mobile menu (< 800px): full-screen overlay with a focus trap.
+// Mobile menu (< 880px): full-screen overlay with a focus trap.
 (function () {
 	var menu = document.getElementById('site-menu');
 	var toggle = document.querySelector('.site-header .menu-toggle');
@@ -54,8 +54,8 @@
 		}
 	});
 
-	// The overlay only exists below 800px; close it if the window grows past that.
-	window.matchMedia('(min-width: 800px)').addEventListener('change', function (mq) {
+	// The overlay only exists below 880px; close it if the window grows past that.
+	window.matchMedia('(min-width: 880px)').addEventListener('change', function (mq) {
 		if (mq.matches) close(false);
 	});
 })();
@@ -63,6 +63,8 @@
 // Filter chips.
 // <div data-filter-for="ID" hidden> holds <button data-filter="key" aria-pressed>.
 // Items inside #ID carry data-filter-tags="key other-key"; "all" shows everything.
+// Optional data-filter-param="track" reads ?track=key to preselect a chip, and keeps
+// the URL in sync so a filtered view can be shared.
 document.querySelectorAll('[data-filter-for]').forEach(function (group) {
 	var list = document.getElementById(group.getAttribute('data-filter-for'));
 	if (!list) return;
@@ -79,9 +81,24 @@ document.querySelectorAll('[data-filter-for]').forEach(function (group) {
 		});
 	}
 
+	var param = group.getAttribute('data-filter-param');
+
 	buttons.forEach(function (b) {
-		b.addEventListener('click', function () { apply(b.getAttribute('data-filter')); });
+		b.addEventListener('click', function () {
+			var key = b.getAttribute('data-filter');
+			apply(key);
+			if (param && window.history.replaceState) {
+				var url = new URL(window.location.href);
+				if (key === 'all') url.searchParams.delete(param); else url.searchParams.set(param, key);
+				window.history.replaceState(null, '', url);
+			}
+		});
 	});
+
+	if (param) {
+		var wanted = (new URLSearchParams(window.location.search).get(param) || '').replace(/[^a-z0-9-]/gi, '');
+		if (wanted && group.querySelector('[data-filter="' + wanted + '"]')) apply(wanted);
+	}
 	group.hidden = false;
 });
 

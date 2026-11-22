@@ -51,12 +51,14 @@ NAV = [
     ("Career", "/#career", None),
     ("Leadership", "/#leadership", None),
     ("Work", "/work/", "work"),
+    ("Guides", "/guides/", "guides"),
     ("Writing", "/writing/", "writing"),
     ("Resume", "/resume/", "resume"),
 ]
 
 FOOTER_LINKS = [
     ("Work", "/work/"),
+    ("Guides", "/guides/"),
     ("Writing", "/writing/"),
     ("Resume", "/resume/"),
     ("Contact", "/contact/"),
@@ -171,11 +173,12 @@ def top_nav(active):
 {mobile_menu(active)}"""
 
 
-# Full-screen menu used below 800px. Opened by .menu-toggle, see js/site.js.
+# Full-screen menu used below 880px. Opened by .menu-toggle, see js/site.js.
 MENU_LINKS = [
     ("Home", "/", "home"),
     ("Career", "/#career", None),
     ("Work", "/work/", "work"),
+    ("Guides", "/guides/", "guides"),
     ("Writing", "/writing/", "writing"),
     ("Resume", "/resume/", "resume"),
 ]
@@ -271,31 +274,19 @@ def layout(*, title, description, path, active, body, source,
 
 # ---------- page builders ----------
 
-def home_context(projects, posts):
-    featured = next(p for p in posts if p.get("featured"))
-    recent = [p for p in posts if not p.get("featured")][:2]
-
-    label = featured.get("featuredLabel") or featured["topic"]
-    featured_html = f"""<a class="card post-feature" {link_attrs(featured["url"])}>
-				<p class="post-feature__label">Featured · {responsive_text(label, featured["date"])}</p>
-				<p class="post-feature__title">{text(featured["title"])}</p>
-				<p class="post-feature__date">{esc(featured["date"])}</p>
-			</a>"""
-
-    rows = "\n\t\t\t\t".join(
-        f"""<a class="post-row" {link_attrs(p["url"])}>
-					<span class="post-row__title">{text(p["title"])}</span>
-					<span class="post-row__meta"><span class="dsk">{esc(TOPIC_SHORT.get(p["topicKey"], p["topic"]))} · </span>{esc(p["date"])}</span>
-				</a>"""
-        for p in recent
-    )
+def home_context(projects, posts, guides):
+    latest = posts[0]  # posts.json is newest first
+    latest_html = f"""<a class="latest-row" {link_attrs(latest["url"])}>
+			<span><span class="latest-row__label">Latest article</span><span class="latest-row__title">{text(latest["title"])}</span></span>
+			<span class="latest-row__date">{esc(latest["date"])}</span>
+		</a>"""
 
     return {
         "social_icons": social_icon_links(["linkedin", "github", "medium", "stackoverflow"]),
         "project_count": len(projects),
         "post_count": len(posts),
-        "writing_featured": featured_html,
-        "writing_recent": rows,
+        "guide_count": len(guides),
+        "latest_post": latest_html,
     }
 
 
@@ -458,7 +449,7 @@ def writing_context(posts):
     if LINKS["youtube"]:
         youtube = f"""<section class="strip" aria-label="Video">
 		<p><span class="dsk">Prefer video? I explain AI and mobile tooling in Bangla.</span><span class="mob">Bangla videos on YouTube</span></p>
-		<a class="link-arrow" {link_attrs(LINKS["youtube"])}><span class="dsk">Watch on YouTube </span>→</a>
+		<a class="link-arrow" {link_attrs(LINKS["youtube"])}><span><span class="dsk">Watch on YouTube </span>→</span></a>
 	</section>"""
 
     return {
@@ -489,13 +480,101 @@ def contact_context():
     }
 
 
-def sitemap(pages):
-    urls = "\n".join(
-        f"\t<url><loc>{SITE_URL}{p['path']}</loc></url>"
-        for p in pages if not p.get("noindex")
+# Guide tracks: (key, eyebrow number, name, short name for phones, tagline, topics)
+GUIDE_TRACKS = [
+    ("agentic", "Track 01", "Agentic engineering", "Agentic",
+     "Build smarter. Ship faster.", "Claude Code · context · tokens"),
+    ("mobile", "Track 02", "Mobile engineering", "Mobile",
+     "Ship native. Scale cross‑platform.", "Android · KMP · Flutter"),
+]
+
+
+def guide_card(guide):
+    return f"""<a class="card guide-card" href="{esc(guide["url"])}">
+					<span class="guide-card__cover">
+						<span class="guide-card__stat"><span class="guide-card__big">{esc(guide["big"])}</span><span class="guide-card__unit">{esc(guide["unit"])}</span></span>
+						<span class="guide-card__fmt">{esc(guide["fmt"])}</span>
+					</span>
+					<span class="guide-card__body">
+						<span class="guide-card__tags">{esc(guide["tags"])}</span>
+						<span class="guide-card__title">{esc(guide["title"])}</span>
+						<span class="guide-card__line">{esc(guide["line"])}</span>
+						<span class="guide-card__cta">Open guide ↗</span>
+					</span>
+				</a>"""
+
+
+def guides_context(guides):
+    counts = {"all": len(guides)}
+    for g in guides:
+        counts[g["t"]] = counts.get(g["t"], 0) + 1
+    filters = [("all", "All", "All")] + [(key, name, short) for key, _, name, short, _, _ in GUIDE_TRACKS]
+
+    featured = next(g for g in guides if g.get("featured"))
+    track_name = next(name for key, _, name, _, _, _ in GUIDE_TRACKS if key == featured["t"])
+    stats = "".join(
+        f'<div class="guide-feature__stat"><p class="guide-feature__big">{esc(v)}</p><p class="guide-feature__unit">{esc(u)}</p></div>'
+        for v, u in featured["featuredStats"]
     )
+    featured_html = f"""<a class="card guide-feature" href="{esc(featured["url"])}">
+		<div class="guide-feature__stats">{stats}</div>
+		<div class="guide-feature__text">
+			<p class="guide-feature__label">Featured<span class="dsk"> · {esc(track_name)}</span></p>
+			<p class="guide-feature__title">{esc(featured["title"])}</p>
+			<p class="guide-feature__line dsk">{esc(featured["line"])}</p>
+		</div>
+		<span class="guide-card__cta">Open guide ↗</span>
+	</a>"""
+
+    sections = []
+    for key, number, name, short, tagline, topics in GUIDE_TRACKS:
+        cards = "\n\t\t\t\t".join(guide_card(g) for g in guides if g["t"] == key)
+        sections.append(f"""<section class="track" id="track-{key}" data-filter-tags="{key}" aria-labelledby="track-{key}-h">
+			<div class="track__head">
+				<div class="section-head__titles">
+					<p class="eyebrow">{number} · {responsive_text(name, short)}</p>
+					<h2 class="track__title" id="track-{key}-h">{esc(tagline)}</h2>
+				</div>
+				<p class="track__topics dsk">{esc(topics)}</p>
+			</div>
+			<div class="guide-grid">
+				{cards}
+			</div>
+		</section>""")
+
+    return {
+        "guide_count": len(guides),
+        "featured": featured_html,
+        "filter_chips": filter_chips(filters, counts),
+        "tracks": "\n\t\t".join(sections),
+    }
+
+
+def redirect_page(target, title):
+    """Static stand-in for a server redirect (GitHub Pages has none)."""
+    return f"""<!doctype html>
+<!-- Generated by build.py: legacy URL, redirects to {target}. -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>{esc(title)} · Sakhawat Hossain</title>
+	<meta name="robots" content="noindex">
+	<link rel="canonical" href="{SITE_URL}{target}">
+	<meta http-equiv="refresh" content="0; url={target}">
+	<script>location.replace({json.dumps(target)});</script>
+</head>
+<body>
+	<p>This page has moved to <a href="{target}">{SITE_URL}{target}</a>.</p>
+</body>
+</html>
+"""
+
+
+def sitemap(pages, extra_paths=()):
+    paths = [p["path"] for p in pages if not p.get("noindex")] + list(extra_paths)
+    urls = "\n".join(f"\t<url><loc>{SITE_URL}{path}</loc></url>" for path in paths)
     return f"""<?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated by build.py. Lists the portfolio pages only. -->
+<!-- Generated by build.py. Lists the portfolio pages and the guides. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {urls}
 </urlset>
@@ -520,6 +599,7 @@ def person_json_ld():
 def build():
     projects = load_json("projects.json")
     posts = load_json("posts.json")
+    guides = load_json("guides.json")
 
     pages = [
         {
@@ -529,8 +609,8 @@ def build():
             "active": "home",
             "title": "Sakhawat Hossain · Mobile lead",
             "description": "Sakhawat Hossain, mobile lead and Senior Software Engineer at Cefalo. "
-                           "Seven years building Android and Flutter apps in fintech, telecom and edtech.",
-            "context": home_context(projects, posts),
+                           "8+ years building Android and Flutter apps in fintech, telecom and edtech.",
+            "context": home_context(projects, posts, guides),
             "head_extra": person_json_ld(),
         },
         {
@@ -544,15 +624,14 @@ def build():
             "context": work_context(projects),
         },
         {
-            "source": "src/pages/case-study-beforepay.html",
-            "out": "work/beforepay/case-study/index.html",
-            "path": "/work/beforepay/case-study/",
-            "active": "work",
-            "title": "Beforepay case study: native to Flutter · Sakhawat Hossain",
-            "description": "How Sakhawat Hossain moved Beforepay's live fintech app from two native "
-                           "codebases to Flutter without freezing a single release.",
-            "og_image": "/images/work/beforepay.jpg",
-            "context": {},
+            "source": "src/pages/guides.html",
+            "out": "guides/index.html",
+            "path": "/guides/",
+            "active": "guides",
+            "title": "Guides · Sakhawat Hossain",
+            "description": "Interactive guides by Sakhawat Hossain on agentic AI engineering with "
+                           "Claude Code, and on Android and Flutter mobile engineering.",
+            "context": guides_context(guides),
         },
         {
             "source": "src/pages/writing.html",
@@ -570,7 +649,7 @@ def build():
             "path": "/resume/",
             "active": "resume",
             "title": "Resume · Sakhawat Hossain",
-            "description": "Resume of Sakhawat Hossain, mobile lead with seven years shipping Android "
+            "description": "Resume of Sakhawat Hossain, mobile lead with 8+ years shipping Android "
                            "and cross-platform apps in fintech, telecom and edtech.",
             "context": {"resume_pdf": RESUME_PDF},
         },
@@ -626,7 +705,13 @@ def build():
         out_path.write_text(output, encoding="utf-8")
         print(f"wrote {page['out']}")
 
-    (ROOT / "sitemap.xml").write_text(sitemap(pages), encoding="utf-8")
+    # The old hub pages now redirect to the matching Guides track.
+    for out, track, title in [("agentic_dev.html", "agentic", "Agentic engineering guides"),
+                              ("mobile_dev.html", "mobile", "Mobile engineering guides")]:
+        (ROOT / out).write_text(redirect_page(f"/guides/?track={track}", title), encoding="utf-8")
+        print(f"wrote {out} (redirect)")
+
+    (ROOT / "sitemap.xml").write_text(sitemap(pages, [g["url"] for g in guides]), encoding="utf-8")
     print("wrote sitemap.xml")
 
 

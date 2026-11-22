@@ -203,18 +203,35 @@
 		<a class="link-arrow mob" href="/work/">All {{ project_count }} projects →</a>
 	</section>
 
-	<!-- 04 Writing -->
-	<section class="section" id="writing" aria-labelledby="writing-h">
+	<!-- 04 Guides & writing -->
+	<section class="section" id="guides" aria-labelledby="guides-h">
 		<div class="section-head__titles">
-			<p class="eyebrow">04 — Writing</p>
-			<h2 class="h2" id="writing-h">Sharing what I learn</h2>
+			<p class="eyebrow">04 — Guides &amp; writing</p>
+			<h2 class="h2" id="guides-h">Teaching what I ship</h2>
 		</div>
-		<div class="writing-grid">
-			{{ writing_featured }}
-			<div class="post-list">
-				{{ writing_recent }}
-				<a class="link-arrow" href="/writing/">All {{ post_count }} articles →</a>
-			</div>
+		<!-- Three highlight tiles; scrolls sideways on phones. -->
+		<div class="guide-tiles">
+			<a class="card guide-tile" href="/guides/?track=agentic">
+				<p class="guide-tile__meta">AGENTIC<span class="dsk"> · INTERACTIVE</span></p>
+				<h3 class="guide-tile__title">Claude Code: The Professional Guide</h3>
+				<p class="guide-tile__stat"><span class="guide-tile__big">5</span><span class="guide-tile__unit">chapters</span></p>
+			</a>
+			<a class="card guide-tile" href="/guides/?track=mobile">
+				<p class="guide-tile__meta">ANDROID<span class="dsk"> · INTERACTIVE</span></p>
+				<h3 class="guide-tile__title">Interactive Android Field Guide</h3>
+				<p class="guide-tile__stat"><span class="guide-tile__big">4</span><span class="guide-tile__unit">labs</span></p>
+			</a>
+			<a class="card guide-tile" href="/guides/?track=mobile">
+				<p class="guide-tile__meta">FLUTTER<span class="dsk"> · PRACTICE</span></p>
+				<h3 class="guide-tile__title">Flutter Senior &amp; Staff Interview Guide</h3>
+				<p class="guide-tile__stat"><span class="guide-tile__big">182</span><span class="guide-tile__unit">questions</span></p>
+			</a>
+		</div>
+		{{ latest_post }}
+		<div class="link-row">
+			<!-- One inner span per label: flex containers would drop the spaces around .dsk -->
+			<a class="link-arrow" href="/guides/"><span>All <span class="dsk">{{ guide_count }} </span>guides →</span></a>
+			<a class="link-arrow" href="/writing/"><span>All <span class="dsk">{{ post_count }} </span>articles →</span></a>
 		</div>
 	</section>
 

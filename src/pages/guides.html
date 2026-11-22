@@ -1,0 +1,19 @@
+<main id="main" class="container page page--inner">
+	<section class="page-intro">
+		<p class="eyebrow">Guides</p>
+		<h1 class="h1">Interactive guides I built for engineers</h1>
+		<p class="page-intro__lede">{{ guide_count }} hands‑on guides on agentic AI and mobile engineering.</p>
+	</section>
+
+	{{ featured }}
+
+	<div class="filterable">
+		<!-- data-filter-param lets /guides/?track=mobile open with that chip selected. -->
+		<div class="chip-group" role="group" aria-label="Filter by track" data-filter-for="guide-tracks" data-filter-param="track" hidden>
+			{{ filter_chips }}
+		</div>
+		<div class="tracks" id="guide-tracks">
+		{{ tracks }}
+		</div>
+	</div>
+</main>
