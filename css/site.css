@@ -1,21 +1,26 @@
 /* Portfolio site styles. Design tokens live in :root; everything below uses them. */
 
 /* ---------- Tokens ---------- */
+/* Dark is the default. The theme toggle sets <html data-theme="light">, which swaps
+   the colour tokens below; the inline script in <head> restores the saved choice. */
 :root {
-	--bg: #0A0B0D;
-	--surface: #111318;
-	--surface-2: #0D0F13;
-	--border: #1E2229;
-	--border-strong: #2A2F37;
-	--border-dashed: #3A404A;
-	--text: #EDEEF0;
-	--text-2: #C9CDD3;
-	--muted: #A0A6B0;
-	--dim: #7C838E;
+	color-scheme: dark;
+	--bg: #1F2329;
+	--surface: #282D35;
+	--surface-2: #242930;
+	--border: #3A414C;
+	--border-strong: #4A525F;
+	--border-dashed: #5C6573;
+	--text: #F3F4F6;
+	--text-2: #DADDE2;
+	--muted: #C4C9D1;
+	--dim: #A3AAB5;
 	--accent: #A5B4FC;
+	--accent-rgb: 165, 180, 252;
 	--on-accent: #0A0B0D;
-	--success-bg: #0E1A13;
-	--success-border: #1F3A2B;
+	--tl-strong-text: var(--on-accent);
+	--success-bg: #1D3328;
+	--success-border: #2F5A40;
 	--success-text: #86EFAC;
 	--success-dot: #4ADE80;
 
@@ -28,6 +33,28 @@
 	--radius-card: 16px;
 	--radius-panel: 20px;
 	--radius-pill: 999px;
+}
+
+:root[data-theme="light"] {
+	color-scheme: light;
+	--bg: #F7F8FA;
+	--surface: #FFFFFF;
+	--surface-2: #F1F3F6;
+	--border: #E2E5EA;
+	--border-strong: #CDD2DA;
+	--border-dashed: #AEB5C0;
+	--text: #14171C;
+	--text-2: #2E343D;
+	--muted: #4A515C;
+	--dim: #5F6672;
+	--accent: #4F46E5;
+	--accent-rgb: 79, 70, 229;
+	--on-accent: #FFFFFF;
+	--tl-strong-text: var(--text);
+	--success-bg: #ECFDF3;
+	--success-border: #ABEFC6;
+	--success-text: #067647;
+	--success-dot: #17B26A;
 }
 
 /* ---------- Base ---------- */
@@ -387,10 +414,10 @@ html { scroll-padding-top: 88px; }
 	color: var(--text);
 }
 /* Opacity rises with seniority; the current role is solid accent. */
-.tl-bar--l1 { background: rgba(165, 180, 252, 0.22); }
-.tl-bar--l2 { background: rgba(165, 180, 252, 0.34); }
-.tl-bar--l3 { background: rgba(165, 180, 252, 0.45); color: var(--on-accent); font-weight: 600; }
-.tl-bar--l4 { background: rgba(165, 180, 252, 0.62); color: var(--on-accent); font-weight: 600; }
+.tl-bar--l1 { background: rgba(var(--accent-rgb), 0.22); }
+.tl-bar--l2 { background: rgba(var(--accent-rgb), 0.34); }
+.tl-bar--l3 { background: rgba(var(--accent-rgb), 0.45); color: var(--tl-strong-text); font-weight: 600; }
+.tl-bar--l4 { background: rgba(var(--accent-rgb), 0.62); color: var(--tl-strong-text); font-weight: 600; }
 .tl-bar--current { background: var(--accent); color: var(--on-accent); font-weight: 600; }
 .tl-bar--dashed { border: 1px dashed var(--border-dashed); color: var(--muted); }
 .tl-bar--edu { padding: 8px 12px; border: 1px solid var(--border-strong); color: var(--muted); }
@@ -1093,6 +1120,29 @@ html { scroll-padding-top: 88px; }
 .menu-toggle:hover { border-color: var(--accent); }
 .menu .menu-toggle { display: grid; }
 
+/* ---------- Theme toggle ---------- */
+/* Right-hand group of header buttons. The theme toggle needs JS, so it stays
+   hidden without it; it shows the sun in dark mode and the moon in light mode. */
+.nav__links { margin-left: auto; }
+.nav__actions { display: flex; align-items: center; gap: 8px; }
+.theme-toggle {
+	display: none;
+	width: 44px;
+	height: 44px;
+	place-items: center;
+	padding: 0;
+	border: 1px solid var(--border-strong);
+	border-radius: 12px;
+	background: transparent;
+	color: var(--text);
+	cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+.js .theme-toggle { display: grid; }
+.theme-toggle__moon,
+[data-theme="light"] .theme-toggle__sun { display: none; }
+[data-theme="light"] .theme-toggle__moon { display: block; }
+
 .menu {
 	position: fixed;
 	inset: 0;
@@ -1189,6 +1239,12 @@ html { scroll-padding-top: 88px; }
 }
 @media (min-width: 880px) {
 	.menu { display: none !important; }
+}
+
+/* Very narrow phones (< 360px): brand + role + two header buttons don't fit,
+   so the header drops the role. The menu overlay still shows it. */
+@media (max-width: 359px) {
+	.js .site-header .nav__brand-role { display: none; }
 }
 
 /* ---------- Tablet ---------- */

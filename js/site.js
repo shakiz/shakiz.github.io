@@ -172,3 +172,29 @@ document.querySelectorAll('[data-filter-for]').forEach(function (group) {
 		form.querySelector('input:not([type="radio"])').focus();
 	});
 })();
+
+// Theme toggle: dark by default, light when <html data-theme="light">. The choice is
+// saved in localStorage under 'theme'; the inline script in <head> restores it on load.
+(function () {
+	var button = document.querySelector('.theme-toggle');
+	if (!button) return;
+	var root = document.documentElement;
+
+	function isDark() {
+		return root.getAttribute('data-theme') !== 'light';
+	}
+
+	function syncLabel() {
+		button.setAttribute('aria-label', isDark() ? 'Switch to light theme' : 'Switch to dark theme');
+	}
+
+	button.addEventListener('click', function () {
+		var next = isDark() ? 'light' : 'dark';
+		if (next === 'light') root.setAttribute('data-theme', 'light');
+		else root.removeAttribute('data-theme');
+		try { localStorage.setItem('theme', next); } catch (e) {}
+		syncLabel();
+	});
+
+	syncLabel();
+})();
